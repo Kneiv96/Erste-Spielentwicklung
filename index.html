@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dungeon Hero</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="game">
+
+    <h1>Die verlassene Mine</h1>
+
+    <div class="battlefield">
+
+      <!-- HELD -->
+      <div class="fighter">
+
+        <h2>Held</h2>
+
+        <div class="character hero">
+          🧙
+        </div>
+
+        <div class="health-bar">
+          <div id="heroHealthBar" class="health-fill"></div>
+        </div>
+
+        <p>
+          ❤️ <span id="heroHealth">100</span> / 100
+        </p>
+
+      </div>
+
+
+      <div class="battle-text">
+
+        <p id="battleMessage">
+          Der Kampf beginnt!
+        </p>
+
+      </div>
+
+
+      <!-- MONSTER -->
+      <div class="fighter">
+
+        <h2>Goblin</h2>
+
+        <div class="character monster">
+          👹
+        </div>
+
+        <div class="health-bar">
+          <div id="monsterHealthBar" class="health-fill"></div>
+        </div>
+
+        <p>
+          ❤️ <span id="monsterHealth">40</span> / 40
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="abilities">
+
+      <button id="attackButton">
+        ⚔️ Schwerer Schlag
+      </button>
+
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+
+</body>
+</html>
