@@ -3,9 +3,11 @@
 // =========================
 
 const hero = {
+const hero = {
     maxHealth: 100,
     health: 100,
     attack: 10,
+    defense: 0,
     level: 1,
     xp: 0
 };
