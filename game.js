@@ -71,14 +71,12 @@ const dungeon = {
 
 
 let currentMonsterIndex = 0;
-
 let monster = null;
-
 let dungeonFinished = false;
 
 
 // =========================
-// HTML ELEMENTE
+// HTML-ELEMENTE
 // =========================
 
 const heroHealthText =
@@ -104,8 +102,10 @@ const lootPanel =
 
 const lootResults =
     document.getElementById("lootResults");
+
 const combatScreen =
     document.getElementById("combatScreen");
+
 
 // =========================
 // MONSTER LADEN
@@ -137,7 +137,7 @@ function loadMonster() {
 
 
 // =========================
-// ANZEIGE
+// ANZEIGE AKTUALISIEREN
 // =========================
 
 function updateDisplay() {
@@ -202,7 +202,7 @@ function heroAttack() {
         return;
     }
 
-    if (monster.health <= 0) {
+    if (!monster || monster.health <= 0) {
         return;
     }
 
@@ -218,7 +218,6 @@ function heroAttack() {
 
     updateDisplay();
 
-
     checkMonsterDeath();
 }
 
@@ -233,7 +232,7 @@ function monsterAttack() {
         return;
     }
 
-    if (monster.health <= 0) {
+    if (!monster || monster.health <= 0) {
         return;
     }
 
@@ -284,7 +283,7 @@ function heavyAttack() {
         return;
     }
 
-    if (monster.health <= 0) {
+    if (!monster || monster.health <= 0) {
         return;
     }
 
@@ -309,7 +308,7 @@ function heavyAttack() {
 
 
 // =========================
-// MONSTER TOD
+// MONSTER BESIEGT
 // =========================
 
 function checkMonsterDeath() {
@@ -321,9 +320,7 @@ function checkMonsterDeath() {
 
     monster.health = 0;
 
-
     hero.xp += monster.xp;
-
 
     updateDisplay();
 
@@ -339,6 +336,7 @@ function checkMonsterDeath() {
     currentMonsterIndex++;
 
 
+    // DUNGEON BEENDET
     if (
         currentMonsterIndex >=
         dungeon.monsters.length
@@ -347,7 +345,6 @@ function checkMonsterDeath() {
         dungeonFinished = true;
 
         attackButton.disabled = true;
-
 
         battleMessage.textContent =
             "🏆 Dungeon abgeschlossen!";
@@ -358,11 +355,11 @@ function checkMonsterDeath() {
             1200
         );
 
-
         return;
     }
 
 
+    // NÄCHSTES MONSTER
     setTimeout(
         loadMonster,
         1800
@@ -417,13 +414,11 @@ const lootCategories = [
         icon: "🛡️",
         weight: 7
     }
-
 ];
 
 
 // =========================
-// GEWICHTETE ZIEHUNG
-// OHNE DOPPELTE KATEGORIEN
+// 3 VERSCHIEDENE LOOTS
 // =========================
 
 function drawUniqueLootCategories(amount) {
@@ -431,15 +426,10 @@ function drawUniqueLootCategories(amount) {
     const available =
         [...lootCategories];
 
-
     const selected = [];
 
 
-    for (
-        let i = 0;
-        i < amount;
-        i++
-    ) {
+    for (let i = 0; i < amount; i++) {
 
         const totalWeight =
             available.reduce(
@@ -450,8 +440,7 @@ function drawUniqueLootCategories(amount) {
 
 
         let roll =
-            Math.random()
-            * totalWeight;
+            Math.random() * totalWeight;
 
 
         let selectedIndex = 0;
@@ -481,6 +470,8 @@ function drawUniqueLootCategories(amount) {
         );
 
 
+        // Gezogenen Loot entfernen:
+        // dadurch keine Doppelungen
         available.splice(
             selectedIndex,
             1
@@ -503,7 +494,6 @@ function rollRarity() {
 
 
     if (roll < 45) {
-
         return {
             name: "Gewöhnlich",
             symbol: "⬜"
@@ -512,7 +502,6 @@ function rollRarity() {
 
 
     if (roll < 72) {
-
         return {
             name: "Ungewöhnlich",
             symbol: "🟩"
@@ -521,7 +510,6 @@ function rollRarity() {
 
 
     if (roll < 87) {
-
         return {
             name: "Selten",
             symbol: "🟦"
@@ -530,7 +518,6 @@ function rollRarity() {
 
 
     if (roll < 95) {
-
         return {
             name: "Episch",
             symbol: "🟪"
@@ -539,7 +526,6 @@ function rollRarity() {
 
 
     if (roll < 99) {
-
         return {
             name: "Legendär",
             symbol: "🟧"
@@ -552,18 +538,28 @@ function rollRarity() {
         symbol: "🟥"
     };
 
-    // Göttlich = 0 %
+    // Göttlich hat in diesem Dungeon 0 %
 }
 
 
 // =========================
-// DUNGEON LOOT
+// DUNGEON-LOOT
 // =========================
 
 function generateDungeonLoot() {
-    combatScreen.classList.add("hidden");
 
-    lootPanel.classList.remove("hidden");
+    // Kampf ausblenden
+    combatScreen.classList.add(
+        "hidden"
+    );
+
+
+    // Loot-Bildschirm anzeigen
+    lootPanel.classList.remove(
+        "hidden"
+    );
+
+
     const loot =
         drawUniqueLootCategories(3);
 
@@ -582,6 +578,7 @@ function generateDungeonLoot() {
         );
 
 
+        // RESSOURCE
         if (
             item.type === "gold" ||
             item.type === "wood" ||
@@ -598,16 +595,20 @@ function generateDungeonLoot() {
 
 
             box.innerHTML = `
-                <h3>${item.icon} ${item.name}</h3>
-                <p>+${amount}</p>
+                <h3>
+                    ${item.icon}
+                    ${item.name}
+                </h3>
+
+                <p>
+                    +${amount}
+                </p>
             `;
         }
 
 
-        else if (
-            item.type === "weapon" ||
-            item.type === "armor"
-        ) {
+        // WAFFE / RÜSTUNG
+        else {
 
             const rarity =
                 rollRarity();
@@ -631,15 +632,11 @@ function generateDungeonLoot() {
             box
         );
     });
-
-
-    
-    );
 }
 
 
 // =========================
-// BUTTON
+// SCHWERER-SCHLAG-BUTTON
 // =========================
 
 attackButton.addEventListener(
@@ -652,12 +649,14 @@ attackButton.addEventListener(
 // AUTO-KAMPF
 // =========================
 
+// Held: alle 2 Sekunden
 setInterval(
     heroAttack,
     2000
 );
 
 
+// Monster: alle 2,5 Sekunden
 setInterval(
     monsterAttack,
     2500
@@ -665,7 +664,7 @@ setInterval(
 
 
 // =========================
-// SPIELSTART
+// SPIEL STARTEN
 // =========================
 
 loadMonster();
