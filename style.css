@@ -149,3 +149,49 @@ button:hover {
 
     font-size: 18px;
 }
+/* =========================
+   LOOT
+========================= */
+
+.loot-panel {
+    margin-top: 30px;
+    padding: 25px;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    border: 2px solid #8a704c;
+    border-radius: 12px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+.loot-results {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+
+.loot-item {
+    min-width: 180px;
+
+    padding: 20px;
+
+    background: #211d1a;
+
+    border: 2px solid #66584d;
+    border-radius: 10px;
+
+    font-size: 18px;
+}
+
+
+.loot-item h3 {
+    margin-top: 0;
+}
