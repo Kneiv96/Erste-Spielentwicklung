@@ -104,7 +104,8 @@ const lootPanel =
 
 const lootResults =
     document.getElementById("lootResults");
-
+const combatScreen =
+    document.getElementById("combatScreen");
 
 // =========================
 // MONSTER LADEN
