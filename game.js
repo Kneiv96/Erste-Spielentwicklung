@@ -7,8 +7,19 @@ const hero = {
     health: 100,
     attack: 10,
     level: 1,
-    xp: 0,
-    gold: 0
+    xp: 0
+};
+
+
+// =========================
+// RESSOURCEN
+// =========================
+
+const resources = {
+    gold: 0,
+    wood: 0,
+    stone: 0,
+    food: 0
 };
 
 
@@ -24,36 +35,28 @@ const dungeon = {
             name: "Ratte",
             maxHealth: 25,
             attack: 4,
-            xp: 10,
-            goldMin: 1,
-            goldMax: 3
+            xp: 10
         },
 
         {
             name: "Goblin",
             maxHealth: 40,
             attack: 6,
-            xp: 15,
-            goldMin: 3,
-            goldMax: 6
+            xp: 15
         },
 
         {
             name: "Wolf",
             maxHealth: 55,
             attack: 8,
-            xp: 20,
-            goldMin: 4,
-            goldMax: 8
+            xp: 20
         },
 
         {
             name: "Ork",
             maxHealth: 80,
             attack: 10,
-            xp: 30,
-            goldMin: 6,
-            goldMax: 12
+            xp: 30
         },
 
         {
@@ -61,8 +64,6 @@ const dungeon = {
             maxHealth: 130,
             attack: 14,
             xp: 60,
-            goldMin: 15,
-            goldMax: 25,
             boss: true
         }
     ]
@@ -98,6 +99,12 @@ const battleMessage =
 const attackButton =
     document.getElementById("attackButton");
 
+const lootPanel =
+    document.getElementById("lootPanel");
+
+const lootResults =
+    document.getElementById("lootResults");
+
 
 // =========================
 // MONSTER LADEN
@@ -113,10 +120,13 @@ function loadMonster() {
         health: template.maxHealth
     };
 
+
     document.getElementById("monsterName").textContent =
         monster.name;
 
+
     updateDisplay();
+
 
     battleMessage.textContent =
         monster.boss
@@ -157,9 +167,6 @@ function updateDisplay() {
 
     document.getElementById("heroXP").textContent =
         hero.xp;
-
-    document.getElementById("heroGold").textContent =
-        hero.gold;
 
     document.getElementById("dungeonProgress").textContent =
         (currentMonsterIndex + 1)
@@ -314,15 +321,6 @@ function checkMonsterDeath() {
     monster.health = 0;
 
 
-    const goldDrop =
-        randomNumber(
-            monster.goldMin,
-            monster.goldMax
-        );
-
-
-    hero.gold += goldDrop;
-
     hero.xp += monster.xp;
 
 
@@ -334,9 +332,7 @@ function checkMonsterDeath() {
         + monster.name
         + " besiegt! +"
         + monster.xp
-        + " XP | 🪙 +"
-        + goldDrop
-        + " Gold";
+        + " XP";
 
 
     currentMonsterIndex++;
@@ -349,11 +345,18 @@ function checkMonsterDeath() {
 
         dungeonFinished = true;
 
-        battleMessage.textContent =
-            "🏆 Dungeon abgeschlossen! "
-            + "Der Ork-Häuptling wurde besiegt!";
-
         attackButton.disabled = true;
+
+
+        battleMessage.textContent =
+            "🏆 Dungeon abgeschlossen!";
+
+
+        setTimeout(
+            generateDungeonLoot,
+            1200
+        );
+
 
         return;
     }
@@ -362,6 +365,273 @@ function checkMonsterDeath() {
     setTimeout(
         loadMonster,
         1800
+    );
+}
+
+
+// =========================
+// LOOT-KATEGORIEN
+// =========================
+
+const lootCategories = [
+
+    {
+        type: "gold",
+        name: "Gold",
+        icon: "🪙",
+        weight: 25
+    },
+
+    {
+        type: "wood",
+        name: "Holz",
+        icon: "🪵",
+        weight: 20
+    },
+
+    {
+        type: "stone",
+        name: "Stein",
+        icon: "🪨",
+        weight: 20
+    },
+
+    {
+        type: "food",
+        name: "Nahrung",
+        icon: "🌾",
+        weight: 20
+    },
+
+    {
+        type: "weapon",
+        name: "Waffe",
+        icon: "⚔️",
+        weight: 8
+    },
+
+    {
+        type: "armor",
+        name: "Rüstung",
+        icon: "🛡️",
+        weight: 7
+    }
+
+];
+
+
+// =========================
+// GEWICHTETE ZIEHUNG
+// OHNE DOPPELTE KATEGORIEN
+// =========================
+
+function drawUniqueLootCategories(amount) {
+
+    const available =
+        [...lootCategories];
+
+
+    const selected = [];
+
+
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
+
+        const totalWeight =
+            available.reduce(
+                (sum, item) =>
+                    sum + item.weight,
+                0
+            );
+
+
+        let roll =
+            Math.random()
+            * totalWeight;
+
+
+        let selectedIndex = 0;
+
+
+        for (
+            let j = 0;
+            j < available.length;
+            j++
+        ) {
+
+            roll -=
+                available[j].weight;
+
+
+            if (roll <= 0) {
+
+                selectedIndex = j;
+
+                break;
+            }
+        }
+
+
+        selected.push(
+            available[selectedIndex]
+        );
+
+
+        available.splice(
+            selectedIndex,
+            1
+        );
+    }
+
+
+    return selected;
+}
+
+
+// =========================
+// SELTENHEIT
+// =========================
+
+function rollRarity() {
+
+    const roll =
+        Math.random() * 100;
+
+
+    if (roll < 45) {
+
+        return {
+            name: "Gewöhnlich",
+            symbol: "⬜"
+        };
+    }
+
+
+    if (roll < 72) {
+
+        return {
+            name: "Ungewöhnlich",
+            symbol: "🟩"
+        };
+    }
+
+
+    if (roll < 87) {
+
+        return {
+            name: "Selten",
+            symbol: "🟦"
+        };
+    }
+
+
+    if (roll < 95) {
+
+        return {
+            name: "Episch",
+            symbol: "🟪"
+        };
+    }
+
+
+    if (roll < 99) {
+
+        return {
+            name: "Legendär",
+            symbol: "🟧"
+        };
+    }
+
+
+    return {
+        name: "Mythisch",
+        symbol: "🟥"
+    };
+
+    // Göttlich = 0 %
+}
+
+
+// =========================
+// DUNGEON LOOT
+// =========================
+
+function generateDungeonLoot() {
+
+    const loot =
+        drawUniqueLootCategories(3);
+
+
+    lootResults.innerHTML = "";
+
+
+    loot.forEach(item => {
+
+        const box =
+            document.createElement("div");
+
+
+        box.classList.add(
+            "loot-item"
+        );
+
+
+        if (
+            item.type === "gold" ||
+            item.type === "wood" ||
+            item.type === "stone" ||
+            item.type === "food"
+        ) {
+
+            const amount =
+                randomNumber(10, 30);
+
+
+            resources[item.type] +=
+                amount;
+
+
+            box.innerHTML = `
+                <h3>${item.icon} ${item.name}</h3>
+                <p>+${amount}</p>
+            `;
+        }
+
+
+        else if (
+            item.type === "weapon" ||
+            item.type === "armor"
+        ) {
+
+            const rarity =
+                rollRarity();
+
+
+            box.innerHTML = `
+                <h3>
+                    ${item.icon}
+                    ${item.name}
+                </h3>
+
+                <p>
+                    ${rarity.symbol}
+                    ${rarity.name}
+                </p>
+            `;
+        }
+
+
+        lootResults.appendChild(
+            box
+        );
+    });
+
+
+    lootPanel.classList.remove(
+        "hidden"
     );
 }
 
