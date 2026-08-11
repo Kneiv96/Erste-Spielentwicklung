@@ -3,29 +3,77 @@
 // =========================
 
 const hero = {
-
     maxHealth: 100,
-
     health: 100,
-
-    attack: 10
+    attack: 10,
+    level: 1,
+    xp: 0,
+    gold: 0
 };
 
 
 // =========================
-// MONSTER
+// DUNGEON
 // =========================
 
-const monster = {
+const dungeon = {
+    name: "Die verlassene Mine",
 
-    name: "Goblin",
+    monsters: [
+        {
+            name: "Ratte",
+            maxHealth: 25,
+            attack: 4,
+            xp: 10,
+            goldMin: 1,
+            goldMax: 3
+        },
 
-    maxHealth: 40,
+        {
+            name: "Goblin",
+            maxHealth: 40,
+            attack: 6,
+            xp: 15,
+            goldMin: 3,
+            goldMax: 6
+        },
 
-    health: 40,
+        {
+            name: "Wolf",
+            maxHealth: 55,
+            attack: 8,
+            xp: 20,
+            goldMin: 4,
+            goldMax: 8
+        },
 
-    attack: 6
+        {
+            name: "Ork",
+            maxHealth: 80,
+            attack: 10,
+            xp: 30,
+            goldMin: 6,
+            goldMax: 12
+        },
+
+        {
+            name: "Ork-Häuptling",
+            maxHealth: 130,
+            attack: 14,
+            xp: 60,
+            goldMin: 15,
+            goldMax: 25,
+            boss: true
+        }
+    ]
 };
+
+
+let currentMonsterIndex = 0;
+
+let monster = null;
+
+let dungeonFinished = false;
 
 
 // =========================
@@ -52,7 +100,33 @@ const attackButton =
 
 
 // =========================
-// ANZEIGE AKTUALISIEREN
+// MONSTER LADEN
+// =========================
+
+function loadMonster() {
+
+    const template =
+        dungeon.monsters[currentMonsterIndex];
+
+    monster = {
+        ...template,
+        health: template.maxHealth
+    };
+
+    document.getElementById("monsterName").textContent =
+        monster.name;
+
+    updateDisplay();
+
+    battleMessage.textContent =
+        monster.boss
+            ? "👑 Der Boss erscheint: " + monster.name + "!"
+            : "⚔️ " + monster.name + " erscheint!";
+}
+
+
+// =========================
+// ANZEIGE
 // =========================
 
 function updateDisplay() {
@@ -65,12 +139,45 @@ function updateDisplay() {
 
 
     heroHealthBar.style.width =
-        (hero.health / hero.maxHealth * 100) + "%";
+        Math.max(
+            hero.health / hero.maxHealth * 100,
+            0
+        ) + "%";
+
 
     monsterHealthBar.style.width =
-        (monster.health / monster.maxHealth * 100) + "%";
+        Math.max(
+            monster.health / monster.maxHealth * 100,
+            0
+        ) + "%";
+
+
+    document.getElementById("monsterMaxHealth").textContent =
+        monster.maxHealth;
+
+    document.getElementById("heroXP").textContent =
+        hero.xp;
+
+    document.getElementById("heroGold").textContent =
+        hero.gold;
+
+    document.getElementById("dungeonProgress").textContent =
+        (currentMonsterIndex + 1)
+        + " / "
+        + dungeon.monsters.length;
 }
 
+
+// =========================
+// ZUFALLSZAHL
+// =========================
+
+function randomNumber(min, max) {
+
+    return Math.floor(
+        Math.random() * (max - min + 1)
+    ) + min;
+}
 
 
 // =========================
@@ -78,6 +185,10 @@ function updateDisplay() {
 // =========================
 
 function heroAttack() {
+
+    if (dungeonFinished) {
+        return;
+    }
 
     if (hero.health <= 0) {
         return;
@@ -92,7 +203,7 @@ function heroAttack() {
 
 
     battleMessage.textContent =
-        "⚔️ Der Held verursacht "
+        "⚔️ Du verursachst "
         + hero.attack
         + " Schaden!";
 
@@ -100,14 +211,8 @@ function heroAttack() {
     updateDisplay();
 
 
-    if (monster.health <= 0) {
-
-        battleMessage.textContent =
-            "🏆 Der Goblin wurde besiegt!";
-
-    }
+    checkMonsterDeath();
 }
-
 
 
 // =========================
@@ -115,6 +220,10 @@ function heroAttack() {
 // =========================
 
 function monsterAttack() {
+
+    if (dungeonFinished) {
+        return;
+    }
 
     if (monster.health <= 0) {
         return;
@@ -129,7 +238,9 @@ function monsterAttack() {
 
 
     battleMessage.textContent =
-        "👹 Der Goblin verursacht "
+        "👹 "
+        + monster.name
+        + " verursacht "
         + monster.attack
         + " Schaden!";
 
@@ -139,25 +250,33 @@ function monsterAttack() {
 
     if (hero.health <= 0) {
 
+        hero.health = 0;
+
+        updateDisplay();
+
         battleMessage.textContent =
             "💀 Dein Held wurde besiegt.";
 
+        attackButton.disabled = true;
     }
 }
 
 
-
 // =========================
-// FÄHIGKEIT
+// SCHWERER SCHLAG
 // =========================
 
 function heavyAttack() {
 
-    if (monster.health <= 0) {
+    if (dungeonFinished) {
         return;
     }
 
     if (hero.health <= 0) {
+        return;
+    }
+
+    if (monster.health <= 0) {
         return;
     }
 
@@ -170,22 +289,86 @@ function heavyAttack() {
 
 
     battleMessage.textContent =
-        "💥 Schwerer Schlag: "
+        "💥 Schwerer Schlag! "
         + damage
         + " Schaden!";
 
 
     updateDisplay();
 
-
-    if (monster.health <= 0) {
-
-        battleMessage.textContent =
-            "🏆 Der Goblin wurde besiegt!";
-
-    }
+    checkMonsterDeath();
 }
 
+
+// =========================
+// MONSTER TOD
+// =========================
+
+function checkMonsterDeath() {
+
+    if (monster.health > 0) {
+        return;
+    }
+
+
+    monster.health = 0;
+
+
+    const goldDrop =
+        randomNumber(
+            monster.goldMin,
+            monster.goldMax
+        );
+
+
+    hero.gold += goldDrop;
+
+    hero.xp += monster.xp;
+
+
+    updateDisplay();
+
+
+    battleMessage.textContent =
+        "🏆 "
+        + monster.name
+        + " besiegt! +"
+        + monster.xp
+        + " XP | 🪙 +"
+        + goldDrop
+        + " Gold";
+
+
+    currentMonsterIndex++;
+
+
+    if (
+        currentMonsterIndex >=
+        dungeon.monsters.length
+    ) {
+
+        dungeonFinished = true;
+
+        battleMessage.textContent =
+            "🏆 Dungeon abgeschlossen! "
+            + "Der Ork-Häuptling wurde besiegt!";
+
+        attackButton.disabled = true;
+
+        return;
+    }
+
+
+    setTimeout(
+        loadMonster,
+        1800
+    );
+}
+
+
+// =========================
+// BUTTON
+// =========================
 
 attackButton.addEventListener(
     "click",
@@ -194,11 +377,8 @@ attackButton.addEventListener(
 
 
 // =========================
-// AUTO-KAMPF STARTEN
+// AUTO-KAMPF
 // =========================
-
-
-// Held greift alle 2 Sekunden an
 
 setInterval(
     heroAttack,
@@ -206,12 +386,14 @@ setInterval(
 );
 
 
-// Goblin greift alle 2.5 Sekunden an
-
 setInterval(
     monsterAttack,
     2500
 );
 
 
-updateDisplay();
+// =========================
+// SPIELSTART
+// =========================
+
+loadMonster();
