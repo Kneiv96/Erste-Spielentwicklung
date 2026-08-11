@@ -417,7 +417,30 @@ const lootCategories = [
         weight: 7
     }
 ];
+// =========================
+// WAFFEN
+// =========================
 
+const weaponNames = [
+    "Kurzschwert",
+    "Langschwert",
+    "Kriegsaxt",
+    "Streitkolben",
+    "Speer"
+];
+
+
+// =========================
+// RÜSTUNGEN
+// =========================
+
+const armorNames = [
+    "Lederrüstung",
+    "Kettenrüstung",
+    "Schuppenrüstung",
+    "Plattenrüstung",
+    "Verstärkte Rüstung"
+];
 
 // =========================
 // 3 VERSCHIEDENE LOOTS
