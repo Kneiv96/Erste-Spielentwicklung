@@ -513,7 +513,100 @@ function drawUniqueLootCategories(amount) {
 // =========================
 
 function rollRarity() {
+// =========================
+// WAFFE ERSTELLEN
+// =========================
 
+function generateWeapon() {
+
+    const rarity =
+        rollRarity();
+
+
+    const name =
+        weaponNames[
+            randomNumber(
+                0,
+                weaponNames.length - 1
+            )
+        ];
+
+
+    const baseAttack =
+        randomNumber(3, 6);
+
+
+    const attackBonus =
+        Math.round(
+            baseAttack
+            * rarity.multiplier
+        );
+
+
+    return {
+        type: "weapon",
+        name: name,
+        rarity: rarity,
+        attackBonus: attackBonus
+    };
+}
+    const roll =
+        Math.random() * 100;
+
+
+    if (roll < 45) {
+        return {
+            name: "Gewöhnlich",
+            symbol: "⬜",
+            multiplier: 1
+        };
+    }
+
+
+    if (roll < 72) {
+        return {
+            name: "Ungewöhnlich",
+            symbol: "🟩",
+            multiplier: 1.3
+        };
+    }
+
+
+    if (roll < 87) {
+        return {
+            name: "Selten",
+            symbol: "🟦",
+            multiplier: 1.7
+        };
+    }
+
+
+    if (roll < 95) {
+        return {
+            name: "Episch",
+            symbol: "🟪",
+            multiplier: 2.2
+        };
+    }
+
+
+    if (roll < 99) {
+        return {
+            name: "Legendär",
+            symbol: "🟧",
+            multiplier: 3
+        };
+    }
+
+
+    return {
+        name: "Mythisch",
+        symbol: "🟥",
+        multiplier: 4
+    };
+
+    // Göttlich = 0 %
+}
     const roll =
         Math.random() * 100;
 
@@ -565,7 +658,51 @@ function rollRarity() {
 
     // Göttlich hat in diesem Dungeon 0 %
 }
+// =========================
+// RÜSTUNG ERSTELLEN
+// =========================
 
+function generateArmor() {
+
+    const rarity =
+        rollRarity();
+
+
+    const name =
+        armorNames[
+            randomNumber(
+                0,
+                armorNames.length - 1
+            )
+        ];
+
+
+    const baseDefense =
+        randomNumber(2, 5);
+
+
+    const defenseBonus =
+        Math.round(
+            baseDefense
+            * rarity.multiplier
+        );
+
+
+    const healthBonus =
+        Math.round(
+            randomNumber(5, 12)
+            * rarity.multiplier
+        );
+
+
+    return {
+        type: "armor",
+        name: name,
+        rarity: rarity,
+        defenseBonus: defenseBonus,
+        healthBonus: healthBonus
+    };
+}
 
 // =========================
 // DUNGEON-LOOT
@@ -633,24 +770,57 @@ function generateDungeonLoot() {
 
 
         // WAFFE / RÜSTUNG
-        else {
+        else if (item.type === "weapon") {
 
-            const rarity =
-                rollRarity();
+    const weapon =
+        generateWeapon();
 
 
-            box.innerHTML = `
-                <h3>
-                    ${item.icon}
-                    ${item.name}
-                </h3>
+    box.innerHTML = `
+        <h3>
+            ⚔️ ${weapon.name}
+        </h3>
 
-                <p>
-                    ${rarity.symbol}
-                    ${rarity.name}
-                </p>
-            `;
-        }
+        <p>
+            ${weapon.rarity.symbol}
+            ${weapon.rarity.name}
+        </p>
+
+        <p>
+            ⚔️ +${weapon.attackBonus}
+            Angriff
+        </p>
+    `;
+}
+
+
+else if (item.type === "armor") {
+
+    const armor =
+        generateArmor();
+
+
+    box.innerHTML = `
+        <h3>
+            🛡️ ${armor.name}
+        </h3>
+
+        <p>
+            ${armor.rarity.symbol}
+            ${armor.rarity.name}
+        </p>
+
+        <p>
+            🛡️ +${armor.defenseBonus}
+            Verteidigung
+        </p>
+
+        <p>
+            ❤️ +${armor.healthBonus}
+            Leben
+        </p>
+    `;
+}
 
 
         lootResults.appendChild(
