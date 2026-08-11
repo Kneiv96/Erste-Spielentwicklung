@@ -3,7 +3,6 @@
 // =========================
 
 const hero = {
-const hero = {
     maxHealth: 100,
     health: 100,
     attack: 10,
@@ -39,28 +38,24 @@ const dungeon = {
             attack: 4,
             xp: 10
         },
-
         {
             name: "Goblin",
             maxHealth: 40,
             attack: 6,
             xp: 15
         },
-
         {
             name: "Wolf",
             maxHealth: 55,
             attack: 8,
             xp: 20
         },
-
         {
             name: "Ork",
             maxHealth: 80,
             attack: 10,
             xp: 30
         },
-
         {
             name: "Ork-Häuptling",
             maxHealth: 130,
@@ -123,13 +118,10 @@ function loadMonster() {
         health: template.maxHealth
     };
 
-
     document.getElementById("monsterName").textContent =
         monster.name;
 
-
     updateDisplay();
-
 
     battleMessage.textContent =
         monster.boss
@@ -139,7 +131,7 @@ function loadMonster() {
 
 
 // =========================
-// ANZEIGE AKTUALISIEREN
+// ANZEIGE
 // =========================
 
 function updateDisplay() {
@@ -150,20 +142,17 @@ function updateDisplay() {
     monsterHealthText.textContent =
         Math.max(monster.health, 0);
 
-
     heroHealthBar.style.width =
         Math.max(
             hero.health / hero.maxHealth * 100,
             0
         ) + "%";
 
-
     monsterHealthBar.style.width =
         Math.max(
             monster.health / monster.maxHealth * 100,
             0
         ) + "%";
-
 
     document.getElementById("monsterMaxHealth").textContent =
         monster.maxHealth;
@@ -208,15 +197,12 @@ function heroAttack() {
         return;
     }
 
-
     monster.health -= hero.attack;
-
 
     battleMessage.textContent =
         "⚔️ Du verursachst "
         + hero.attack
         + " Schaden!";
-
 
     updateDisplay();
 
@@ -242,20 +228,22 @@ function monsterAttack() {
         return;
     }
 
+    const damage =
+        Math.max(
+            1,
+            monster.attack - hero.defense
+        );
 
-    hero.health -= monster.attack;
-
+    hero.health -= damage;
 
     battleMessage.textContent =
         "👹 "
         + monster.name
         + " verursacht "
-        + monster.attack
+        + damage
         + " Schaden!";
 
-
     updateDisplay();
-
 
     if (hero.health <= 0) {
 
@@ -289,19 +277,15 @@ function heavyAttack() {
         return;
     }
 
-
     const damage =
         hero.attack * 2;
 
-
     monster.health -= damage;
-
 
     battleMessage.textContent =
         "💥 Schwerer Schlag! "
         + damage
         + " Schaden!";
-
 
     updateDisplay();
 
@@ -319,13 +303,11 @@ function checkMonsterDeath() {
         return;
     }
 
-
     monster.health = 0;
 
     hero.xp += monster.xp;
 
     updateDisplay();
-
 
     battleMessage.textContent =
         "🏆 "
@@ -334,11 +316,8 @@ function checkMonsterDeath() {
         + monster.xp
         + " XP";
 
-
     currentMonsterIndex++;
 
-
-    // DUNGEON BEENDET
     if (
         currentMonsterIndex >=
         dungeon.monsters.length
@@ -351,7 +330,6 @@ function checkMonsterDeath() {
         battleMessage.textContent =
             "🏆 Dungeon abgeschlossen!";
 
-
         setTimeout(
             generateDungeonLoot,
             1200
@@ -360,8 +338,6 @@ function checkMonsterDeath() {
         return;
     }
 
-
-    // NÄCHSTES MONSTER
     setTimeout(
         loadMonster,
         1800
@@ -374,42 +350,36 @@ function checkMonsterDeath() {
 // =========================
 
 const lootCategories = [
-
     {
         type: "gold",
         name: "Gold",
         icon: "🪙",
         weight: 25
     },
-
     {
         type: "wood",
         name: "Holz",
         icon: "🪵",
         weight: 20
     },
-
     {
         type: "stone",
         name: "Stein",
         icon: "🪨",
         weight: 20
     },
-
     {
         type: "food",
         name: "Nahrung",
         icon: "🌾",
         weight: 20
     },
-
     {
         type: "weapon",
         name: "Waffe",
         icon: "⚔️",
         weight: 8
     },
-
     {
         type: "armor",
         name: "Rüstung",
@@ -417,6 +387,8 @@ const lootCategories = [
         weight: 7
     }
 ];
+
+
 // =========================
 // WAFFEN
 // =========================
@@ -442,6 +414,7 @@ const armorNames = [
     "Verstärkte Rüstung"
 ];
 
+
 // =========================
 // 3 VERSCHIEDENE LOOTS
 // =========================
@@ -453,7 +426,6 @@ function drawUniqueLootCategories(amount) {
 
     const selected = [];
 
-
     for (let i = 0; i < amount; i++) {
 
         const totalWeight =
@@ -463,13 +435,10 @@ function drawUniqueLootCategories(amount) {
                 0
             );
 
-
         let roll =
             Math.random() * totalWeight;
 
-
         let selectedIndex = 0;
-
 
         for (
             let j = 0;
@@ -477,9 +446,7 @@ function drawUniqueLootCategories(amount) {
             j++
         ) {
 
-            roll -=
-                available[j].weight;
-
+            roll -= available[j].weight;
 
             if (roll <= 0) {
 
@@ -489,20 +456,15 @@ function drawUniqueLootCategories(amount) {
             }
         }
 
-
         selected.push(
             available[selectedIndex]
         );
 
-
-        // Gezogenen Loot entfernen:
-        // dadurch keine Doppelungen
         available.splice(
             selectedIndex,
             1
         );
     }
-
 
     return selected;
 }
@@ -513,46 +475,9 @@ function drawUniqueLootCategories(amount) {
 // =========================
 
 function rollRarity() {
-// =========================
-// WAFFE ERSTELLEN
-// =========================
 
-function generateWeapon() {
-
-    const rarity =
-        rollRarity();
-
-
-    const name =
-        weaponNames[
-            randomNumber(
-                0,
-                weaponNames.length - 1
-            )
-        ];
-
-
-    const baseAttack =
-        randomNumber(3, 6);
-
-
-    const attackBonus =
-        Math.round(
-            baseAttack
-            * rarity.multiplier
-        );
-
-
-    return {
-        type: "weapon",
-        name: name,
-        rarity: rarity,
-        attackBonus: attackBonus
-    };
-}
     const roll =
         Math.random() * 100;
-
 
     if (roll < 45) {
         return {
@@ -562,7 +487,6 @@ function generateWeapon() {
         };
     }
 
-
     if (roll < 72) {
         return {
             name: "Ungewöhnlich",
@@ -570,7 +494,6 @@ function generateWeapon() {
             multiplier: 1.3
         };
     }
-
 
     if (roll < 87) {
         return {
@@ -580,7 +503,6 @@ function generateWeapon() {
         };
     }
 
-
     if (roll < 95) {
         return {
             name: "Episch",
@@ -588,7 +510,6 @@ function generateWeapon() {
             multiplier: 2.2
         };
     }
-
 
     if (roll < 99) {
         return {
@@ -598,7 +519,6 @@ function generateWeapon() {
         };
     }
 
-
     return {
         name: "Mythisch",
         symbol: "🟥",
@@ -607,57 +527,43 @@ function generateWeapon() {
 
     // Göttlich = 0 %
 }
-    const roll =
-        Math.random() * 100;
 
 
-    if (roll < 45) {
-        return {
-            name: "Gewöhnlich",
-            symbol: "⬜"
-        };
-    }
+// =========================
+// WAFFE ERSTELLEN
+// =========================
 
+function generateWeapon() {
 
-    if (roll < 72) {
-        return {
-            name: "Ungewöhnlich",
-            symbol: "🟩"
-        };
-    }
+    const rarity =
+        rollRarity();
 
+    const name =
+        weaponNames[
+            randomNumber(
+                0,
+                weaponNames.length - 1
+            )
+        ];
 
-    if (roll < 87) {
-        return {
-            name: "Selten",
-            symbol: "🟦"
-        };
-    }
+    const baseAttack =
+        randomNumber(3, 6);
 
-
-    if (roll < 95) {
-        return {
-            name: "Episch",
-            symbol: "🟪"
-        };
-    }
-
-
-    if (roll < 99) {
-        return {
-            name: "Legendär",
-            symbol: "🟧"
-        };
-    }
-
+    const attackBonus =
+        Math.round(
+            baseAttack
+            * rarity.multiplier
+        );
 
     return {
-        name: "Mythisch",
-        symbol: "🟥"
+        type: "weapon",
+        name: name,
+        rarity: rarity,
+        attackBonus: attackBonus
     };
-
-    // Göttlich hat in diesem Dungeon 0 %
 }
+
+
 // =========================
 // RÜSTUNG ERSTELLEN
 // =========================
@@ -667,7 +573,6 @@ function generateArmor() {
     const rarity =
         rollRarity();
 
-
     const name =
         armorNames[
             randomNumber(
@@ -676,10 +581,8 @@ function generateArmor() {
             )
         ];
 
-
     const baseDefense =
         randomNumber(2, 5);
-
 
     const defenseBonus =
         Math.round(
@@ -687,13 +590,11 @@ function generateArmor() {
             * rarity.multiplier
         );
 
-
     const healthBonus =
         Math.round(
             randomNumber(5, 12)
             * rarity.multiplier
         );
-
 
     return {
         type: "armor",
@@ -704,43 +605,37 @@ function generateArmor() {
     };
 }
 
+
 // =========================
 // DUNGEON-LOOT
 // =========================
 
 function generateDungeonLoot() {
 
-    // Kampf ausblenden
     combatScreen.classList.add(
         "hidden"
     );
 
-
-    // Loot-Bildschirm anzeigen
     lootPanel.classList.remove(
         "hidden"
     );
 
-
     const loot =
         drawUniqueLootCategories(3);
 
-
     lootResults.innerHTML = "";
-
 
     loot.forEach(item => {
 
         const box =
             document.createElement("div");
 
-
         box.classList.add(
             "loot-item"
         );
 
 
-        // RESSOURCE
+        // RESSOURCEN
         if (
             item.type === "gold" ||
             item.type === "wood" ||
@@ -751,15 +646,12 @@ function generateDungeonLoot() {
             const amount =
                 randomNumber(10, 30);
 
-
             resources[item.type] +=
                 amount;
 
-
             box.innerHTML = `
                 <h3>
-                    ${item.icon}
-                    ${item.name}
+                    ${item.icon} ${item.name}
                 </h3>
 
                 <p>
@@ -769,59 +661,57 @@ function generateDungeonLoot() {
         }
 
 
-        // WAFFE / RÜSTUNG
+        // WAFFE
         else if (item.type === "weapon") {
 
-    const weapon =
-        generateWeapon();
+            const weapon =
+                generateWeapon();
+
+            box.innerHTML = `
+                <h3>
+                    ⚔️ ${weapon.name}
+                </h3>
+
+                <p>
+                    ${weapon.rarity.symbol}
+                    ${weapon.rarity.name}
+                </p>
+
+                <p>
+                    ⚔️ +${weapon.attackBonus}
+                    Angriff
+                </p>
+            `;
+        }
 
 
-    box.innerHTML = `
-        <h3>
-            ⚔️ ${weapon.name}
-        </h3>
+        // RÜSTUNG
+        else if (item.type === "armor") {
 
-        <p>
-            ${weapon.rarity.symbol}
-            ${weapon.rarity.name}
-        </p>
+            const armor =
+                generateArmor();
 
-        <p>
-            ⚔️ +${weapon.attackBonus}
-            Angriff
-        </p>
-    `;
-}
+            box.innerHTML = `
+                <h3>
+                    🛡️ ${armor.name}
+                </h3>
 
+                <p>
+                    ${armor.rarity.symbol}
+                    ${armor.rarity.name}
+                </p>
 
-else if (item.type === "armor") {
+                <p>
+                    🛡️ +${armor.defenseBonus}
+                    Verteidigung
+                </p>
 
-    const armor =
-        generateArmor();
-
-
-    box.innerHTML = `
-        <h3>
-            🛡️ ${armor.name}
-        </h3>
-
-        <p>
-            ${armor.rarity.symbol}
-            ${armor.rarity.name}
-        </p>
-
-        <p>
-            🛡️ +${armor.defenseBonus}
-            Verteidigung
-        </p>
-
-        <p>
-            ❤️ +${armor.healthBonus}
-            Leben
-        </p>
-    `;
-}
-
+                <p>
+                    ❤️ +${armor.healthBonus}
+                    Leben
+                </p>
+            `;
+        }
 
         lootResults.appendChild(
             box
@@ -831,7 +721,7 @@ else if (item.type === "armor") {
 
 
 // =========================
-// SCHWERER-SCHLAG-BUTTON
+// BUTTON
 // =========================
 
 attackButton.addEventListener(
@@ -844,14 +734,11 @@ attackButton.addEventListener(
 // AUTO-KAMPF
 // =========================
 
-// Held: alle 2 Sekunden
 setInterval(
     heroAttack,
     2000
 );
 
-
-// Monster: alle 2,5 Sekunden
 setInterval(
     monsterAttack,
     2500
@@ -859,7 +746,7 @@ setInterval(
 
 
 // =========================
-// SPIEL STARTEN
+// SPIELSTART
 // =========================
 
 loadMonster();
