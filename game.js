@@ -561,7 +561,9 @@ function rollRarity() {
 // =========================
 
 function generateDungeonLoot() {
+    combatScreen.classList.add("hidden");
 
+    lootPanel.classList.remove("hidden");
     const loot =
         drawUniqueLootCategories(3);
 
@@ -631,8 +633,7 @@ function generateDungeonLoot() {
     });
 
 
-    lootPanel.classList.remove(
-        "hidden"
+    
     );
 }
 
