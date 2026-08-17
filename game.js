@@ -468,7 +468,26 @@ function drawUniqueLootCategories(amount) {
 
     return selected;
 }
+// =========================
+// GEGENSTÄNDE
+// =========================
 
+const weaponTypes = [
+    "Kurzschwert",
+    "Langschwert",
+    "Kriegsaxt",
+    "Streitaxt",
+    "Kriegshammer",
+    "Speer"
+];
+
+
+const armorTypes = [
+    "Lederrüstung",
+    "Schuppenrüstung",
+    "Kettenrüstung",
+    "Plattenrüstung"
+];
 
 // =========================
 // SELTENHEIT
