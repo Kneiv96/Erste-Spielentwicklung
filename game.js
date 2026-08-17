@@ -498,7 +498,9 @@ function rollRarity() {
     const roll =
         Math.random() * 100;
 
+
     if (roll < 45) {
+
         return {
             name: "Gewöhnlich",
             symbol: "⬜",
@@ -506,7 +508,9 @@ function rollRarity() {
         };
     }
 
+
     if (roll < 72) {
+
         return {
             name: "Ungewöhnlich",
             symbol: "🟩",
@@ -514,7 +518,9 @@ function rollRarity() {
         };
     }
 
+
     if (roll < 87) {
+
         return {
             name: "Selten",
             symbol: "🟦",
@@ -522,7 +528,9 @@ function rollRarity() {
         };
     }
 
+
     if (roll < 95) {
+
         return {
             name: "Episch",
             symbol: "🟪",
@@ -530,7 +538,9 @@ function rollRarity() {
         };
     }
 
+
     if (roll < 99) {
+
         return {
             name: "Legendär",
             symbol: "🟧",
@@ -538,11 +548,13 @@ function rollRarity() {
         };
     }
 
+
     return {
         name: "Mythisch",
         symbol: "🟥",
         multiplier: 4
     };
+
 
     // Göttlich = 0 %
 }
