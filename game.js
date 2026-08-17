@@ -368,8 +368,84 @@ function equipItem(index) {
 
 
     recalculateHeroStats();
-
+saveGame();
     showInventory();
+}
+function saveGame() {
+
+    const saveData = {
+        inventory: inventory,
+        equipped: equipped,
+        resources: resources,
+        heroXP: hero.xp
+    };
+
+    localStorage.setItem(
+        "dungeonHeroSave",
+        JSON.stringify(saveData)
+    );
+}
+function loadGame() {
+
+    const saved =
+        localStorage.getItem(
+            "dungeonHeroSave"
+        );
+
+    if (!saved) {
+        return;
+    }
+
+    const data =
+        JSON.parse(saved);
+
+
+    if (data.inventory) {
+
+        inventory.length = 0;
+
+        data.inventory.forEach(item => {
+            inventory.push(item);
+        });
+    }
+
+
+    if (data.equipped) {
+
+        equipped.weapon =
+            data.equipped.weapon || null;
+
+        equipped.armor =
+            data.equipped.armor || null;
+    }
+
+
+    if (data.resources) {
+
+        resources.gold =
+            data.resources.gold || 0;
+
+        resources.wood =
+            data.resources.wood || 0;
+
+        resources.stone =
+            data.resources.stone || 0;
+
+        resources.food =
+            data.resources.food || 0;
+    }
+
+
+    if (
+        data.heroXP !== undefined
+    ) {
+
+        hero.xp =
+            data.heroXP;
+    }
+
+
+    recalculateHeroStats();
 }
 // =========================
 // INVENTAR ANZEIGEN
@@ -1059,6 +1135,7 @@ inventory.push(armor);
             box
         );
     });
+    saveGame();
 }
 
 
@@ -1090,6 +1167,6 @@ setInterval(
 // =========================
 // SPIELSTART
 // =========================
-
+loadGame();
 loadMonster();
 }
