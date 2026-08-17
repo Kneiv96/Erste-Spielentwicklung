@@ -147,7 +147,22 @@ function loadMonster() {
         monster.name;
 
     updateDisplay();
+document.getElementById(
+    "heroMaxHealth"
+).textContent =
+    hero.maxHealth;
 
+
+document.getElementById(
+    "heroAttack"
+).textContent =
+    hero.attack;
+
+
+document.getElementById(
+    "heroDefense"
+).textContent =
+    hero.defense;
     battleMessage.textContent =
         monster.boss
             ? "👑 Der Boss erscheint: " + monster.name + "!"
