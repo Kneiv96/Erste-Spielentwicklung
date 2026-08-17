@@ -616,6 +616,69 @@ const armorTypes = [
 // =========================
 
 function rollRarity() {
+
+    const roll =
+        Math.random() * 100;
+
+
+    if (roll < 45) {
+
+        return {
+            name: "Gewöhnlich",
+            symbol: "⬜",
+            multiplier: 1
+        };
+    }
+
+
+    if (roll < 72) {
+
+        return {
+            name: "Ungewöhnlich",
+            symbol: "🟩",
+            multiplier: 1.3
+        };
+    }
+
+
+    if (roll < 87) {
+
+        return {
+            name: "Selten",
+            symbol: "🟦",
+            multiplier: 1.7
+        };
+    }
+
+
+    if (roll < 95) {
+
+        return {
+            name: "Episch",
+            symbol: "🟪",
+            multiplier: 2.2
+        };
+    }
+
+
+    if (roll < 99) {
+
+        return {
+            name: "Legendär",
+            symbol: "🟧",
+            multiplier: 3
+        };
+    }
+
+
+    return {
+        name: "Mythisch",
+        symbol: "🟥",
+        multiplier: 4
+    };
+
+    // Göttlich = 0 % in normalen Dungeons
+}
 // =========================
 // GEGENSTAND ERZEUGEN
 // =========================
