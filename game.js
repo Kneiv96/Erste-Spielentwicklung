@@ -869,12 +869,7 @@ function createEquipment(type) {
         };
     }
 }
-    const roll =
-        Math.random() * 100;
-
-
-    if (roll < 45) {
-
+    
        
 // =========================
 // WAFFE ERSTELLEN
