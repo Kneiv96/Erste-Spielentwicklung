@@ -891,7 +891,7 @@ function generateDungeonLoot() {
 
             const weapon =
                 generateWeapon();
-inventory.push(Waffe);
+inventory.push(weapon);
             box.innerHTML = `
                 <h3>
                     ⚔️ ${weapon.name}
@@ -915,7 +915,7 @@ inventory.push(Waffe);
 
             const armor =
                 generateArmor();
-inventory.push(Rüstung);
+inventory.push(armor);
             box.innerHTML = `
                 <h3>
                     🛡️ ${armor.name}
