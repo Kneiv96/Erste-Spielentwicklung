@@ -195,3 +195,32 @@ button:hover {
 .loot-item h3 {
     margin-top: 0;
 }
+/* =========================
+   INVENTAR
+========================= */
+
+.inventory-screen {
+    margin-top: 30px;
+    padding: 25px;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    border: 2px solid #66584d;
+    border-radius: 12px;
+}
+
+
+.inventory-item {
+    margin: 15px 0;
+    padding: 15px;
+
+    background: #211d1a;
+
+    border: 2px solid #66584d;
+    border-radius: 10px;
+}
+
+
+.inventory-item h3 {
+    margin-top: 0;
+}
