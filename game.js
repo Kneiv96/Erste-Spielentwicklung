@@ -494,7 +494,79 @@ const armorTypes = [
 // =========================
 
 function rollRarity() {
+// =========================
+// GEGENSTAND ERZEUGEN
+// =========================
 
+function createEquipment(type) {
+
+    const rarity =
+        rollRarity();
+
+
+    // WAFFE
+    if (type === "weapon") {
+
+        const weaponName =
+            weaponTypes[
+                randomNumber(
+                    0,
+                    weaponTypes.length - 1
+                )
+            ];
+
+
+        const baseAttack =
+            randomNumber(3, 6);
+
+
+        const attackBonus =
+            Math.round(
+                baseAttack *
+                rarity.multiplier
+            );
+
+
+        return {
+            type: "weapon",
+            name: weaponName,
+            rarity: rarity,
+            attack: attackBonus
+        };
+    }
+
+
+    // RÜSTUNG
+    if (type === "armor") {
+
+        const armorName =
+            armorTypes[
+                randomNumber(
+                    0,
+                    armorTypes.length - 1
+                )
+            ];
+
+
+        const baseDefense =
+            randomNumber(3, 6);
+
+
+        const defenseBonus =
+            Math.round(
+                baseDefense *
+                rarity.multiplier
+            );
+
+
+        return {
+            type: "armor",
+            name: armorName,
+            rarity: rarity,
+            defense: defenseBonus
+        };
+    }
+}
     const roll =
         Math.random() * 100;
 
