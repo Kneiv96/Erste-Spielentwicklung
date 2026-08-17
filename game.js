@@ -272,7 +272,115 @@ function monsterAttack() {
     }
 }
 
+// =========================
+// INVENTAR ANZEIGEN
+// =========================
 
+function showInventory() {
+
+    inventoryList.innerHTML = "";
+
+
+    if (inventory.length === 0) {
+
+        inventoryList.innerHTML =
+            "<p>Dein Inventar ist leer.</p>";
+
+        return;
+    }
+
+
+    inventory.forEach((item, index) => {
+
+        const box =
+            document.createElement("div");
+
+        box.classList.add(
+            "inventory-item"
+        );
+
+
+        let values = "";
+
+
+        if (item.attack !== undefined) {
+
+            values =
+                `⚔️ +${item.attack} Angriff`;
+        }
+
+
+        if (item.defense !== undefined) {
+
+            values =
+                `🛡️ +${item.defense} Verteidigung`;
+        }
+
+
+        box.innerHTML = `
+            <h3>
+                ${item.name}
+            </h3>
+
+            <p>
+                ${item.rarity.symbol}
+                ${item.rarity.name}
+            </p>
+
+            <p>
+                ${values}
+            </p>
+        `;
+
+
+        inventoryList.appendChild(
+            box
+        );
+    });
+}
+inventoryButton.addEventListener(
+    "click",
+    function () {
+
+        combatScreen.classList.add(
+            "hidden"
+        );
+
+        lootPanel.classList.add(
+            "hidden"
+        );
+
+        inventoryScreen.classList.remove(
+            "hidden"
+        );
+
+        showInventory();
+    }
+);
+
+
+closeInventoryButton.addEventListener(
+    "click",
+    function () {
+
+        inventoryScreen.classList.add(
+            "hidden"
+        );
+
+        if (dungeonFinished) {
+
+            lootPanel.classList.remove(
+                "hidden"
+            );
+
+        } else {
+
+            combatScreen.classList.remove(
+                "hidden"
+            );
+        }
+    }
+);
 // =========================
 // SCHWERER SCHLAG
 // =========================
