@@ -868,7 +868,7 @@ function createEquipment(type) {
             defense: defenseBonus
         };
     }
-}
+
     
        
 // =========================
