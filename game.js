@@ -3,12 +3,19 @@
 // =========================
 
 const hero = {
+    baseMaxHealth: 100,
     maxHealth: 100,
     health: 100,
+
+    baseAttack: 10,
     attack: 10,
+
+    baseDefense: 0,
     defense: 0,
+
     level: 1,
     xp: 0
+};
 };
 
 // =========================
@@ -16,6 +23,10 @@ const hero = {
 // =========================
 
 const inventory = [];
+const equipped = {
+    weapon: null,
+    armor: null
+};
 // =========================
 // RESSOURCEN
 // =========================
@@ -271,7 +282,81 @@ function monsterAttack() {
         attackButton.disabled = true;
     }
 }
+// =========================
+// HELDENWERTE BERECHNEN
+// =========================
 
+function recalculateHeroStats() {
+
+    hero.attack =
+        hero.baseAttack;
+
+    hero.defense =
+        hero.baseDefense;
+
+    hero.maxHealth =
+        hero.baseMaxHealth;
+
+
+    if (equipped.weapon) {
+
+        hero.attack +=
+            equipped.weapon.attackBonus;
+    }
+
+
+    if (equipped.armor) {
+
+        hero.defense +=
+            equipped.armor.defenseBonus;
+
+        hero.maxHealth +=
+            equipped.armor.healthBonus;
+    }
+
+
+    if (hero.health > hero.maxHealth) {
+
+        hero.health =
+            hero.maxHealth;
+    }
+
+
+    updateDisplay();
+}
+// =========================
+// ITEM AUSRÜSTEN
+// =========================
+
+function equipItem(index) {
+
+    const item =
+        inventory[index];
+
+
+    if (!item) {
+        return;
+    }
+
+
+    if (item.type === "weapon") {
+
+        equipped.weapon =
+            item;
+    }
+
+
+    if (item.type === "armor") {
+
+        equipped.armor =
+            item;
+    }
+
+
+    recalculateHeroStats();
+
+    showInventory();
+}
 // =========================
 // INVENTAR ANZEIGEN
 // =========================
@@ -300,37 +385,66 @@ function showInventory() {
         );
 
 
-        let values = "";
+       let values = "";
 
 
-        if (item.attack !== undefined) {
+if (item.type === "weapon") {
 
-            values =
-                `⚔️ +${item.attack} Angriff`;
-        }
-
-
-        if (item.defense !== undefined) {
-
-            values =
-                `🛡️ +${item.defense} Verteidigung`;
-        }
+    values =
+        `⚔️ +${item.attackBonus} Angriff`;
+}
 
 
-        box.innerHTML = `
-            <h3>
-                ${item.name}
-            </h3>
+if (item.type === "armor") {
 
-            <p>
-                ${item.rarity.symbol}
-                ${item.rarity.name}
-            </p>
+    values =
+        `🛡️ +${item.defenseBonus} Verteidigung
+        <br>
+        ❤️ +${item.healthBonus} Leben`;
+}
 
-            <p>
-                ${values}
-            </p>
-        `;
+        let isEquipped = false;
+
+
+if (
+    item.type === "weapon" &&
+    equipped.weapon === item
+) {
+
+    isEquipped = true;
+}
+
+
+if (
+    item.type === "armor" &&
+    equipped.armor === item
+) {
+
+    isEquipped = true;
+}
+
+
+box.innerHTML = `
+    <h3>
+        ${item.name}
+    </h3>
+
+    <p>
+        ${item.rarity.symbol}
+        ${item.rarity.name}
+    </p>
+
+    <p>
+        ${values}
+    </p>
+
+    <button
+        onclick="equipItem(${index})"
+        ${isEquipped ? "disabled" : ""}
+    >
+        ${isEquipped ? "✅ Ausgerüstet" : "Ausrüsten"}
+    </button>
+`;
 
 
         inventoryList.appendChild(
