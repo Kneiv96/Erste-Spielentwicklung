@@ -869,7 +869,7 @@ function createEquipment(type) {
         };
     }
 
-    
+}
        
 // =========================
 // WAFFE ERSTELLEN
