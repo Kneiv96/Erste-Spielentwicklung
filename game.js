@@ -107,7 +107,17 @@ const lootResults =
 const combatScreen =
     document.getElementById("combatScreen");
 
+const inventoryButton =
+    document.getElementById("inventoryButton");
 
+const inventoryScreen =
+    document.getElementById("inventoryScreen");
+
+const inventoryList =
+    document.getElementById("inventoryList");
+
+const closeInventoryButton =
+    document.getElementById("closeInventoryButton");
 // =========================
 // MONSTER LADEN
 // =========================
