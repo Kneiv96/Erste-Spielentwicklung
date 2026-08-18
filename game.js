@@ -1297,9 +1297,9 @@ attackButton.addEventListener(
     "click",
     heavyAttack
 );
-monsterCharacter.addEventListener(
+nextDungeonButton.addEventListener(
     "click",
-    clickAttack
+    restartDungeon
 );
 
 // =========================
