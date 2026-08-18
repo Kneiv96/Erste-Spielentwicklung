@@ -1440,7 +1440,7 @@ farmMode = true;
 // =========================
 
 function restartDungeon() {
-
+farmMode = false;
     if (
         currentDungeonLevel <
         highestUnlockedLevel
