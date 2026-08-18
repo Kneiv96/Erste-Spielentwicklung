@@ -376,7 +376,7 @@ function monsterAttack() {
         2000
     );
 }
-
+}
 // =========================
 // HELDENWERTE BERECHNEN
 // =========================
