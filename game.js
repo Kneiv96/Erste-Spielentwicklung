@@ -822,16 +822,29 @@ function showInventory() {
                 ${values}
             </p>
 
-            <button
-                onclick="equipItem(${index})"
-                ${isEquipped ? "disabled" : ""}
-            >
-                ${
-                    isEquipped
-                        ? "✅ Ausgerüstet"
-                        : "Ausrüsten"
-                }
-            </button>
+            <div class="inventory-buttons">
+
+    <button
+        onclick="equipItem(${index})"
+        ${isEquipped ? "disabled" : ""}
+    >
+        ${
+            isEquipped
+                ? "✅ Ausgerüstet"
+                : "Ausrüsten"
+        }
+    </button>
+
+
+    <button
+        onclick="sellItem(${index})"
+        ${isEquipped ? "disabled" : ""}
+    >
+        🪙 Verkaufen
+        (${getSellPrice(item)} Gold)
+    </button>
+
+</div>
         `;
 
 
