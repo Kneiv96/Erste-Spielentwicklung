@@ -984,11 +984,12 @@ function createEquipment(type) {
 
 
         return {
-            type: "weapon",
-            name: weaponName,
-            rarity: rarity,
-            attack: attackBonus
-        };
+    id: crypto.randomUUID(),
+    type: "weapon",
+    name: name,
+    rarity: rarity,
+    attackBonus: attackBonus
+};
     }
 
 
@@ -1016,11 +1017,13 @@ function createEquipment(type) {
 
 
         return {
-            type: "armor",
-            name: armorName,
-            rarity: rarity,
-            defense: defenseBonus
-        };
+    id: crypto.randomUUID(),
+    type: "armor",
+    name: name,
+    rarity: rarity,
+    defenseBonus: defenseBonus,
+    healthBonus: healthBonus
+};
     }
 
 }
