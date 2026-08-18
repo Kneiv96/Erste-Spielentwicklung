@@ -651,6 +651,24 @@ function showEquippedItems() {
     }
 }
 // =========================
+// VERKAUFSWERT
+// =========================
+
+function getSellPrice(item) {
+
+    const prices = {
+        "Gewöhnlich": 10,
+        "Ungewöhnlich": 20,
+        "Selten": 40,
+        "Episch": 100,
+        "Legendär": 260,
+        "Mythisch": 550,
+        "Göttlich": 3000
+    };
+
+    return prices[item.rarity.name] || 10;
+}
+// =========================
 // INVENTAR ANZEIGEN
 // =========================
 
