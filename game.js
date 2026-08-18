@@ -563,7 +563,33 @@ function loadGame() {
         hero.xp =
             data.heroXP;
     }
+// Dungeon-Fortschritt laden
 
+if (
+    data.currentDungeonLevel !== undefined
+) {
+
+    currentDungeonLevel =
+        data.currentDungeonLevel;
+}
+
+
+if (
+    data.highestUnlockedLevel !== undefined
+) {
+
+    highestUnlockedLevel =
+        data.highestUnlockedLevel;
+}
+
+
+if (
+    data.lastCompletedLevel !== undefined
+) {
+
+    lastCompletedLevel =
+        data.lastCompletedLevel;
+}
 
     recalculateHeroStats();
 }
