@@ -133,7 +133,8 @@ const equippedWeaponDisplay =
 
 const equippedArmorDisplay =
     document.getElementById("equippedArmor");
-
+const nextDungeonButton =
+    document.getElementById("nextDungeonButton");
 // =========================
 // MONSTER LADEN
 // =========================
