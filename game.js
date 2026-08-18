@@ -127,8 +127,11 @@ const inventoryButton =
 const inventoryScreen =
     document.getElementById("inventoryScreen");
 
-const inventoryList =
-    document.getElementById("inventoryList");
+const weaponInventoryList =
+    document.getElementById("weaponInventoryList");
+
+const armorInventoryList =
+    document.getElementById("armorInventoryList");
 
 const closeInventoryButton =
     document.getElementById("closeInventoryButton");
