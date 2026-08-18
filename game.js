@@ -175,11 +175,9 @@ document.getElementById(
 
 function updateDisplay() {
 
+    // HELD
     heroHealthText.textContent =
         Math.max(hero.health, 0);
-
-    monsterHealthText.textContent =
-        Math.max(monster.health, 0);
 
     heroHealthBar.style.width =
         Math.max(
@@ -187,25 +185,47 @@ function updateDisplay() {
             0
         ) + "%";
 
-    monsterHealthBar.style.width =
-        Math.max(
-            monster.health / monster.maxHealth * 100,
-            0
-        ) + "%";
-
-    document.getElementById("monsterMaxHealth").textContent =
-        monster.maxHealth;
-
     document.getElementById("heroXP").textContent =
         hero.xp;
 
-    document.getElementById("dungeonProgress").textContent =
+    document.getElementById("heroMaxHealth").textContent =
+        hero.maxHealth;
+
+    document.getElementById("heroAttack").textContent =
+        hero.attack;
+
+    document.getElementById("heroDefense").textContent =
+        hero.defense;
+
+
+    // MONSTER
+    // Nur aktualisieren, wenn bereits ein Monster existiert
+    if (monster) {
+
+        monsterHealthText.textContent =
+            Math.max(monster.health, 0);
+
+        monsterHealthBar.style.width =
+            Math.max(
+                monster.health / monster.maxHealth * 100,
+                0
+            ) + "%";
+
+        document.getElementById(
+            "monsterMaxHealth"
+        ).textContent =
+            monster.maxHealth;
+    }
+
+
+    // DUNGEON-FORTSCHRITT
+    document.getElementById(
+        "dungeonProgress"
+    ).textContent =
         (currentMonsterIndex + 1)
         + " / "
         + dungeon.monsters.length;
 }
-
-
 // =========================
 // ZUFALLSZAHL
 // =========================
