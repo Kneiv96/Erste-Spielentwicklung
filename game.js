@@ -1393,7 +1393,49 @@ inventory.push(armor);
         lootResults.appendChild(
             box
         );
-    });
+       });
+
+    saveGame();
+
+
+    if (farmMode) {
+
+        setTimeout(
+            restartFarmDungeon,
+            5000
+        );
+    }
+}
+// =========================
+// FARM-DUNGEON NEU STARTEN
+// =========================
+
+function restartFarmDungeon() {
+
+    currentDungeonLevel =
+        lastCompletedLevel > 0
+            ? lastCompletedLevel
+            : 1;
+
+    currentMonsterIndex = 0;
+
+    dungeonFinished = false;
+
+    hero.health =
+        hero.maxHealth;
+
+    attackButton.disabled = false;
+
+    lootPanel.classList.add(
+        "hidden"
+    );
+
+    combatScreen.classList.remove(
+        "hidden"
+    );
+
+    loadMonster();
+
     saveGame();
 }
 // =========================
