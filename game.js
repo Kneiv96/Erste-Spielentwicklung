@@ -12,7 +12,7 @@ const hero = {
 
     baseDefense: 0,
     defense: 0,
- clickDamage: 1,
+
     level: 1,
     xp: 0
 };
@@ -133,8 +133,7 @@ const equippedWeaponDisplay =
 
 const equippedArmorDisplay =
     document.getElementById("equippedArmor");
-const monsterCharacter =
-    document.getElementById("monsterCharacter");
+
 // =========================
 // MONSTER LADEN
 // =========================
@@ -275,37 +274,7 @@ function heroAttack() {
     checkMonsterDeath();
 }
 
-// =========================
-// KLICK-ANGRIFF
-// =========================
 
-function clickAttack() {
-
-    if (dungeonFinished) {
-        return;
-    }
-
-    if (!monster || monster.health <= 0) {
-        return;
-    }
-
-    if (hero.health <= 0) {
-        return;
-    }
-
-    monster.health -=
-        hero.clickDamage;
-
-    battleMessage.textContent =
-        "👆 Klick! "
-        + hero.clickDamage
-        + " Schaden!";
-
-    updateDisplay();
-
-    checkMonsterDeath();
-    
-}
 // =========================
 // MONSTER AUTO-ANGRIFF
 // =========================
