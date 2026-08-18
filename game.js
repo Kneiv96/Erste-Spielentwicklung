@@ -792,9 +792,12 @@ closeInventoryButton.addEventListener(
 // =========================
 // SCHWERER SCHLAG
 // =========================
-
+let heavyAttackCooldown = false;
 function heavyAttack() {
 
+    if (heavyAttackCooldown) {
+    return;
+}
     if (dungeonFinished) {
         return;
     }
@@ -820,9 +823,45 @@ function heavyAttack() {
     updateDisplay();
 
     checkMonsterDeath();
+startHeavyAttackCooldown();
 }
 
+function startHeavyAttackCooldown() {
 
+    heavyAttackCooldown = true;
+
+    let secondsLeft = 10;
+
+    attackButton.disabled = true;
+
+    attackButton.textContent =
+        "💥 Schwerer Schlag (" + secondsLeft + "s)";
+
+
+    const cooldownInterval =
+        setInterval(function () {
+
+            secondsLeft--;
+
+            if (secondsLeft > 0) {
+
+                attackButton.textContent =
+                    "💥 Schwerer Schlag (" + secondsLeft + "s)";
+
+            } else {
+
+                clearInterval(cooldownInterval);
+
+                heavyAttackCooldown = false;
+
+                attackButton.disabled = false;
+
+                attackButton.textContent =
+                    "💥 Schwerer Schlag";
+            }
+
+        }, 1000);
+}
 // =========================
 // MONSTER BESIEGT
 // =========================
