@@ -669,6 +669,74 @@ function getSellPrice(item) {
     return prices[item.rarity.name] || 10;
 }
 // =========================
+// GEGENSTAND VERKAUFEN
+// =========================
+
+function sellItem(index) {
+
+    const item =
+        inventory[index];
+
+    if (!item) {
+        return;
+    }
+
+
+    // Ausgerüstete Gegenstände dürfen nicht verkauft werden
+
+    const isEquippedWeapon =
+        item.type === "weapon" &&
+        equipped.weapon &&
+        equipped.weapon.id === item.id;
+
+    const isEquippedArmor =
+        item.type === "armor" &&
+        equipped.armor &&
+        equipped.armor.id === item.id;
+
+
+    if (
+        isEquippedWeapon ||
+        isEquippedArmor
+    ) {
+
+        return;
+    }
+
+
+    const price =
+        getSellPrice(item);
+
+
+    const confirmed =
+        confirm(
+            item.name
+            + " für "
+            + price
+            + " Gold verkaufen?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    resources.gold +=
+        price;
+
+
+    inventory.splice(
+        index,
+        1
+    );
+
+
+    saveGame();
+
+    showInventory();
+}
+// =========================
 // INVENTAR ANZEIGEN
 // =========================
 
