@@ -304,10 +304,7 @@ function clickAttack() {
     updateDisplay();
 
     checkMonsterDeath();
-    monsterCharacter.addEventListener(
-    "click",
-    clickAttack
-);
+    
 }
 // =========================
 // MONSTER AUTO-ANGRIFF
@@ -1298,7 +1295,10 @@ attackButton.addEventListener(
     "click",
     heavyAttack
 );
-
+monsterCharacter.addEventListener(
+    "click",
+    clickAttack
+);
 
 // =========================
 // AUTO-KAMPF
