@@ -248,6 +248,7 @@ function updateDisplay() {
             "monsterMaxHealth"
         ).textContent =
             monster.maxHealth;
+    }
     if (
     currentDungeonLevel <
     highestUnlockedLevel
