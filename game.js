@@ -133,6 +133,8 @@ const equippedWeaponDisplay =
 
 const equippedArmorDisplay =
     document.getElementById("equippedArmor");
+const monsterCharacter =
+    document.getElementById("monsterCharacter");
 // =========================
 // MONSTER LADEN
 // =========================
@@ -302,6 +304,10 @@ function clickAttack() {
     updateDisplay();
 
     checkMonsterDeath();
+    monsterCharacter.addEventListener(
+    "click",
+    clickAttack
+);
 }
 // =========================
 // MONSTER AUTO-ANGRIFF
