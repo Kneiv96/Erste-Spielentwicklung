@@ -262,3 +262,24 @@ button:hover {
     border: none;
     border-top: 1px solid #66584d;
 }
+.equipped-inventory-item {
+    border: 3px solid #c9a85c;
+    background: #2d281f;
+
+    box-shadow:
+        0 0 15px rgba(201, 168, 92, 0.35);
+}
+
+
+.equipped-inventory-item::before {
+    content: "AKTUELL AUSGERÜSTET";
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
