@@ -273,7 +273,36 @@ function heroAttack() {
     checkMonsterDeath();
 }
 
+// =========================
+// KLICK-ANGRIFF
+// =========================
 
+function clickAttack() {
+
+    if (dungeonFinished) {
+        return;
+    }
+
+    if (!monster || monster.health <= 0) {
+        return;
+    }
+
+    if (hero.health <= 0) {
+        return;
+    }
+
+    monster.health -=
+        hero.clickDamage;
+
+    battleMessage.textContent =
+        "👆 Klick! "
+        + hero.clickDamage
+        + " Schaden!";
+
+    updateDisplay();
+
+    checkMonsterDeath();
+}
 // =========================
 // MONSTER AUTO-ANGRIFF
 // =========================
