@@ -315,3 +315,29 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+/* =========================
+   INVENTAR – 2 SPALTEN
+   ========================= */
+
+.inventory-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    align-items: start;
+}
+
+.inventory-section {
+    min-width: 0;
+}
+
+.inventory-section h2 {
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+
+    .inventory-columns {
+        grid-template-columns: 1fr;
+    }
+}
