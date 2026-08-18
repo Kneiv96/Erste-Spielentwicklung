@@ -12,7 +12,7 @@ const hero = {
 
     baseDefense: 0,
     defense: 0,
-
+ clickDamage: 1,
     level: 1,
     xp: 0
 };
