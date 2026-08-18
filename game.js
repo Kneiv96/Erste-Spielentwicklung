@@ -88,6 +88,8 @@ let dungeonFinished = false;
 let currentDungeonLevel = 1;
 let highestUnlockedLevel = 1;
 let lastCompletedLevel = 0;
+
+let farmMode = false;
 // =========================
 // HTML-ELEMENTE
 // =========================
