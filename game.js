@@ -1401,7 +1401,7 @@ inventory.push(armor);
 // =========================
 
 function returnToFarmLevel() {
-
+farmMode = true;
     if (lastCompletedLevel > 0) {
 
         currentDungeonLevel =
