@@ -473,6 +473,57 @@ function loadGame() {
     recalculateHeroStats();
 }
 // =========================
+// AUSRÜSTUNG ANZEIGEN
+// =========================
+
+function showEquippedItems() {
+
+    // WAFFE
+    if (equipped.weapon) {
+
+        equippedWeaponDisplay.innerHTML = `
+            <strong>
+                ${equipped.weapon.rarity.symbol}
+                ${equipped.weapon.name}
+            </strong>
+
+            <br>
+
+            ⚔️ +${equipped.weapon.attackBonus} Angriff
+        `;
+
+    } else {
+
+        equippedWeaponDisplay.textContent =
+            "Keine Waffe ausgerüstet";
+    }
+
+
+    // RÜSTUNG
+    if (equipped.armor) {
+
+        equippedArmorDisplay.innerHTML = `
+            <strong>
+                ${equipped.armor.rarity.symbol}
+                ${equipped.armor.name}
+            </strong>
+
+            <br>
+
+            🛡️ +${equipped.armor.defenseBonus} Verteidigung
+
+            <br>
+
+            ❤️ +${equipped.armor.healthBonus} Leben
+        `;
+
+    } else {
+
+        equippedArmorDisplay.textContent =
+            "Keine Rüstung ausgerüstet";
+    }
+}
+// =========================
 // INVENTAR ANZEIGEN
 // =========================
 
