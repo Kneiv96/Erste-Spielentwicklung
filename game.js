@@ -457,7 +457,16 @@ function saveGame() {
         inventory: inventory,
         equipped: equipped,
         resources: resources,
-        heroXP: hero.xp
+        heroXP: hero.xp,
+
+        currentDungeonLevel:
+            currentDungeonLevel,
+
+        highestUnlockedLevel:
+            highestUnlockedLevel,
+
+        lastCompletedLevel:
+            lastCompletedLevel
     };
 
     localStorage.setItem(
