@@ -429,20 +429,51 @@ function loadGame() {
 
         inventory.length = 0;
 
-        data.inventory.forEach(item => {
-            inventory.push(item);
-        });
+       data.inventory.forEach(item => {
+
+    if (!item.id) {
+        item.id = crypto.randomUUID();
+    }
+
+    inventory.push(item);
+});
     }
 
 
-    if (data.equipped) {
+   if (data.equipped) {
+
+    if (data.equipped.weapon) {
 
         equipped.weapon =
-            data.equipped.weapon || null;
+            inventory.find(item =>
+                item.type === "weapon" &&
+                (
+                    item.id === data.equipped.weapon.id ||
+                    (
+                        item.name === data.equipped.weapon.name &&
+                        item.attackBonus === data.equipped.weapon.attackBonus
+                    )
+                )
+            ) || null;
+    }
+
+
+    if (data.equipped.armor) {
 
         equipped.armor =
-            data.equipped.armor || null;
+            inventory.find(item =>
+                item.type === "armor" &&
+                (
+                    item.id === data.equipped.armor.id ||
+                    (
+                        item.name === data.equipped.armor.name &&
+                        item.defenseBonus === data.equipped.armor.defenseBonus &&
+                        item.healthBonus === data.equipped.armor.healthBonus
+                    )
+                )
+            ) || null;
     }
+}
 
 
     if (data.resources) {
@@ -576,7 +607,8 @@ if (item.type === "armor") {
 
 if (
     item.type === "weapon" &&
-    equipped.weapon === item
+    equipped.weapon &&
+    equipped.weapon.id === item.id
 ) {
 
     isEquipped = true;
@@ -585,13 +617,16 @@ if (
 
 if (
     item.type === "armor" &&
-    equipped.armor === item
+    equipped.armor &&
+    equipped.armor.id === item.id
 ) {
 
     isEquipped = true;
 }
 
-
+if (isEquipped) {
+    box.classList.add("equipped-inventory-item");
+}
 box.innerHTML = `
     <h3>
         ${item.name}
