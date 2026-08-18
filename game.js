@@ -1167,6 +1167,6 @@ setInterval(
 // =========================
 // SPIELSTART
 // =========================
-loadGame();
-loadMonster();
 
+loadMonster();
+loadGame();
