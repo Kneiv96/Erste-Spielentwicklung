@@ -85,7 +85,9 @@ let currentMonsterIndex = 0;
 let monster = null;
 let dungeonFinished = false;
 
-
+let currentDungeonLevel = 1;
+let highestUnlockedLevel = 1;
+let lastCompletedLevel = 0;
 // =========================
 // HTML-ELEMENTE
 // =========================
@@ -144,10 +146,34 @@ function loadMonster() {
     const template =
         dungeon.monsters[currentMonsterIndex];
 
-    monster = {
-        ...template,
-        health: template.maxHealth
-    };
+ const healthMultiplier =
+    1 + (currentDungeonLevel - 1) * 0.25;
+
+const attackMultiplier =
+    1 + (currentDungeonLevel - 1) * 0.15;
+
+
+monster = {
+    ...template,
+
+    maxHealth:
+        Math.round(
+            template.maxHealth *
+            healthMultiplier
+        ),
+
+    health:
+        Math.round(
+            template.maxHealth *
+            healthMultiplier
+        ),
+
+    attack:
+        Math.round(
+            template.attack *
+            attackMultiplier
+        )
+};
 
     document.getElementById("monsterName").textContent =
         monster.name;
