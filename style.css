@@ -224,3 +224,41 @@ button:hover {
 .inventory-item h3 {
     margin-top: 0;
 }
+/* =========================
+   AUSRÜSTUNG
+========================= */
+
+.equipment-slots {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    margin-bottom: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.equipment-slot {
+    width: 260px;
+
+    padding: 20px;
+
+    background: #211d1a;
+
+    border: 2px solid #8a704c;
+    border-radius: 10px;
+}
+
+
+.equipment-slot h3 {
+    margin-top: 0;
+}
+
+
+.inventory-screen hr {
+    margin: 30px 0;
+
+    border: none;
+    border-top: 1px solid #66584d;
+}
