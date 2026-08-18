@@ -283,3 +283,11 @@ button:hover {
 
     letter-spacing: 1px;
 }
+.monster {
+    cursor: pointer;
+    user-select: none;
+}
+
+.monster:active {
+    transform: scale(0.9);
+}
