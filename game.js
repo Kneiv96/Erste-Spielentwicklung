@@ -248,7 +248,21 @@ function updateDisplay() {
             "monsterMaxHealth"
         ).textContent =
             monster.maxHealth;
-    }
+    if (
+    currentDungeonLevel <
+    highestUnlockedLevel
+) {
+
+    nextDungeonButton.textContent =
+        "⚔️ Stufe "
+        + highestUnlockedLevel
+        + " versuchen";
+
+} else {
+
+    nextDungeonButton.textContent =
+        "⚔️ Nächste Stufe";
+}
 
 
     // DUNGEON-FORTSCHRITT
@@ -1305,18 +1319,65 @@ inventory.push(armor);
     });
     saveGame();
 }
+// =========================
+// ZUR FARM-STUFE ZURÜCK
+// =========================
 
+function returnToFarmLevel() {
+
+    if (lastCompletedLevel > 0) {
+
+        currentDungeonLevel =
+            lastCompletedLevel;
+
+    } else {
+
+        currentDungeonLevel = 1;
+    }
+
+
+    currentMonsterIndex = 0;
+
+    dungeonFinished = false;
+
+    hero.health =
+        hero.maxHealth;
+
+    attackButton.disabled =
+        false;
+
+    lootPanel.classList.add(
+        "hidden"
+    );
+
+    combatScreen.classList.remove(
+        "hidden"
+    );
+
+    loadMonster();
+
+    saveGame();
+}
 // =========================
 // DUNGEON NEU STARTEN
 // =========================
 
 function restartDungeon() {
 
-    // Dungeon zurücksetzen
+    if (
+        currentDungeonLevel <
+        highestUnlockedLevel
+    ) {
+
+        currentDungeonLevel =
+            highestUnlockedLevel;
+    }
+
+
     currentMonsterIndex = 0;
+
     dungeonFinished = false;
 
-    // Held wieder vollständig heilen
     hero.health =
         hero.maxHealth;
 
