@@ -128,6 +128,11 @@ const inventoryList =
 
 const closeInventoryButton =
     document.getElementById("closeInventoryButton");
+const equippedWeaponDisplay =
+    document.getElementById("equippedWeapon");
+
+const equippedArmorDisplay =
+    document.getElementById("equippedArmor");
 // =========================
 // MONSTER LADEN
 // =========================
