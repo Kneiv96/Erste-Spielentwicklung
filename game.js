@@ -658,16 +658,128 @@ function showInventory() {
 
     showEquippedItems();
 
-    inventoryList.innerHTML = "";
+    weaponInventoryList.innerHTML = "";
+    armorInventoryList.innerHTML = "";
+
+    let weaponCount = 0;
+    let armorCount = 0;
+
+    inventory.forEach((item, index) => {
+
+        const box =
+            document.createElement("div");
+
+        box.classList.add("inventory-item");
+
+        let values = "";
+        let isEquipped = false;
 
 
-    if (inventory.length === 0) {
+        // =========================
+        // WAFFE
+        // =========================
 
-        inventoryList.innerHTML =
-            "<p>Dein Inventar ist leer.</p>";
+        if (item.type === "weapon") {
 
-        return;
+            weaponCount++;
+
+            values =
+                `⚔️ +${item.attackBonus} Angriff`;
+
+            if (
+                equipped.weapon &&
+                equipped.weapon.id === item.id
+            ) {
+                isEquipped = true;
+            }
+        }
+
+
+        // =========================
+        // RÜSTUNG
+        // =========================
+
+        if (item.type === "armor") {
+
+            armorCount++;
+
+            values =
+                `🛡️ +${item.defenseBonus} Verteidigung
+                <br>
+                ❤️ +${item.healthBonus} Leben`;
+
+            if (
+                equipped.armor &&
+                equipped.armor.id === item.id
+            ) {
+                isEquipped = true;
+            }
+        }
+
+
+        if (isEquipped) {
+            box.classList.add(
+                "equipped-inventory-item"
+            );
+        }
+
+
+        box.innerHTML = `
+            <h3>${item.name}</h3>
+
+            <p>
+                ${item.rarity.symbol}
+                ${item.rarity.name}
+            </p>
+
+            <p>
+                ${values}
+            </p>
+
+            <button
+                onclick="equipItem(${index})"
+                ${isEquipped ? "disabled" : ""}
+            >
+                ${
+                    isEquipped
+                        ? "✅ Ausgerüstet"
+                        : "Ausrüsten"
+                }
+            </button>
+        `;
+
+
+        if (item.type === "weapon") {
+
+            weaponInventoryList.appendChild(
+                box
+            );
+        }
+
+
+        if (item.type === "armor") {
+
+            armorInventoryList.appendChild(
+                box
+            );
+        }
+
+    });
+
+
+    if (weaponCount === 0) {
+
+        weaponInventoryList.innerHTML =
+            "<p>Keine Waffen vorhanden.</p>";
     }
+
+
+    if (armorCount === 0) {
+
+        armorInventoryList.innerHTML =
+            "<p>Keine Rüstungen vorhanden.</p>";
+    }
+}
 
 
     inventory.forEach((item, index) => {
