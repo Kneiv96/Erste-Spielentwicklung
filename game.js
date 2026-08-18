@@ -529,6 +529,8 @@ function showEquippedItems() {
 
 function showInventory() {
 
+    showEquippedItems();
+
     inventoryList.innerHTML = "";
 
 
