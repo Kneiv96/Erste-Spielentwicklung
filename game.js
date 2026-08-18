@@ -258,7 +258,12 @@ function updateDisplay() {
         (currentMonsterIndex + 1)
         + " / "
         + dungeon.monsters.length;
+document.getElementById(
+    "dungeonLevel"
+).textContent =
+    currentDungeonLevel;
 }
+
 // =========================
 // ZUFALLSZAHL
 // =========================
@@ -339,16 +344,24 @@ function monsterAttack() {
 
     if (hero.health <= 0) {
 
-        hero.health = 0;
+    hero.health = 0;
 
-        updateDisplay();
+    updateDisplay();
 
-        battleMessage.textContent =
-            "💀 Dein Held wurde besiegt.";
+    battleMessage.textContent =
+        "💀 Niederlage auf Stufe "
+        + currentDungeonLevel
+        + "!";
 
-        attackButton.disabled = true;
-    }
+    attackButton.disabled = true;
+
+
+    setTimeout(
+        returnToFarmLevel,
+        2000
+    );
 }
+
 // =========================
 // HELDENWERTE BERECHNEN
 // =========================
@@ -791,7 +804,18 @@ function checkMonsterDeath() {
     ) {
 
         dungeonFinished = true;
+lastCompletedLevel =
+    Math.max(
+        lastCompletedLevel,
+        currentDungeonLevel
+    );
 
+
+highestUnlockedLevel =
+    Math.max(
+        highestUnlockedLevel,
+        currentDungeonLevel + 1
+    );
         attackButton.disabled = true;
 
         battleMessage.textContent =
