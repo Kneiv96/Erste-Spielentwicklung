@@ -1256,7 +1256,39 @@ inventory.push(armor);
     saveGame();
 }
 
+// =========================
+// DUNGEON NEU STARTEN
+// =========================
 
+function restartDungeon() {
+
+    // Dungeon zurücksetzen
+    currentMonsterIndex = 0;
+    dungeonFinished = false;
+
+    // Held wieder vollständig heilen
+    hero.health =
+        hero.maxHealth;
+
+    // Loot ausblenden
+    lootPanel.classList.add(
+        "hidden"
+    );
+
+    // Kampfbildschirm anzeigen
+    combatScreen.classList.remove(
+        "hidden"
+    );
+
+    // Angriff wieder aktivieren
+    attackButton.disabled = false;
+
+    // Erstes Monster laden
+    loadMonster();
+
+    // Spielstand speichern
+    saveGame();
+}
 // =========================
 // BUTTON
 // =========================
