@@ -341,3 +341,9 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+.inventory-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
