@@ -170,6 +170,10 @@ const nextDungeonButton =
 const tryNextLevelButton =
     document.getElementById(
         "tryNextLevelButton"
+        const farmStatus =
+    document.getElementById(
+        "farmStatus"
+    
     );
 
 // =====================================================
