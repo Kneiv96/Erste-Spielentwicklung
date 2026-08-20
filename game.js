@@ -5142,10 +5142,10 @@ const OFFLINE_EFFICIENCY =
     0.60;
 
 const OFFLINE_DUNGEON_MINUTES =
-    0.1;
+    0.01;
 
 const OFFLINE_MINIMUM_MINUTES =
-    0.1;
+    0.05;
 
 const OFFLINE_TIME_KEY =
     "dungeonHeroLastActive";
