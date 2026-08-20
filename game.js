@@ -4507,72 +4507,7 @@ function rollRarity() {
     };
 }
     
-    // -------------------------
-    // NORMALE VERTEILUNG
-    // -------------------------
-
-    const roll =
-        Math.random() * 100;
-
-
-    if (roll < 45) {
-
-        return {
-            name: "Gewöhnlich",
-            symbol: "⬜",
-            tier: 1
-        };
-    }
-
-
-    if (roll < 72) {
-
-        return {
-            name: "Ungewöhnlich",
-            symbol: "🟩",
-            tier: 2
-        };
-    }
-
-
-    if (roll < 87) {
-
-        return {
-            name: "Selten",
-            symbol: "🟦",
-            tier: 3
-        };
-    }
-
-
-    if (roll < 95) {
-
-        return {
-            name: "Episch",
-            symbol: "🟪",
-            tier: 4
-        };
-    }
-
-
-    if (roll < 99) {
-
-        return {
-            name: "Legendär",
-            symbol: "🟧",
-            tier: 5
-        };
-    }
-
-
-    return {
-        name: "Mythisch",
-        symbol: "🟥",
-        tier: 6
-    };
-
-
-
+    
 // =====================================================
 // WAFFE GENERIEREN
 // =====================================================
