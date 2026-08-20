@@ -2094,7 +2094,10 @@ function saveGame() {
             lastCompletedLevel,
 
         farmMode:
-            farmMode
+    farmMode,
+
+chosenAbilities:
+    chosenAbilities
     };
 
 
