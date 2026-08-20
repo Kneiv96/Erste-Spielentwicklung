@@ -1496,6 +1496,7 @@ function drawUniqueLootCategories(
 // =====================================================
 
 function rollRarity() {
+
     const roll =
         Math.random() * 100;
 
@@ -1503,7 +1504,7 @@ function rollRarity() {
         return {
             name: "Gewöhnlich",
             symbol: "⬜",
-            multiplier: 1
+            tier: 1
         };
     }
 
@@ -1511,7 +1512,7 @@ function rollRarity() {
         return {
             name: "Ungewöhnlich",
             symbol: "🟩",
-            multiplier: 1.3
+            tier: 2
         };
     }
 
@@ -1519,7 +1520,7 @@ function rollRarity() {
         return {
             name: "Selten",
             symbol: "🟦",
-            multiplier: 1.7
+            tier: 3
         };
     }
 
@@ -1527,7 +1528,7 @@ function rollRarity() {
         return {
             name: "Episch",
             symbol: "🟪",
-            multiplier: 2.2
+            tier: 4
         };
     }
 
@@ -1535,14 +1536,14 @@ function rollRarity() {
         return {
             name: "Legendär",
             symbol: "🟧",
-            multiplier: 3
+            tier: 5
         };
     }
 
     return {
         name: "Mythisch",
         symbol: "🟥",
-        multiplier: 4
+        tier: 6
     };
 }
 
