@@ -966,7 +966,7 @@ function startHeavyAttackCooldown() {
 
     heavyAttackCooldown = true;
 
-    let secondsLeft = 10;
+    let secondsLeft = 6;
 
     attackButton.disabled = true;
 
