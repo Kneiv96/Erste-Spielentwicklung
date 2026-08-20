@@ -1826,21 +1826,42 @@ function loadMonster() {
     }
 
 
-    const healthMultiplier =
-        1
-        +
-        (currentDungeonLevel - 1)
-        *
-        0.25;
+    // =====================================================
+// MONSTER-SKALIERUNG
+// =====================================================
+
+let healthMultiplier =
+    1
+    +
+    (currentDungeonLevel - 1)
+    *
+    0.25;
 
 
-    const attackMultiplier =
-        1
-        +
-        (currentDungeonLevel - 1)
-        *
-        0.15;
+let attackMultiplier =
+    1
+    +
+    (currentDungeonLevel - 1)
+    *
+    0.15;
 
+
+// =====================================================
+// FARM-MODUS
+// Monster sind deutlich einfacher.
+// XP und Loot bleiben unverändert.
+// =====================================================
+
+if (
+    farmMode
+) {
+
+    healthMultiplier *=
+        0.60;
+
+    attackMultiplier *=
+        0.55;
+}
 
     monster = {
 
