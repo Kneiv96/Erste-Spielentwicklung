@@ -5145,7 +5145,7 @@ const OFFLINE_DUNGEON_MINUTES =
     3;
 
 const OFFLINE_MINIMUM_MINUTES =
-    5;
+    0,1;
 
 const OFFLINE_TIME_KEY =
     "dungeonHeroLastActive";
