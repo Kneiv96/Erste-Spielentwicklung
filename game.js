@@ -659,7 +659,270 @@ const farmStatus =
         "farmStatus"
     );
 
+const abilitySelectionScreen =
+    document.getElementById(
+        "abilitySelectionScreen"
+    );
 
+const abilitySelectionText =
+    document.getElementById(
+        "abilitySelectionText"
+    );
+
+const abilityChoices =
+    document.getElementById(
+        "abilityChoices"
+    );
+
+// =====================================================
+// FÄHIGKEITSSYSTEM
+// =====================================================
+
+function hasAbility(id) {
+
+    return chosenAbilities.includes(
+        id
+    );
+}
+
+
+function hasChosenAbilityForLevel(
+    level
+) {
+
+    const abilities =
+        abilitiesByLevel[level];
+
+    if (!abilities) {
+        return false;
+    }
+
+    return abilities.some(
+        ability =>
+            chosenAbilities.includes(
+                ability.id
+            )
+    );
+}
+
+
+function queueAbilityUnlock(
+    level
+) {
+
+    if (
+        !abilityLevels.includes(
+            level
+        )
+    ) {
+        return;
+    }
+
+
+    if (
+        hasChosenAbilityForLevel(
+            level
+        )
+    ) {
+        return;
+    }
+
+
+    if (
+        pendingAbilityLevels.includes(
+            level
+        )
+    ) {
+        return;
+    }
+
+
+    pendingAbilityLevels.push(
+        level
+    );
+
+
+    showNextAbilitySelection();
+}
+
+
+function showNextAbilitySelection() {
+
+    if (abilitySelectionOpen) {
+        return;
+    }
+
+
+    if (
+        pendingAbilityLevels.length === 0
+    ) {
+        return;
+    }
+
+
+    const level =
+        pendingAbilityLevels[0];
+
+
+    const abilities =
+        abilitiesByLevel[level];
+
+
+    if (!abilities) {
+        return;
+    }
+
+
+    abilitySelectionOpen =
+        true;
+
+
+    combatScreen.classList.add(
+        "hidden"
+    );
+
+    lootPanel.classList.add(
+        "hidden"
+    );
+
+    inventoryScreen.classList.add(
+        "hidden"
+    );
+
+    abilitySelectionScreen.classList.remove(
+        "hidden"
+    );
+
+
+    abilitySelectionText.textContent =
+        "Level "
+        + level
+        + " erreicht – wähle 1 von 3 Fähigkeiten.";
+
+
+    abilityChoices.innerHTML =
+        "";
+
+
+    abilities.forEach(
+        ability => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.classList.add(
+                "ability-card"
+            );
+
+
+            card.innerHTML = `
+
+                <div class="ability-icon">
+                    ${ability.icon}
+                </div>
+
+                <h3>
+                    ${ability.name}
+                </h3>
+
+                <p>
+                    ${ability.description}
+                </p>
+
+                <button>
+                    Auswählen
+                </button>
+            `;
+
+
+            const button =
+                card.querySelector(
+                    "button"
+                );
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    chooseAbility(
+                        level,
+                        ability.id
+                    );
+                }
+            );
+
+
+            abilityChoices.appendChild(
+                card
+            );
+        }
+    );
+}
+
+
+function chooseAbility(
+    level,
+    abilityId
+) {
+
+    if (
+        hasChosenAbilityForLevel(
+            level
+        )
+    ) {
+        return;
+    }
+
+
+    chosenAbilities.push(
+        abilityId
+    );
+
+
+    pendingAbilityLevels.shift();
+
+
+    abilitySelectionOpen =
+        false;
+
+
+    abilitySelectionScreen.classList.add(
+        "hidden"
+    );
+
+
+    recalculateHeroStats();
+
+    saveGame();
+
+
+    if (
+        pendingAbilityLevels.length > 0
+    ) {
+
+        showNextAbilitySelection();
+
+        return;
+    }
+
+
+    if (dungeonFinished) {
+
+        lootPanel.classList.remove(
+            "hidden"
+        );
+
+    } else {
+
+        combatScreen.classList.remove(
+            "hidden"
+        );
+    }
+}
 // =====================================================
 // HILFSFUNKTIONEN
 // =====================================================
