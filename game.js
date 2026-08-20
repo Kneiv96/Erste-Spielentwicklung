@@ -1340,7 +1340,9 @@ function updateFarmStatus() {
 // =====================================================
 
 function heroAttack() {
-
+if (abilitySelectionOpen) {
+    return;
+}
     if (
         dungeonFinished
         ||
