@@ -1707,75 +1707,177 @@ function recalculateHeroStats() {
     hero.baseAttack =
         15
         +
-        (hero.level - 1)
-        *
-        2;
+        (hero.level - 1) * 2;
 
 
     hero.baseMaxHealth =
         100
         +
-        (hero.level - 1)
-        *
-        5;
+        (hero.level - 1) * 5;
 
 
     hero.baseDefense =
         0;
 
 
-    hero.attack =
-        hero.baseAttack;
+    let weaponBonus = 0;
 
 
-    hero.defense =
-        hero.baseDefense;
+    if (equipped.weapon) {
+
+        weaponBonus =
+            Number(
+                equipped.weapon.attackBonus
+            ) || 0;
 
 
-    hero.maxHealth =
-        hero.baseMaxHealth;
+        if (
+            hasAbility(
+                "weaponMaster"
+            )
+        ) {
+
+            weaponBonus *=
+                1.25;
+        }
+    }
+
+
+    let attackMultiplier = 1;
 
 
     if (
-        equipped.weapon
+        hasAbility("warrior")
     ) {
-
-        hero.attack +=
-            Number(
-                equipped.weapon
-                    .attackBonus
-            )
-            ||
-            0;
+        attackMultiplier += 0.15;
     }
 
 
     if (
-        equipped.armor
+        hasAbility("warlord")
     ) {
+        attackMultiplier += 0.35;
+    }
 
-        hero.defense +=
-            Number(
-                equipped.armor
-                    .defenseBonus
+
+    if (
+        hasAbility("godOfWar")
+    ) {
+        attackMultiplier += 1;
+    }
+
+
+    hero.attack =
+        Math.round(
+            (
+                hero.baseAttack
+                +
+                weaponBonus
             )
-            ||
-            0;
+            *
+            attackMultiplier
+        );
+
+
+    let healthMultiplier = 1;
+
+
+    if (
+        hasAbility("tough")
+    ) {
+        healthMultiplier += 0.20;
+    }
+
+
+    if (
+        hasAbility(
+            "indestructible"
+        )
+    ) {
+        healthMultiplier += 0.30;
+    }
+
+
+    if (
+        hasAbility("immortal")
+    ) {
+        healthMultiplier += 1;
+    }
+
+
+    hero.maxHealth =
+        Math.round(
+            hero.baseMaxHealth
+            *
+            healthMultiplier
+        );
+
+
+    let armorDefense = 0;
+
+
+    if (equipped.armor) {
+
+        armorDefense =
+            Number(
+                equipped.armor.defenseBonus
+            ) || 0;
 
 
         hero.maxHealth +=
             Number(
-                equipped.armor
-                    .healthBonus
-            )
-            ||
-            0;
+                equipped.armor.healthBonus
+            ) || 0;
+    }
+
+
+    let defenseMultiplier = 1;
+
+
+    if (
+        hasAbility(
+            "armorTraining"
+        )
+    ) {
+        defenseMultiplier += 0.20;
     }
 
 
     if (
-        hero.health
-        >
+        hasAbility("warlord")
+    ) {
+        defenseMultiplier += 0.15;
+    }
+
+
+    if (
+        hasAbility("immortal")
+    ) {
+        defenseMultiplier += 0.50;
+    }
+
+
+    if (
+        veteranInstinctActive
+    ) {
+        defenseMultiplier += 0.50;
+    }
+
+
+    hero.defense =
+        Math.round(
+            (
+                hero.baseDefense
+                +
+                armorDefense
+            )
+            *
+            defenseMultiplier
+        );
+
+
+    if (
+        hero.health >
         hero.maxHealth
     ) {
 
@@ -1786,7 +1888,59 @@ function recalculateHeroStats() {
 
     updateDisplay();
 }
+function calculateHeroDamage(
+    baseDamage
+) {
 
+    let damage =
+        baseDamage;
+
+
+    if (
+        hasAbility(
+            "battleFrenzy"
+        )
+        &&
+        hero.health /
+        hero.maxHealth
+        <
+        0.40
+    ) {
+
+        damage *= 1.40;
+    }
+
+
+    if (
+        monster &&
+        monster.boss
+    ) {
+
+        if (
+            hasAbility(
+                "executioner"
+            )
+        ) {
+
+            damage *= 1.35;
+        }
+
+
+        if (
+            hasAbility(
+                "bossHunter"
+            )
+        ) {
+
+            damage *= 1.60;
+        }
+    }
+
+
+    return Math.round(
+        damage
+    );
+}
 
 // =====================================================
 // AUSRÜSTUNG
