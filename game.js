@@ -727,8 +727,18 @@ function checkMonsterDeath() {
 
     monster.health = 0;
 
-    hero.xp +=
-        monster.xp;
+    const xpMultiplier =
+    getDungeonXPMultiplier();
+
+const earnedXP =
+    Math.round(
+        monster.xp *
+        xpMultiplier
+    );
+
+hero.xp +=
+    earnedXP;
+
 checkLevelUp();
     updateDisplay();
 
