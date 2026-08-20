@@ -82,21 +82,16 @@ const levelXPRequirements = {
 
 
 const abilityLevels = [
-    3,
-    5,
-    9,
-    12,
-    15,
-    18,
-    20,
-    25,
-    30,
-    35,
-    40,
-    50,
-    100
+    3,   // 1. Fähigkeit
+    5,   // 2. Fähigkeit
+    9,   // 3. Fähigkeit
+    15,  // Rekrut
+    30,  // Soldat
+    50,  // Veteran
+    70,  // Lord
+    85,  // Halb-Gott
+    100  // Göttlich
 ];
-
 
 function xpNeededForLevel(level) {
 
