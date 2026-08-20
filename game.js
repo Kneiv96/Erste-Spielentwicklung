@@ -7,8 +7,8 @@ const hero = {
     maxHealth: 100,
     health: 100,
 
-    baseAttack: 10,
-    attack: 10,
+    baseAttack: 15,
+    attack: 15,
 
     baseDefense: 0,
     defense: 0,
@@ -55,25 +55,25 @@ const dungeon = {
         {
             name: "Goblin",
             maxHealth: 40,
-            attack: 6,
+            attack: 5,
             xp: 15
         },
         {
             name: "Wolf",
             maxHealth: 55,
-            attack: 8,
+            attack: 6,
             xp: 20
         },
         {
             name: "Ork",
             maxHealth: 80,
-            attack: 10,
+            attack: 8,
             xp: 30
         },
         {
             name: "Ork-Häuptling",
             maxHealth: 130,
-            attack: 14,
+            attack: 10,
             xp: 60,
             boss: true
         }
