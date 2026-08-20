@@ -36,12 +36,14 @@
     ====================== -->
 
     <div class="game-info">
-<p>
-    ⛏️ Dungeon-Stufe:
-    <span id="dungeonLevel">
-        1
-    </span>
-</p>
+
+        <p>
+            ⛏️ Dungeon-Stufe:
+            <span id="dungeonLevel">
+                1
+            </span>
+        </p>
+
         <p>
             🗺️ Raum:
             <span id="dungeonProgress">
@@ -82,34 +84,40 @@
 
                     <div
                         id="heroHealthBar"
-                        class="health-fill">
+                        class="health-fill"
+                    >
                     </div>
 
                 </div>
 
-               <p>
-    ❤️
-    <span id="heroHealth">
-        100
-    </span>
-    /
-    <span id="heroMaxHealth">
-        100
-    </span>
-</p>
 
-<p>
-    ⚔️ Angriff:
-    <span id="heroAttack">
-        10
-    </span>
-</p>
-<p>
-    🛡️ Verteidigung:
-    <span id="heroDefense">
-        0
-    </span>
-</p>
+                <p>
+                    ❤️
+                    <span id="heroHealth">
+                        100
+                    </span>
+                    /
+                    <span id="heroMaxHealth">
+                        100
+                    </span>
+                </p>
+
+
+                <p>
+                    ⚔️ Angriff:
+                    <span id="heroAttack">
+                        10
+                    </span>
+                </p>
+
+
+                <p>
+                    🛡️ Verteidigung:
+                    <span id="heroDefense">
+                        0
+                    </span>
+                </p>
+
             </div>
 
 
@@ -132,39 +140,36 @@
                     Monster
                 </h2>
 
-             <div
-    id="monsterCharacter"
-    class="character monster"
->
-    👹
-</div>
+                <div class="character monster">
+                    👹
+                </div>
 
                 <div class="health-bar">
 
                     <div
                         id="monsterHealthBar"
-                        class="health-fill">
+                        class="health-fill"
+                    >
                     </div>
 
                 </div>
 
+
                 <p>
-
                     ❤️
-
                     <span id="monsterHealth">
                         40
                     </span>
-
                     /
-
                     <span id="monsterMaxHealth">
                         40
                     </span>
-
                 </p>
 
             </div>
+
+
+        </div>
 
 
         <!-- =====================
@@ -174,85 +179,112 @@
         <div class="abilities">
 
             <button id="attackButton">
-
                 ⚔️ Schwerer Schlag
-
             </button>
 
         </div>
 
+    </div>
+
+
+    <!-- =====================
+         INVENTAR-BUTTON
+    ====================== -->
+
+    <button id="inventoryButton">
+        🎒 Inventar
+    </button>
+
+
+    <!-- =====================
+         INVENTAR
+    ====================== -->
+
+    <div
+        id="inventoryScreen"
+        class="inventory-screen hidden"
+    >
+
+        <h2>🎒 Inventar</h2>
+
+
+        <!-- AUSGERÜSTETE GEGENSTÄNDE -->
+
+        <div class="equipment-slots">
+
+            <div class="equipment-slot">
+
+                <h3>⚔️ Waffe</h3>
+
+                <div id="equippedWeapon">
+                    Keine Waffe ausgerüstet
+                </div>
+
+            </div>
+
+
+            <div class="equipment-slot">
+
+                <h3>🛡️ Rüstung</h3>
+
+                <div id="equippedArmor">
+                    Keine Rüstung ausgerüstet
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <h3>Gegenstände</h3>
+
+
+        <!-- INVENTAR-SPALTEN -->
+
+        <div class="inventory-columns">
+
+
+            <!-- WAFFEN -->
+
+            <div class="inventory-section">
+
+                <h2>⚔️ Waffen</h2>
+
+                <div id="weaponInventoryList">
+                </div>
+
+            </div>
+
+
+            <!-- RÜSTUNGEN -->
+
+            <div class="inventory-section">
+
+                <h2>🛡️ Rüstungen</h2>
+
+                <div id="armorInventoryList">
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <button id="closeInventoryButton">
+            Zurück
+        </button>
+
+    </div>
 
 
     <!-- =====================
          LOOT-BILDSCHIRM
     ====================== -->
-<button id="inventoryButton">
-    🎒 Inventar
-</button>
-    
-    <div
-    id="inventoryScreen"
-    class="inventory-screen hidden"
->
 
-    <h2>🎒 Inventar</h2>
-
-    <div class="equipment-slots">
-
-        <div class="equipment-slot">
-            <h3>⚔️ Waffe</h3>
-
-            <div id="equippedWeapon">
-                Keine Waffe ausgerüstet
-            </div>
-    
-
-
-        <div class="equipment-slot">
-            <h3>🛡️ Rüstung</h3>
-
-            <div id="equippedArmor">
-                Keine Rüstung ausgerüstet
-            </div>
-
-
-    <hr>
-
-
-    <h3>Gegenstände</h3>
-
-   <div class="inventory-columns">
-
-    <!-- WAFFEN -->
-    <div class="inventory-section">
-
-        <h2>⚔️ Waffen</h2>
-
-        <div id="weaponInventoryList">
-        </div>
-
-    </div>
-
-
-    <!-- RÜSTUNGEN -->
-    <div class="inventory-section">
-
-        <h2>🛡️ Rüstungen</h2>
-
-        <div id="armorInventoryList">
-        </div>
-
-    </div>
-
-</div>
-
-
-    <button id="closeInventoryButton">
-        Zurück
-    </button>
-
-
-</div>
     <div
         id="lootPanel"
         class="loot-panel hidden"
@@ -262,14 +294,18 @@
             🎁 Dungeon-Belohnung
         </h2>
 
+
         <div
             id="lootResults"
             class="loot-results"
         >
         </div>
-<button id="nextDungeonButton">
-    ⚔️ Nächster Dungeon
-</button>
+
+
+        <button id="nextDungeonButton">
+            ⚔️ Nächster Dungeon
+        </button>
+
     </div>
 
 
