@@ -1766,9 +1766,26 @@ function checkMonsterDeath() {
     monster.health = 0;
 
 
-    const earnedXP =
-        Math.round(
-            monster.xp
+    let xpMultiplier =
+    getDungeonXPMultiplier();
+
+
+if (
+    hasAbility(
+        "learner"
+    )
+) {
+
+    xpMultiplier *=
+        1.15;
+}
+
+
+const earnedXP =
+    Math.round(
+        monster.xp *
+        xpMultiplier
+    );
             *
             getDungeonXPMultiplier()
         );
@@ -1776,7 +1793,26 @@ function checkMonsterDeath() {
 
     hero.xp +=
         earnedXP;
+if (
+    hasAbility(
+        "regeneration"
+    )
+) {
 
+    const healing =
+        Math.round(
+            hero.maxHealth *
+            0.08
+        );
+
+
+    hero.health =
+        Math.min(
+            hero.maxHealth,
+            hero.health +
+            healing
+        );
+}
 
     checkLevelUp();
 
