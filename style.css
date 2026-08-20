@@ -421,3 +421,25 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+.abilities-screen {
+    margin-top: 25px;
+}
+
+#chosenAbilitiesList {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.chosen-ability-card {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 15px;
+    border: 1px solid #888;
+    border-radius: 12px;
+}
+
+.chosen-ability-card .ability-icon {
+    font-size: 32px;
+}
