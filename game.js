@@ -82,17 +82,223 @@ const levelXPRequirements = {
 
 
 const abilityLevels = [
-    3,   // 1. Fähigkeit
-    5,   // 2. Fähigkeit
-    9,   // 3. Fähigkeit
-    15,  // Rekrut
-    30,  // Soldat
-    50,  // Veteran
-    70,  // Lord
-    85,  // Halb-Gott
-    100  // Göttlich
+    3,
+    5,
+    9,
+    15,
+    30,
+    50,
+    70,
+    85,
+    100
 ];
+// =====================================================
+// FÄHIGKEITEN
+// =====================================================
 
+const abilitiesByLevel = {
+
+    3: [
+        {
+            id: "warrior",
+            icon: "⚔️",
+            name: "Krieger",
+            description: "+15 % Angriff"
+        },
+        {
+            id: "tough",
+            icon: "❤️",
+            name: "Zäh",
+            description: "+20 % maximales Leben"
+        },
+        {
+            id: "looter",
+            icon: "🪙",
+            name: "Plünderer",
+            description: "+20 % Gold"
+        }
+    ],
+
+    5: [
+        {
+            id: "heavyStrike",
+            icon: "💥",
+            name: "Wuchtiger Schlag",
+            description: "Schwerer Schlag verursacht ×2,5 Schaden"
+        },
+        {
+            id: "regeneration",
+            icon: "🩸",
+            name: "Regeneration",
+            description: "Nach jedem besiegten Monster 8 % Leben regenerieren"
+        },
+        {
+            id: "learner",
+            icon: "⭐",
+            name: "Lernfähig",
+            description: "+15 % erhaltene XP"
+        }
+    ],
+
+    9: [
+        {
+            id: "fastStrike",
+            icon: "⚡",
+            name: "Schneller Schlag",
+            description: "Cooldown des Schweren Schlags −2 Sekunden"
+        },
+        {
+            id: "armorTraining",
+            icon: "🛡️",
+            name: "Panzerung",
+            description: "+20 % Verteidigung"
+        },
+        {
+            id: "treasureHunter",
+            icon: "🎁",
+            name: "Schatzsucher",
+            description: "+50 % Chance auf Waffen- und Rüstungsloot"
+        }
+    ],
+
+    15: [
+        {
+            id: "weaponMaster",
+            icon: "🗡️",
+            name: "Waffenmeister",
+            description: "Waffenboni wirken +25 % stärker"
+        },
+        {
+            id: "indestructible",
+            icon: "❤️",
+            name: "Unverwüstlich",
+            description: "+30 % maximales Leben"
+        },
+        {
+            id: "collector",
+            icon: "🌾",
+            name: "Sammler",
+            description: "+30 % Holz, Stein und Nahrung"
+        }
+    ],
+
+    30: [
+        {
+            id: "executioner",
+            icon: "💀",
+            name: "Henker",
+            description: "+35 % Schaden gegen Bosse"
+        },
+        {
+            id: "bulwark",
+            icon: "🛡️",
+            name: "Bollwerk",
+            description: "15 % weniger erlittener Schaden"
+        },
+        {
+            id: "fortuneHunter",
+            icon: "💰",
+            name: "Glücksritter",
+            description: "+50 % Gold"
+        }
+    ],
+
+    50: [
+        {
+            id: "battleFrenzy",
+            icon: "⚔️",
+            name: "Kampfrausch",
+            description: "Unter 40 % Leben +40 % Angriff"
+        },
+        {
+            id: "veteranInstinct",
+            icon: "🛡️",
+            name: "Veteraneninstinkt",
+            description: "Unter 30 % Leben: 10 Sek. +50 % Verteidigung"
+        },
+        {
+            id: "masterLooter",
+            icon: "🎁",
+            name: "Meisterplünderer",
+            description: "Deutlich bessere Chance auf hochwertige Ausrüstung"
+        }
+    ],
+
+    70: [
+        {
+            id: "warlord",
+            icon: "👑",
+            name: "Kriegsherr",
+            description: "+35 % Angriff und +15 % Verteidigung"
+        },
+        {
+            id: "ruler",
+            icon: "🏰",
+            name: "Herrscher",
+            description: "+50 % aller Ressourcen"
+        },
+        {
+            id: "bossHunter",
+            icon: "🔥",
+            name: "Bossjäger",
+            description: "+60 % Schaden gegen Bosse"
+        }
+    ],
+
+    85: [
+        {
+            id: "superhuman",
+            icon: "⚡",
+            name: "Übermenschlich",
+            description: "Schwerer Schlag ×4 und zusätzlich −2 Sek. Cooldown"
+        },
+        {
+            id: "immortality",
+            icon: "🩸",
+            name: "Unsterblichkeit",
+            description: "Einmal pro Dungeon mit 50 % Leben wiederauferstehen"
+        },
+        {
+            id: "fateHunter",
+            icon: "✨",
+            name: "Schicksalsjäger",
+            description: "Stark erhöhte Chance auf legendären und mythischen Loot"
+        }
+    ],
+
+    100: [
+        {
+            id: "godOfWar",
+            icon: "⚔️",
+            name: "Gott des Krieges",
+            description: "+100 % Angriff"
+        },
+        {
+            id: "immortal",
+            icon: "🛡️",
+            name: "Unsterblicher",
+            description: "+100 % Leben und +50 % Verteidigung"
+        },
+        {
+            id: "divineFavor",
+            icon: "🌟",
+            name: "Göttliche Gunst",
+            description: "+100 % Ressourcen und Göttliche Dropchance 1 % → 2 %"
+        }
+    ]
+};
+
+
+const chosenAbilities = [];
+
+let pendingAbilityLevels = [];
+
+let abilitySelectionOpen = false;
+
+let immortalityUsedThisDungeon = false;
+
+let veteranInstinctActive = false;
+let veteranInstinctCooldown = false;
 function xpNeededForLevel(level) {
 
     if (level >= 100) {
