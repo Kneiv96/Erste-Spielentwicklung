@@ -1944,7 +1944,52 @@ function generateDungeonLoot() {
     }
 }
 
+function tryHighestUnlockedLevel() {
 
+    if (
+        highestUnlockedLevel <=
+        currentDungeonLevel
+    ) {
+        return;
+    }
+
+    // Farmmodus beenden
+    farmMode = false;
+
+    // Höchste freigeschaltete Stufe wählen
+    currentDungeonLevel =
+        highestUnlockedLevel;
+
+    // aktuellen Run abbrechen
+    currentMonsterIndex = 0;
+
+    dungeonFinished = false;
+
+    // Held heilen
+    hero.health =
+        hero.maxHealth;
+
+    // Bildschirme korrigieren
+    lootPanel.classList.add(
+        "hidden"
+    );
+
+    inventoryScreen.classList.add(
+        "hidden"
+    );
+
+    combatScreen.classList.remove(
+        "hidden"
+    );
+
+    // Fähigkeit wieder verfügbar
+    attackButton.disabled = false;
+
+    // neue Stufe starten
+    loadMonster();
+
+    saveGame();
+}
 // =====================================================
 // FARM-DUNGEON NEU STARTEN
 // =====================================================
@@ -2112,7 +2157,10 @@ nextDungeonButton.addEventListener(
     restartDungeon
 );
 
-
+tryNextLevelButton.addEventListener(
+    "click",
+    tryHighestUnlockedLevel
+);
 // =====================================================
 // AUTO-KAMPF
 // =====================================================
