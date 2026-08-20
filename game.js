@@ -1004,7 +1004,13 @@ function loadGame() {
     recalculateHeroStats();
 }
 
+if (
+    data.farmMode !== undefined
+) {
 
+    farmMode =
+        data.farmMode;
+}
 // =====================================================
 // AUSGERÜSTETE ITEMS ANZEIGEN
 // =====================================================
