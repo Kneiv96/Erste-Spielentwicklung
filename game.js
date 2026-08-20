@@ -287,7 +287,36 @@ const abilitiesByLevel = {
         }
     ]
 };
+function queueMissingAbilityChoices() {
 
+    abilityLevels.forEach(
+        level => {
+
+            if (
+                hero.level >= level
+                &&
+                !hasChosenAbilityForLevel(
+                    level
+                )
+            ) {
+
+                if (
+                    !pendingAbilityLevels.includes(
+                        level
+                    )
+                ) {
+
+                    pendingAbilityLevels.push(
+                        level
+                    );
+                }
+            }
+        }
+    );
+
+
+    showNextAbilitySelection();
+}
 
 const chosenAbilities = [];
 
@@ -2125,7 +2154,25 @@ function loadGame() {
     if (
         !saved
     ) {
+if (
+    Array.isArray(
+        data.chosenAbilities
+    )
+) {
 
+    chosenAbilities.length =
+        0;
+
+
+    data.chosenAbilities.forEach(
+        abilityId => {
+
+            chosenAbilities.push(
+                abilityId
+            );
+        }
+    );
+}
         recalculateHeroStats();
 
         return;
@@ -3616,3 +3663,4 @@ loadGame();
 generateDungeonMonsters();
 
 loadMonster();
+queueMissingAbilityChoices();
