@@ -1456,7 +1456,54 @@ if (
 
     hero.health -=
         damage;
+if (
+    hasAbility(
+        "veteranInstinct"
+    )
+    &&
+    hero.health > 0
+    &&
+    hero.health /
+    hero.maxHealth
+    <
+    0.30
+    &&
+    !veteranInstinctCooldown
+) {
 
+    veteranInstinctActive =
+        true;
+
+    veteranInstinctCooldown =
+        true;
+
+
+    recalculateHeroStats();
+
+
+    setTimeout(
+        function () {
+
+            veteranInstinctActive =
+                false;
+
+            recalculateHeroStats();
+
+        },
+        10000
+    );
+
+
+    setTimeout(
+        function () {
+
+            veteranInstinctCooldown =
+                false;
+
+        },
+        30000
+    );
+}
 
     battleMessage.textContent =
         "👹 "
@@ -1468,6 +1515,35 @@ if (
 
     updateDisplay();
 
+    if (
+    hero.health <= 0
+    &&
+    hasAbility(
+        "immortality"
+    )
+    &&
+    !immortalityUsedThisDungeon
+) {
+
+    immortalityUsedThisDungeon =
+        true;
+
+
+    hero.health =
+        Math.round(
+            hero.maxHealth *
+            0.50
+        );
+
+
+    battleMessage.textContent =
+        "🩸 Unsterblichkeit! Du kehrst mit 50 % Leben zurück.";
+
+
+    updateDisplay();
+
+    return;
+}
 
     if (
         hero.health <= 0
