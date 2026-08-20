@@ -811,7 +811,9 @@ function saveGame() {
             highestUnlockedLevel,
 
         lastCompletedLevel:
-            lastCompletedLevel
+            lastCompletedLevel,
+        farmMode:
+    farmMode
     };
 
 
