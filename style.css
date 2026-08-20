@@ -443,3 +443,53 @@ button:hover {
 .chosen-ability-card .ability-icon {
     font-size: 32px;
 }
+/* =========================
+   OFFLINE-FARM
+========================= */
+
+.offline-farm-screen {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    z-index: 1000;
+}
+
+.offline-farm-screen.hidden {
+    display: none;
+}
+
+.offline-farm-box {
+    width: min(500px, 90%);
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    background: #1f1f1f;
+
+    text-align: center;
+}
+
+.offline-farm-box h2 {
+    margin-top: 0;
+}
+
+.offline-farm-box p {
+    margin: 8px 0;
+}
+
+.offline-farm-box button {
+    margin-top: 20px;
+}
