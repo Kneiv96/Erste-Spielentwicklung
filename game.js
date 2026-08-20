@@ -1175,20 +1175,40 @@ function chooseAbility(
     }
 
 
-    if (dungeonFinished) {
+   if (dungeonFinished) {
 
-        lootPanel.classList.remove(
-            "hidden"
-        );
+    lootPanel.classList.remove(
+        "hidden"
+    );
+
+} else {
+
+    combatScreen.classList.remove(
+        "hidden"
+    );
+
+
+    // Schweren Schlag nach der
+    // Fähigkeitsauswahl korrekt aktivieren
+
+    if (
+        !heavyAttackCooldown
+        &&
+        hero.health > 0
+    ) {
+
+        attackButton.disabled =
+            false;
+
+        attackButton.textContent =
+            "💥 Schwerer Schlag";
 
     } else {
 
-        combatScreen.classList.remove(
-            "hidden"
-        );
+        attackButton.disabled =
+            true;
     }
 }
-
 
 // =====================================================
 // LEVEL-UP
