@@ -1378,7 +1378,9 @@ if (abilitySelectionOpen) {
 // =====================================================
 
 function monsterAttack() {
-
+if (abilitySelectionOpen) {
+    return;
+}
     if (
         dungeonFinished
         ||
