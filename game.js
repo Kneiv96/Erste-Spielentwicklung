@@ -1220,8 +1220,9 @@ function checkLevelUp() {
         }
 
 
-        hero.xp -=
-            neededXP;
+        // XP werden NICHT abgezogen.
+        // hero.xp bleibt die gesamte
+        // bisher verdiente XP-Menge.
 
 
         hero.level++;
@@ -1237,9 +1238,12 @@ function checkLevelUp() {
     }
 
 
-    if (leveledUp) {
+    if (
+        leveledUp
+    ) {
 
         recalculateHeroStats();
+
 
         hero.health =
             hero.maxHealth;
@@ -1248,8 +1252,6 @@ function checkLevelUp() {
 
     saveGame();
 }
-
-
 // =====================================================
 // HELDENWERTE
 // =====================================================
