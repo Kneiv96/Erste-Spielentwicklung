@@ -244,31 +244,7 @@ function loadMonster() {
 
 
     updateDisplay();
-}
 
-function updateNextLevelButton() {
-
-    if (
-        farmMode &&
-        highestUnlockedLevel >
-        currentDungeonLevel
-    ) {
-
-        tryNextLevelButton.classList.remove(
-            "hidden"
-        );
-
-        tryNextLevelButton.textContent =
-            "⚔️ Stufe "
-            + highestUnlockedLevel
-            + " versuchen";
-
-    } else {
-
-        tryNextLevelButton.classList.add(
-            "hidden"
-        );
-    }
 }
 // =====================================================
 // ANZEIGE AKTUALISIEREN
@@ -378,8 +354,41 @@ function updateDisplay() {
     }
 updateNextLevelButton();
 }
+function updateNextLevelButton() {
 
+    if (
+        farmMode &&
+        highestUnlockedLevel >
+        currentDungeonLevel
+    ) {
 
+        tryNextLevelButton.classList.remove(
+            "hidden"
+        );
+
+        tryNextLevelButton.textContent =
+            "⚔️ Stufe "
+            + highestUnlockedLevel
+            + " versuchen";
+
+    } else {
+
+        tryNextLevelButton.classList.add(
+            "hidden"
+        );
+    }
+
+if (farmMode) {
+
+    farmStatus.textContent =
+        "Farmen – Stufe "
+        + currentDungeonLevel;
+
+} else {
+
+    farmStatus.textContent =
+        "Fortschritt";
+}
 // =====================================================
 // AUTO-ANGRIFF HELD
 // =====================================================
