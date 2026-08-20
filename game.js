@@ -3768,7 +3768,11 @@ function generateDungeonLoot() {
 // =====================================================
 
 function prepareDungeonRun() {
+immortalityUsedThisDungeon =
+    false;
 
+veteranInstinctActive =
+    false;
     currentMonsterIndex =
         0;
 
