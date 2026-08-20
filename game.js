@@ -1386,13 +1386,18 @@ if (abilitySelectionOpen) {
     }
 
 
-    monster.health -=
-        hero.attack;
+    const damage =
+    calculateHeroDamage(
+        hero.attack
+    );
+
+monster.health -=
+    damage;
 
 
     battleMessage.textContent =
         "⚔️ Du verursachst "
-        + hero.attack
+        + damage
         + " Schaden!";
 
 
@@ -1498,10 +1503,37 @@ function heavyAttack() {
     }
 
 
-    const damage =
-        hero.attack
-        *
-        2;
+    let heavyMultiplier =
+    2;
+
+
+if (
+    hasAbility(
+        "heavyStrike"
+    )
+) {
+
+    heavyMultiplier =
+        2.5;
+}
+
+
+if (
+    hasAbility(
+        "superhuman"
+    )
+) {
+
+    heavyMultiplier =
+        4;
+}
+
+
+const damage =
+    calculateHeroDamage(
+        hero.attack *
+        heavyMultiplier
+    );
 
 
     monster.health -=
@@ -1533,7 +1565,34 @@ function startHeavyAttackCooldown() {
 
 
     let secondsLeft =
-        6;
+    6;
+
+
+if (
+    hasAbility(
+        "fastStrike"
+    )
+) {
+
+    secondsLeft -= 2;
+}
+
+
+if (
+    hasAbility(
+        "superhuman"
+    )
+) {
+
+    secondsLeft -= 2;
+}
+
+
+secondsLeft =
+    Math.max(
+        1,
+        secondsLeft
+    );
 
 
     attackButton.disabled =
