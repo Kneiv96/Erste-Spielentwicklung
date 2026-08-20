@@ -4506,68 +4506,7 @@ function rollRarity() {
             6
     };
 }
-    // -------------------------
-    // MEISTERPLÜNDERER
-    // -------------------------
-
-    if (
-        hasAbility(
-            "masterLooter"
-        )
-    ) {
-
-        const roll =
-            Math.random() * 100;
-
-
-        if (roll < 35) {
-            return {
-                name: "Gewöhnlich",
-                symbol: "⬜",
-                tier: 1
-            };
-        }
-
-        if (roll < 62) {
-            return {
-                name: "Ungewöhnlich",
-                symbol: "🟩",
-                tier: 2
-            };
-        }
-
-        if (roll < 82) {
-            return {
-                name: "Selten",
-                symbol: "🟦",
-                tier: 3
-            };
-        }
-
-        if (roll < 93) {
-            return {
-                name: "Episch",
-                symbol: "🟪",
-                tier: 4
-            };
-        }
-
-        if (roll < 98) {
-            return {
-                name: "Legendär",
-                symbol: "🟧",
-                tier: 5
-            };
-        }
-
-        return {
-            name: "Mythisch",
-            symbol: "🟥",
-            tier: 6
-        };
-    }
-
-
+    
     // -------------------------
     // NORMALE VERTEILUNG
     // -------------------------
