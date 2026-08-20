@@ -699,64 +699,117 @@ function showChosenAbilities() {
         }
     );
 }
-abilitiesButton.addEventListener(
-    "click",
-    function () {
+// =====================================================
+// FÄHIGKEITEN-ÜBERSICHT ÖFFNEN
+// =====================================================
 
-        if (
-            abilitySelectionOpen
-        ) {
-            return;
-        }
+if (
+    abilitiesButton
+    &&
+    abilitiesScreen
+) {
 
+    abilitiesButton.addEventListener(
+        "click",
+        function () {
 
-        combatScreen.classList.add(
-            "hidden"
-        );
+            // Während einer echten neuen
+            // Fähigkeitswahl darf die Übersicht
+            // nicht geöffnet werden.
+            if (
+                abilitySelectionOpen
+            ) {
 
-        lootPanel.classList.add(
-            "hidden"
-        );
-
-        inventoryScreen.classList.add(
-            "hidden"
-        );
-
-        abilitiesScreen.classList.remove(
-            "hidden"
-        );
+                return;
+            }
 
 
-        showChosenAbilities();
-    }
-);
+            // Alle anderen Bildschirme ausblenden
 
-
-closeAbilitiesButton.addEventListener(
-    "click",
-    function () {
-
-        abilitiesScreen.classList.add(
-            "hidden"
-        );
-
-
-        if (
-            dungeonFinished
-        ) {
-
-            lootPanel.classList.remove(
+            combatScreen.classList.add(
                 "hidden"
             );
 
-        } else {
 
-            combatScreen.classList.remove(
+            lootPanel.classList.add(
                 "hidden"
             );
+
+
+            inventoryScreen.classList.add(
+                "hidden"
+            );
+
+
+            if (
+                abilitySelectionScreen
+            ) {
+
+                abilitySelectionScreen
+                    .classList
+                    .add(
+                        "hidden"
+                    );
+            }
+
+
+            // Fähigkeiten anzeigen
+
+            abilitiesScreen.classList.remove(
+                "hidden"
+            );
+
+
+            showChosenAbilities();
         }
-    }
-);
+    );
+}
+
+
+// =====================================================
+// FÄHIGKEITEN-ÜBERSICHT SCHLIESSEN
+// =====================================================
+
+if (
+    closeAbilitiesButton
+    &&
+    abilitiesScreen
+) {
+
+    closeAbilitiesButton.addEventListener(
+        "click",
+        function () {
+
+            abilitiesScreen.classList.add(
+                "hidden"
+            );
+
+
+            // Falls der Dungeon beendet ist,
+            // zurück zum Loot.
+
+            if (
+                dungeonFinished
+            ) {
+
+                lootPanel.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+            // Sonst zurück zum Kampf.
+
+            else {
+
+                combatScreen.classList.remove(
+                    "hidden"
+                );
+            }
+        }
+    );
+}
+
 // =====================================================
 // HILFSFUNKTIONEN
 // =====================================================
