@@ -1536,7 +1536,7 @@ inventory.push(armor);
 
         setTimeout(
             restartFarmDungeon,
-            5000
+            2500
         );
     }
 }
