@@ -5131,7 +5131,829 @@ function restartDungeon() {
     prepareDungeonRun();
 }
 
+// =====================================================
+// OFFLINE-FARM
+// =====================================================
 
+const OFFLINE_MAX_HOURS =
+    8;
+
+const OFFLINE_EFFICIENCY =
+    0.60;
+
+const OFFLINE_DUNGEON_MINUTES =
+    3;
+
+const OFFLINE_MINIMUM_MINUTES =
+    5;
+
+const OFFLINE_TIME_KEY =
+    "dungeonHeroLastActive";
+
+
+// =====================================================
+// LETZTE AKTIVITÄT SPEICHERN
+// =====================================================
+
+function saveLastActiveTime() {
+
+    localStorage.setItem(
+        OFFLINE_TIME_KEY,
+        Date.now().toString()
+    );
+}
+
+
+// =====================================================
+// OFFLINE-ZEIT FORMATIEREN
+// =====================================================
+
+function formatOfflineTime(
+    milliseconds
+) {
+
+    const totalMinutes =
+        Math.floor(
+            milliseconds /
+            60000
+        );
+
+
+    const hours =
+        Math.floor(
+            totalMinutes /
+            60
+        );
+
+
+    const minutes =
+        totalMinutes %
+        60;
+
+
+    if (
+        hours > 0
+    ) {
+
+        return (
+            hours
+            +
+            " Std. "
+            +
+            minutes
+            +
+            " Min."
+        );
+    }
+
+
+    return (
+        minutes
+        +
+        " Min."
+    );
+}
+
+
+// =====================================================
+// XP EINES OFFLINE-DUNGEONS
+// =====================================================
+
+function calculateOfflineDungeonXP() {
+
+    const normalPool =
+        [
+            ...dungeon.normalMonsters
+        ];
+
+
+    // Pool zufällig mischen
+
+    normalPool.sort(
+        () =>
+            Math.random() - 0.5
+    );
+
+
+    // Genau vier verschiedene normale Monster
+
+    const selectedMonsters =
+        normalPool.slice(
+            0,
+            4
+        );
+
+
+    // Ein zufälliger Boss
+
+    const boss =
+        dungeon.bosses[
+            randomNumber(
+                0,
+                dungeon.bosses.length - 1
+            )
+        ];
+
+
+    let baseXP =
+        boss.xp;
+
+
+    selectedMonsters.forEach(
+        monsterTemplate => {
+
+            baseXP +=
+                monsterTemplate.xp;
+        }
+    );
+
+
+    let multiplier =
+        getDungeonXPMultiplier();
+
+
+    // Fähigkeit Lernfähig
+
+    if (
+        hasAbility(
+            "learner"
+        )
+    ) {
+
+        multiplier *=
+            1.15;
+    }
+
+
+    return Math.round(
+        baseXP *
+        multiplier
+    );
+}
+
+
+// =====================================================
+// ZWEI OFFLINE-RESSOURCEN AUSWÄHLEN
+// =====================================================
+
+function getOfflineResourceTypes() {
+
+    const types = [
+        "gold",
+        "wood",
+        "stone",
+        "food"
+    ];
+
+
+    types.sort(
+        () =>
+            Math.random() - 0.5
+    );
+
+
+    return types.slice(
+        0,
+        2
+    );
+}
+
+
+// =====================================================
+// OFFLINE-BELOHNUNGEN BERECHNEN
+// =====================================================
+
+function calculateOfflineRewards(
+    dungeonCount
+) {
+
+    const rewards = {
+
+        xp: 0,
+
+        gold: 0,
+        wood: 0,
+        stone: 0,
+        food: 0,
+
+        weapons: 0,
+        armor: 0,
+
+        rarity: {
+            common: 0,
+            uncommon: 0,
+            rare: 0,
+            epic: 0,
+            legendary: 0,
+            mythic: 0,
+            divine: 0
+        }
+    };
+
+
+    for (
+        let i = 0;
+        i < dungeonCount;
+        i++
+    ) {
+
+        // -------------------------
+        // XP
+        // -------------------------
+
+        rewards.xp +=
+            calculateOfflineDungeonXP();
+
+
+        // -------------------------
+        // GENAU 2 RESSOURCEN
+        // -------------------------
+
+        const resourceTypes =
+            getOfflineResourceTypes();
+
+
+        resourceTypes.forEach(
+            type => {
+
+                const baseAmount =
+                    randomNumber(
+                        10,
+                        30
+                    );
+
+
+                const amount =
+                    Math.round(
+                        baseAmount
+                        *
+                        getResourceMultiplier(
+                            type
+                        )
+                    );
+
+
+                resources[
+                    type
+                ] +=
+                    amount;
+
+
+                rewards[
+                    type
+                ] +=
+                    amount;
+            }
+        );
+
+
+        // -------------------------
+        // GENAU 1 AUSRÜSTUNG
+        // -------------------------
+
+        if (
+            Math.random() < 0.5
+        ) {
+
+            const weapon =
+                generateWeapon();
+
+
+            inventory.push(
+                weapon
+            );
+
+
+            rewards.weapons++;
+
+
+            countOfflineRarity(
+                rewards,
+                weapon.rarity
+            );
+
+        } else {
+
+            const armorItem =
+                generateArmor();
+
+
+            inventory.push(
+                armorItem
+            );
+
+
+            rewards.armor++;
+
+
+            countOfflineRarity(
+                rewards,
+                armorItem.rarity
+            );
+        }
+    }
+
+
+    return rewards;
+}
+
+
+// =====================================================
+// SELTENHEIT FÜR OFFLINE-STATISTIK
+// =====================================================
+
+function countOfflineRarity(
+    rewards,
+    rarity
+) {
+
+    if (!rarity) {
+        return;
+    }
+
+
+    switch (
+        rarity.name
+    ) {
+
+        case "Gewöhnlich":
+
+            rewards.rarity.common++;
+            break;
+
+
+        case "Ungewöhnlich":
+
+            rewards.rarity.uncommon++;
+            break;
+
+
+        case "Selten":
+
+            rewards.rarity.rare++;
+            break;
+
+
+        case "Episch":
+
+            rewards.rarity.epic++;
+            break;
+
+
+        case "Legendär":
+
+            rewards.rarity.legendary++;
+            break;
+
+
+        case "Mythisch":
+
+            rewards.rarity.mythic++;
+            break;
+
+
+        case "Göttlich":
+
+            rewards.rarity.divine++;
+            break;
+    }
+}
+
+
+// =====================================================
+// OFFLINE-FENSTER ANZEIGEN
+// =====================================================
+
+function showOfflineFarmResults(
+    offlineTime,
+    dungeonCount,
+    farmLevel,
+    rewards
+) {
+
+    const screen =
+        document.getElementById(
+            "offlineFarmScreen"
+        );
+
+
+    const details =
+        document.getElementById(
+            "offlineFarmDetails"
+        );
+
+
+    if (
+        !screen
+        ||
+        !details
+    ) {
+
+        return;
+    }
+
+
+    details.innerHTML = `
+
+        <p>
+            Du warst
+            <strong>
+                ${formatOfflineTime(
+                    offlineTime
+                )}
+            </strong>
+            offline.
+        </p>
+
+        <p>
+            Farm-Stufe:
+            <strong>
+                ${farmLevel}
+            </strong>
+        </p>
+
+        <p>
+            ⚙️ Offline-Effizienz:
+            <strong>
+                60 %
+            </strong>
+        </p>
+
+        <hr>
+
+        <p>
+            🏰 Gefarmte Dungeons:
+            <strong>
+                ${dungeonCount}
+            </strong>
+        </p>
+
+        <p>
+            ⭐ XP:
+            <strong>
+                +${rewards.xp}
+            </strong>
+        </p>
+
+        <p>
+            🪙 Gold:
+            +${rewards.gold}
+        </p>
+
+        <p>
+            🪵 Holz:
+            +${rewards.wood}
+        </p>
+
+        <p>
+            🪨 Stein:
+            +${rewards.stone}
+        </p>
+
+        <p>
+            🌾 Nahrung:
+            +${rewards.food}
+        </p>
+
+        <hr>
+
+        <p>
+            ⚔️ Waffen:
+            ${rewards.weapons}
+        </p>
+
+        <p>
+            🛡️ Rüstungen:
+            ${rewards.armor}
+        </p>
+
+    `;
+
+
+    const rareLoot = [];
+
+
+    if (
+        rewards.rarity.epic > 0
+    ) {
+
+        rareLoot.push(
+            "🟪 Episch: "
+            +
+            rewards.rarity.epic
+        );
+    }
+
+
+    if (
+        rewards.rarity.legendary > 0
+    ) {
+
+        rareLoot.push(
+            "🟧 Legendär: "
+            +
+            rewards.rarity.legendary
+        );
+    }
+
+
+    if (
+        rewards.rarity.mythic > 0
+    ) {
+
+        rareLoot.push(
+            "🟥 Mythisch: "
+            +
+            rewards.rarity.mythic
+        );
+    }
+
+
+    if (
+        rewards.rarity.divine > 0
+    ) {
+
+        rareLoot.push(
+            "🌟 Göttlich: "
+            +
+            rewards.rarity.divine
+        );
+    }
+
+
+    if (
+        rareLoot.length > 0
+    ) {
+
+        details.innerHTML += `
+
+            <hr>
+
+            <h3>
+                Besondere Funde
+            </h3>
+
+            <p>
+                ${rareLoot.join(
+                    "<br>"
+                )}
+            </p>
+        `;
+    }
+
+
+    screen.classList.remove(
+        "hidden"
+    );
+}
+
+
+// =====================================================
+// OFFLINE-FARM AUSWERTEN
+// =====================================================
+
+function applyOfflineProgress() {
+
+    const savedTime =
+        Number(
+            localStorage.getItem(
+                OFFLINE_TIME_KEY
+            )
+        );
+
+
+    const now =
+        Date.now();
+
+
+    // Beim allerersten Start existiert
+    // noch kein Zeitstempel.
+
+    if (
+        !savedTime
+    ) {
+
+        saveLastActiveTime();
+
+        return;
+    }
+
+
+    const actualOfflineTime =
+        Math.max(
+            0,
+            now - savedTime
+        );
+
+
+    const minimumTime =
+        OFFLINE_MINIMUM_MINUTES
+        *
+        60
+        *
+        1000;
+
+
+    if (
+        actualOfflineTime <
+        minimumTime
+    ) {
+
+        saveLastActiveTime();
+
+        return;
+    }
+
+
+    // Maximal 8 Stunden berücksichtigen
+
+    const maxOfflineTime =
+        OFFLINE_MAX_HOURS
+        *
+        60
+        *
+        60
+        *
+        1000;
+
+
+    const creditedOfflineTime =
+        Math.min(
+            actualOfflineTime,
+            maxOfflineTime
+        );
+
+
+    const offlineMinutes =
+        creditedOfflineTime
+        /
+        60000;
+
+
+    // Beispiel:
+    // 60 Minuten / 3 Minuten
+    // = 20 Dungeons
+    //
+    // × 60 %
+    // = 12 Dungeons
+
+    const dungeonCount =
+        Math.floor(
+            (
+                offlineMinutes
+                /
+                OFFLINE_DUNGEON_MINUTES
+            )
+            *
+            OFFLINE_EFFICIENCY
+        );
+
+
+    if (
+        dungeonCount <= 0
+    ) {
+
+        saveLastActiveTime();
+
+        return;
+    }
+
+
+    // Offline wird immer die zuletzt
+    // erfolgreich abgeschlossene Stufe gefarmt.
+
+    const farmLevel =
+        lastCompletedLevel > 0
+            ?
+            lastCompletedLevel
+            :
+            1;
+
+
+    // Die Loot-Berechnung verwendet
+    // currentDungeonLevel.
+    // Deshalb kurz auf die Farm-Stufe wechseln.
+
+    const originalDungeonLevel =
+        currentDungeonLevel;
+
+
+    currentDungeonLevel =
+        farmLevel;
+
+
+    const rewards =
+        calculateOfflineRewards(
+            dungeonCount
+        );
+
+
+    // Ursprünglichen Dungeon wiederherstellen
+
+    currentDungeonLevel =
+        originalDungeonLevel;
+
+
+    // XP hinzufügen
+
+    hero.xp +=
+        rewards.xp;
+
+
+    // Eventuelle Levelaufstiege ausführen
+
+    checkLevelUp();
+
+
+    recalculateHeroStats();
+
+
+    saveGame();
+
+
+    showOfflineFarmResults(
+        creditedOfflineTime,
+        dungeonCount,
+        farmLevel,
+        rewards
+    );
+
+
+    // Ab jetzt läuft die neue
+    // Online-Zeit.
+
+    saveLastActiveTime();
+}
+
+
+// =====================================================
+// OFFLINE-TRACKING STARTEN
+// =====================================================
+
+function startOfflineTracking() {
+
+    // Alle 30 Sekunden speichern,
+    // dass der Spieler noch aktiv ist.
+
+    setInterval(
+        saveLastActiveTime,
+        30000
+    );
+
+
+    // Tab / Browser wird verlassen
+
+    window.addEventListener(
+        "beforeunload",
+        saveLastActiveTime
+    );
+
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState
+                ===
+                "hidden"
+            ) {
+
+                saveLastActiveTime();
+            }
+        }
+    );
+
+
+    const closeButton =
+        document.getElementById(
+            "closeOfflineFarmButton"
+        );
+
+
+    const screen =
+        document.getElementById(
+            "offlineFarmScreen"
+        );
+
+
+    if (
+        closeButton
+        &&
+        screen
+    ) {
+
+        closeButton.addEventListener(
+            "click",
+            function () {
+
+                screen.classList.add(
+                    "hidden"
+                );
+            }
+        );
+    }
+}
 // =====================================================
 // BUTTONS
 // =====================================================
@@ -5182,10 +6004,23 @@ setInterval(
 loadGame();
 
 
-generateDungeonMonsters();
+// Offline-Farm berechnen
 
+applyOfflineProgress();
+
+
+// Normalen Dungeon vorbereiten
+
+generateDungeonMonsters();
 
 loadMonster();
 
 
+// Noch offene Fähigkeiten prüfen
+
 queueMissingAbilityChoices();
+
+
+// Offline-Zeit ab jetzt verfolgen
+
+startOfflineTracking();
