@@ -746,7 +746,7 @@ checkLevelUp();
         "🏆 "
         + monster.name
         + " besiegt! +"
-        + monster.xp
+       + earnedXP
         + " XP";
 
     currentMonsterIndex++;
