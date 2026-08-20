@@ -4677,10 +4677,80 @@ function generateDungeonLoot() {
     );
 
 
-    const loot =
-        drawUniqueLootCategories(
-            3
+    // =====================================================
+// LOOT ZUSAMMENSTELLEN
+// Immer:
+// 2 unterschiedliche Ressourcen
+// + 1 Waffe oder Rüstung
+// =====================================================
+
+const resourceLootPool = [
+    {
+        type: "gold",
+        name: "Gold",
+        icon: "🪙"
+    },
+    {
+        type: "wood",
+        name: "Holz",
+        icon: "🪵"
+    },
+    {
+        type: "stone",
+        name: "Stein",
+        icon: "🪨"
+    },
+    {
+        type: "food",
+        name: "Nahrung",
+        icon: "🌾"
+    }
+];
+
+
+// Pool mischen
+
+const shuffledResources =
+    [...resourceLootPool]
+        .sort(
+            () =>
+                Math.random() - 0.5
         );
+
+
+// Genau zwei verschiedene Ressourcen
+
+const selectedResources =
+    shuffledResources.slice(
+        0,
+        2
+    );
+
+
+// Genau ein Ausrüstungsgegenstand
+
+const equipmentLoot =
+    Math.random() < 0.5
+        ?
+        {
+            type: "weapon",
+            name: "Waffe",
+            icon: "⚔️"
+        }
+        :
+        {
+            type: "armor",
+            name: "Rüstung",
+            icon: "🛡️"
+        };
+
+
+// Endgültiger Loot
+
+const loot = [
+    ...selectedResources,
+    equipmentLoot
+];
 
 
     lootResults.innerHTML =
