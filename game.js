@@ -376,7 +376,11 @@ function checkLevelUp() {
 
         hero.level++;
 
-        leveledUp = true;
+queueAbilityUnlock(
+    hero.level
+);
+
+leveledUp = true;
     }
 
     if (leveledUp) {
