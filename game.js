@@ -4082,10 +4082,277 @@ function drawUniqueLootCategories(
 // SELTENHEIT WÜRFELN
 // =====================================================
 
+// =====================================================
+// LOOT-QUALITÄT NACH DUNGEON-STUFE
+// =====================================================
+
+function getEffectiveLootDungeonLevel() {
+
+    let effectiveLevel =
+        currentDungeonLevel;
+
+
+    // Meisterplünderer:
+    // Loot wird behandelt wie +15 Dungeon-Stufen
+
+    if (
+        hasAbility(
+            "masterLooter"
+        )
+    ) {
+
+        effectiveLevel +=
+            15;
+    }
+
+
+    // Schicksalsjäger:
+    // Loot wird behandelt wie +30 Dungeon-Stufen
+
+    if (
+        hasAbility(
+            "fateHunter"
+        )
+    ) {
+
+        effectiveLevel +=
+            30;
+    }
+
+
+    return Math.min(
+        effectiveLevel,
+        100
+    );
+}
+
+
+// =====================================================
+// LOOT-ECKPUNKTE
+// =====================================================
+
+const lootRarityMilestones = [
+
+    {
+        level: 1,
+
+        common: 62.000,
+        uncommon: 27.000,
+        rare: 9.000,
+        epic: 1.989,
+        legendary: 0.010,
+        mythic: 0.001
+    },
+
+    {
+        level: 5,
+
+        common: 61.450,
+        uncommon: 26.970,
+        rare: 9.240,
+        epic: 2.198,
+        legendary: 0.115,
+        mythic: 0.027
+    },
+
+    {
+        level: 10,
+
+        common: 60.350,
+        uncommon: 26.920,
+        rare: 9.710,
+        epic: 2.616,
+        legendary: 0.324,
+        mythic: 0.080
+    },
+
+    {
+        level: 25,
+
+        common: 55.800,
+        uncommon: 26.710,
+        rare: 11.660,
+        epic: 4.350,
+        legendary: 1.190,
+        mythic: 0.290
+    },
+
+    {
+        level: 50,
+
+        common: 38.000,
+        uncommon: 26.230,
+        rare: 20.500,
+        epic: 8.180,
+        legendary: 6.320,
+        mythic: 0.770
+    },
+
+    {
+        level: 75,
+
+        common: 29.000,
+        uncommon: 23.500,
+        rare: 24.000,
+        epic: 13.000,
+        legendary: 8.500,
+        mythic: 2.000
+    },
+
+    {
+        level: 100,
+
+        common: 20.000,
+        uncommon: 22.000,
+        rare: 27.000,
+        epic: 18.000,
+        legendary: 10.000,
+        mythic: 3.000
+    }
+];
+
+
+// =====================================================
+// ZWISCHENWERTE BERECHNEN
+// =====================================================
+
+function getLootRarityChances() {
+
+    const dungeonLevel =
+        getEffectiveLootDungeonLevel();
+
+
+    let lower =
+        lootRarityMilestones[0];
+
+
+    let upper =
+        lootRarityMilestones[
+            lootRarityMilestones.length - 1
+        ];
+
+
+    for (
+        let i = 0;
+        i < lootRarityMilestones.length - 1;
+        i++
+    ) {
+
+        const current =
+            lootRarityMilestones[i];
+
+        const next =
+            lootRarityMilestones[i + 1];
+
+
+        if (
+            dungeonLevel >= current.level
+            &&
+            dungeonLevel <= next.level
+        ) {
+
+            lower =
+                current;
+
+            upper =
+                next;
+
+            break;
+        }
+    }
+
+
+    // exakt auf Eckpunkt
+
+    if (
+        lower.level === upper.level
+    ) {
+
+        return {
+            common: lower.common,
+            uncommon: lower.uncommon,
+            rare: lower.rare,
+            epic: lower.epic,
+            legendary: lower.legendary,
+            mythic: lower.mythic
+        };
+    }
+
+
+    const progress =
+        (
+            dungeonLevel - lower.level
+        )
+        /
+        (
+            upper.level - lower.level
+        );
+
+
+    function interpolate(
+        start,
+        end
+    ) {
+
+        return start
+            +
+            (
+                end - start
+            )
+            *
+            progress;
+    }
+
+
+    return {
+
+        common:
+            interpolate(
+                lower.common,
+                upper.common
+            ),
+
+        uncommon:
+            interpolate(
+                lower.uncommon,
+                upper.uncommon
+            ),
+
+        rare:
+            interpolate(
+                lower.rare,
+                upper.rare
+            ),
+
+        epic:
+            interpolate(
+                lower.epic,
+                upper.epic
+            ),
+
+        legendary:
+            interpolate(
+                lower.legendary,
+                upper.legendary
+            ),
+
+        mythic:
+            interpolate(
+                lower.mythic,
+                upper.mythic
+            )
+    };
+}
+
+
+// =====================================================
+// SELTENHEIT WÜRFELN
+// =====================================================
+
 function rollRarity() {
 
     // -------------------------
-    // GÖTTLICHER LOOT
+    // 1. GÖTTLICHER LOOT
     // -------------------------
 
     const divineChance =
@@ -4099,75 +4366,146 @@ function rollRarity() {
     ) {
 
         return {
-            name: "Göttlich",
-            symbol: "🌟",
-            tier: 7
+            name:
+                "Göttlich",
+
+            symbol:
+                "🌟",
+
+            tier:
+                7
         };
     }
 
 
     // -------------------------
-    // SCHICKSALSJÄGER
+    // 2. NORMALER LOOT
     // -------------------------
+
+    const chances =
+        getLootRarityChances();
+
+
+    const roll =
+        Math.random() * 100;
+
+
+    let threshold =
+        chances.common;
+
 
     if (
-        hasAbility(
-            "fateHunter"
-        )
+        roll < threshold
     ) {
 
-        const roll =
-            Math.random() * 100;
-
-
-        if (roll < 20) {
-            return {
-                name: "Gewöhnlich",
-                symbol: "⬜",
-                tier: 1
-            };
-        }
-
-        if (roll < 42) {
-            return {
-                name: "Ungewöhnlich",
-                symbol: "🟩",
-                tier: 2
-            };
-        }
-
-        if (roll < 67) {
-            return {
-                name: "Selten",
-                symbol: "🟦",
-                tier: 3
-            };
-        }
-
-        if (roll < 84) {
-            return {
-                name: "Episch",
-                symbol: "🟪",
-                tier: 4
-            };
-        }
-
-        if (roll < 94) {
-            return {
-                name: "Legendär",
-                symbol: "🟧",
-                tier: 5
-            };
-        }
-
         return {
-            name: "Mythisch",
-            symbol: "🟥",
-            tier: 6
+            name:
+                "Gewöhnlich",
+
+            symbol:
+                "⬜",
+
+            tier:
+                1
         };
     }
 
 
+    threshold +=
+        chances.uncommon;
+
+
+    if (
+        roll < threshold
+    ) {
+
+        return {
+            name:
+                "Ungewöhnlich",
+
+            symbol:
+                "🟩",
+
+            tier:
+                2
+        };
+    }
+
+
+    threshold +=
+        chances.rare;
+
+
+    if (
+        roll < threshold
+    ) {
+
+        return {
+            name:
+                "Selten",
+
+            symbol:
+                "🟦",
+
+            tier:
+                3
+        };
+    }
+
+
+    threshold +=
+        chances.epic;
+
+
+    if (
+        roll < threshold
+    ) {
+
+        return {
+            name:
+                "Episch",
+
+            symbol:
+                "🟪",
+
+            tier:
+                4
+        };
+    }
+
+
+    threshold +=
+        chances.legendary;
+
+
+    if (
+        roll < threshold
+    ) {
+
+        return {
+            name:
+                "Legendär",
+
+            symbol:
+                "🟧",
+
+            tier:
+                5
+        };
+    }
+
+
+    return {
+        name:
+            "Mythisch",
+
+        symbol:
+            "🟥",
+
+        tier:
+            6
+    };
+}
     // -------------------------
     // MEISTERPLÜNDERER
     // -------------------------
