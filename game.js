@@ -1429,13 +1429,29 @@ if (abilitySelectionOpen) {
     }
 
 
-    const damage =
+   let damage =
+    Math.max(
+        1,
+        monster.attack -
+        hero.defense
+    );
+
+
+if (
+    hasAbility(
+        "bulwark"
+    )
+) {
+
+    damage =
         Math.max(
             1,
-            monster.attack
-            -
-            hero.defense
+            Math.round(
+                damage *
+                0.85
+            )
         );
+}
 
 
     hero.health -=
