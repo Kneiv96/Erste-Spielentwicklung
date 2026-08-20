@@ -602,7 +602,25 @@ const abilityChoices =
         "abilityChoices"
     );
 
+const abilitiesButton =
+    document.getElementById(
+        "abilitiesButton"
+    );
 
+const abilitiesScreen =
+    document.getElementById(
+        "abilitiesScreen"
+    );
+
+const chosenAbilitiesList =
+    document.getElementById(
+        "chosenAbilitiesList"
+    );
+
+const closeAbilitiesButton =
+    document.getElementById(
+        "closeAbilitiesButton"
+    );
 // =====================================================
 // HILFSFUNKTIONEN
 // =====================================================
