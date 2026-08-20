@@ -621,6 +621,142 @@ const closeAbilitiesButton =
     document.getElementById(
         "closeAbilitiesButton"
     );
+function showChosenAbilities() {
+
+    chosenAbilitiesList.innerHTML =
+        "";
+
+
+    if (
+        chosenAbilities.length === 0
+    ) {
+
+        chosenAbilitiesList.innerHTML =
+            "<p>Noch keine Fähigkeiten freigeschaltet.</p>";
+
+        return;
+    }
+
+
+    abilityLevels.forEach(
+        level => {
+
+            const abilities =
+                abilitiesByLevel[level];
+
+
+            const chosen =
+                abilities.find(
+                    ability =>
+                        chosenAbilities.includes(
+                            ability.id
+                        )
+                );
+
+
+            if (!chosen) {
+                return;
+            }
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.classList.add(
+                "chosen-ability-card"
+            );
+
+
+            card.innerHTML = `
+                <div class="ability-icon">
+                    ${chosen.icon}
+                </div>
+
+                <div>
+                    <strong>
+                        ${chosen.name}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Freigeschaltet auf Level ${level}
+                    </small>
+
+                    <p>
+                        ${chosen.description}
+                    </p>
+                </div>
+            `;
+
+
+            chosenAbilitiesList.appendChild(
+                card
+            );
+        }
+    );
+}
+abilitiesButton.addEventListener(
+    "click",
+    function () {
+
+        if (
+            abilitySelectionOpen
+        ) {
+            return;
+        }
+
+
+        combatScreen.classList.add(
+            "hidden"
+        );
+
+        lootPanel.classList.add(
+            "hidden"
+        );
+
+        inventoryScreen.classList.add(
+            "hidden"
+        );
+
+        abilitiesScreen.classList.remove(
+            "hidden"
+        );
+
+
+        showChosenAbilities();
+    }
+);
+
+
+closeAbilitiesButton.addEventListener(
+    "click",
+    function () {
+
+        abilitiesScreen.classList.add(
+            "hidden"
+        );
+
+
+        if (
+            dungeonFinished
+        ) {
+
+            lootPanel.classList.remove(
+                "hidden"
+            );
+
+        } else {
+
+            combatScreen.classList.remove(
+                "hidden"
+            );
+        }
+    }
+);
 // =====================================================
 // HILFSFUNKTIONEN
 // =====================================================
