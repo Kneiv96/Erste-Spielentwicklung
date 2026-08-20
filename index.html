@@ -43,12 +43,14 @@
                 1
             </span>
         </p>
-<p>
-    ♻️ Modus:
-    <span id="farmStatus">
-        Fortschritt
-    </span>
-</p>
+
+        <p>
+            ♻️ Modus:
+            <span id="farmStatus">
+                Fortschritt
+            </span>
+        </p>
+
         <p>
             🗺️ Raum:
             <span id="dungeonProgress">
@@ -56,30 +58,30 @@
             </span>
         </p>
 
-    <p>
-    🧙 Level:
-    <span id="heroLevel">
-        1
-    </span>
-</p>
+        <p>
+            🧙 Level:
+            <span id="heroLevel">
+                1
+            </span>
+        </p>
 
-<p>
-    🏅 Rang:
-    <span id="heroRank">
-        Noob
-    </span>
-</p>
+        <p>
+            🏅 Rang:
+            <span id="heroRank">
+                Noob
+            </span>
+        </p>
 
-<p>
-    ⭐ XP:
-    <span id="heroXP">
-        0
-    </span>
-    /
-    <span id="heroXPNeeded">
-        1000
-    </span>
-</p>
+        <p>
+            ⭐ XP:
+            <span id="heroXP">
+                0
+            </span>
+            /
+            <span id="heroXPNeeded">
+                1000
+            </span>
+        </p>
 
     </div>
 
@@ -113,7 +115,6 @@
 
                 </div>
 
-
                 <p>
                     ❤️
                     <span id="heroHealth">
@@ -125,14 +126,12 @@
                     </span>
                 </p>
 
-
                 <p>
                     ⚔️ Angriff:
                     <span id="heroAttack">
-                        10
+                        15
                     </span>
                 </p>
-
 
                 <p>
                     🛡️ Verteidigung:
@@ -163,7 +162,10 @@
                     Monster
                 </h2>
 
-                <div class="character monster">
+                <div
+                    id="monsterCharacter"
+                    class="character monster"
+                >
                     👹
                 </div>
 
@@ -176,7 +178,6 @@
                     </div>
 
                 </div>
-
 
                 <p>
                     ❤️
@@ -191,18 +192,17 @@
 
             </div>
 
-
         </div>
 
 
         <!-- =====================
-             FÄHIGKEITEN
+             KAMPFFÄHIGKEITEN
         ====================== -->
 
         <div class="abilities">
 
             <button id="attackButton">
-                ⚔️ Schwerer Schlag
+                💥 Schwerer Schlag
             </button>
 
         </div>
@@ -211,19 +211,25 @@
 
 
     <!-- =====================
-         INVENTAR-BUTTON
+         HAUPT-BUTTONS
     ====================== -->
 
-    <button id="inventoryButton">
-        🎒 Inventar
-    </button>
+    <div class="main-buttons">
 
-<button
-    id="tryNextLevelButton"
-    class="hidden"
->
-    ⚔️ Nächste Stufe versuchen
-</button>
+        <button id="inventoryButton">
+            🎒 Inventar
+        </button>
+
+        <button
+            id="tryNextLevelButton"
+            class="hidden"
+        >
+            ⚔️ Nächste Stufe versuchen
+        </button>
+
+    </div>
+
+
     <!-- =====================
          INVENTAR
     ====================== -->
@@ -298,7 +304,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -322,41 +327,41 @@
             🎁 Dungeon-Belohnung
         </h2>
 
-
         <div
             id="lootResults"
             class="loot-results"
         >
-            <!-- =====================
-     FÄHIGKEITSAUSWAHL
-====================== -->
-
-<div
-    id="abilitySelectionScreen"
-    class="ability-selection-screen hidden"
->
-
-    <h2>
-        ⭐ Neue Fähigkeit
-    </h2>
-
-    <p id="abilitySelectionText">
-        Wähle eine Fähigkeit
-    </p>
-
-    <div
-        id="abilityChoices"
-        class="ability-choices"
-    >
-    </div>
-
-</div>
         </div>
-
 
         <button id="nextDungeonButton">
             ⚔️ Nächster Dungeon
         </button>
+
+    </div>
+
+
+    <!-- =====================
+         FÄHIGKEITSAUSWAHL
+    ====================== -->
+
+    <div
+        id="abilitySelectionScreen"
+        class="ability-selection-screen hidden"
+    >
+
+        <h2>
+            ⭐ Neue Fähigkeit
+        </h2>
+
+        <p id="abilitySelectionText">
+            Wähle eine Fähigkeit
+        </p>
+
+        <div
+            id="abilityChoices"
+            class="ability-choices"
+        >
+        </div>
 
     </div>
 
