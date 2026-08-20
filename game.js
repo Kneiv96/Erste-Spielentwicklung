@@ -623,16 +623,37 @@ const closeAbilitiesButton =
     );
 function showChosenAbilities() {
 
+    if (
+        !chosenAbilitiesList
+    ) {
+
+        console.error(
+            "chosenAbilitiesList wurde nicht gefunden."
+        );
+
+        return;
+    }
+
+
     chosenAbilitiesList.innerHTML =
         "";
 
+
+    // Noch keine Fähigkeiten
 
     if (
         chosenAbilities.length === 0
     ) {
 
-        chosenAbilitiesList.innerHTML =
-            "<p>Noch keine Fähigkeiten freigeschaltet.</p>";
+        chosenAbilitiesList.innerHTML = `
+            <p>
+                Noch keine Fähigkeiten freigeschaltet.
+            </p>
+
+            <p>
+                Die erste Fähigkeit erhältst du auf Level 3.
+            </p>
+        `;
 
         return;
     }
@@ -642,7 +663,17 @@ function showChosenAbilities() {
         level => {
 
             const abilities =
-                abilitiesByLevel[level];
+                abilitiesByLevel[
+                    level
+                ];
+
+
+            if (
+                !abilities
+            ) {
+
+                return;
+            }
 
 
             const chosen =
@@ -654,7 +685,10 @@ function showChosenAbilities() {
                 );
 
 
-            if (!chosen) {
+            if (
+                !chosen
+            ) {
+
                 return;
             }
 
@@ -671,11 +705,13 @@ function showChosenAbilities() {
 
 
             card.innerHTML = `
+
                 <div class="ability-icon">
                     ${chosen.icon}
                 </div>
 
                 <div>
+
                     <strong>
                         ${chosen.name}
                     </strong>
@@ -689,6 +725,7 @@ function showChosenAbilities() {
                     <p>
                         ${chosen.description}
                     </p>
+
                 </div>
             `;
 
