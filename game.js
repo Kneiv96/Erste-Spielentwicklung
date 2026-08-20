@@ -22,7 +22,148 @@ const hero = {
     xp: 0
 };
 
+// =====================================================
+// LEVELSYSTEM
+// =====================================================
 
+const levelXPRequirements = {
+    1: 1000,
+    2: 2300,
+    3: 3800,
+    4: 5700,
+    5: 7000,
+    6: 8600,
+    7: 10400,
+    8: 12900,
+    9: 15500,
+    10: 18500,
+    11: 22000,
+    12: 26000,
+    13: 30500,
+    14: 35500,
+    15: 41000,
+    16: 47000,
+    17: 54000,
+    18: 62000,
+    19: 71000,
+    20: 81000,
+    21: 95000,
+    22: 110000,
+    23: 125000,
+    24: 140000,
+    25: 150000,
+    26: 170000,
+    27: 190000,
+    28: 210000,
+    29: 230000,
+    30: 250000,
+    31: 280000,
+    32: 305000,
+    33: 335000,
+    34: 365000,
+    35: 390000,
+    36: 430000,
+    37: 465000,
+    38: 505000,
+    39: 545000,
+    40: 580000,
+    41: 635000,
+    42: 690000,
+    43: 745000,
+    44: 800000,
+    45: 860000,
+    46: 915000,
+    47: 975000,
+    48: 1035000,
+    49: 1095000,
+    50: 1150000
+};
+
+
+function xpNeededForLevel(level) {
+
+    if (level >= 100) {
+        return null;
+    }
+
+    if (levelXPRequirements[level]) {
+        return levelXPRequirements[level];
+    }
+
+    return Math.round(
+        1150000 *
+        Math.pow(
+            1.045,
+            level - 50
+        )
+    );
+}
+
+
+function getHeroRank(level) {
+
+    if (level >= 100) {
+        return "Göttlich";
+    }
+
+    if (level >= 85) {
+        return "Halb-Gott";
+    }
+
+    if (level >= 70) {
+        return "Lord";
+    }
+
+    if (level >= 50) {
+        return "Veteran";
+    }
+
+    if (level >= 30) {
+        return "Soldat";
+    }
+
+    if (level >= 15) {
+        return "Rekrut";
+    }
+
+    if (level >= 5) {
+        return "Anfänger";
+    }
+
+    return "Noob";
+}
+function checkLevelUp() {
+
+    while (hero.level < 100) {
+
+        const neededXP =
+            xpNeededForLevel(
+                hero.level
+            );
+
+        if (
+            neededXP === null ||
+            hero.xp < neededXP
+        ) {
+            break;
+        }
+
+        hero.xp -=
+            neededXP;
+
+        hero.level++;
+
+        hero.baseAttack += 2;
+        hero.baseMaxHealth += 5;
+
+        recalculateHeroStats();
+
+        hero.health =
+            hero.maxHealth;
+    }
+
+    saveGame();
+}
 // =====================================================
 // INVENTAR & AUSRÜSTUNG
 // =====================================================
