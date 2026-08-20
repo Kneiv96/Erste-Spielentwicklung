@@ -319,7 +319,17 @@ function randomNumber(min, max) {
     ) + min;
 }
 
+// =====================================================
+// XP-SKALIERUNG NACH DUNGEON-STUFE
+// =====================================================
 
+function getDungeonXPMultiplier() {
+
+    return Math.pow(
+        1.045,
+        currentDungeonLevel - 1
+    );
+}
 // =====================================================
 // MONSTER LADEN
 // =====================================================
