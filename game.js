@@ -52,39 +52,33 @@ const resources = {
 // =====================================================
 
 const dungeon = {
-
     name: "Die verlassene Mine",
 
     monsters: [
-
         {
             name: "Ratte",
             maxHealth: 25,
             attack: 4,
             xp: 10
         },
-
         {
             name: "Goblin",
             maxHealth: 40,
             attack: 5,
             xp: 15
         },
-
         {
             name: "Wolf",
             maxHealth: 55,
             attack: 6,
             xp: 20
         },
-
         {
             name: "Ork",
             maxHealth: 80,
             attack: 8,
             xp: 30
         },
-
         {
             name: "Ork-Häuptling",
             maxHealth: 130,
@@ -109,7 +103,6 @@ let highestUnlockedLevel = 1;
 let lastCompletedLevel = 0;
 
 let farmMode = false;
-
 let heavyAttackCooldown = false;
 
 
@@ -167,21 +160,19 @@ const equippedArmorDisplay =
 
 const nextDungeonButton =
     document.getElementById("nextDungeonButton");
+
 const tryNextLevelButton =
-    document.getElementById(
-        "tryNextLevelButton"
-        const farmStatus =
-    document.getElementById(
-        "farmStatus"
-    
-    );
+    document.getElementById("tryNextLevelButton");
+
+const farmStatus =
+    document.getElementById("farmStatus");
+
 
 // =====================================================
 // HILFSFUNKTIONEN
 // =====================================================
 
 function randomNumber(min, max) {
-
     return Math.floor(
         Math.random() * (max - min + 1)
     ) + min;
@@ -193,12 +184,8 @@ function randomNumber(min, max) {
 // =====================================================
 
 function loadMonster() {
-
     const template =
         dungeon.monsters[currentMonsterIndex];
-
-
-    // Gegner werden mit Dungeon-Stufe stärker
 
     const healthMultiplier =
         1 + (currentDungeonLevel - 1) * 0.25;
@@ -206,9 +193,7 @@ function loadMonster() {
     const attackMultiplier =
         1 + (currentDungeonLevel - 1) * 0.15;
 
-
     monster = {
-
         ...template,
 
         maxHealth:
@@ -230,30 +215,25 @@ function loadMonster() {
             )
     };
 
-
     document.getElementById(
         "monsterName"
     ).textContent =
         monster.name;
-
 
     battleMessage.textContent =
         monster.boss
             ? "👑 Der Boss erscheint: " + monster.name + "!"
             : "⚔️ " + monster.name + " erscheint!";
 
-
     updateDisplay();
-
 }
+
+
 // =====================================================
 // ANZEIGE AKTUALISIEREN
 // =====================================================
 
 function updateDisplay() {
-
-    // HELD
-
     heroHealthText.textContent =
         Math.max(hero.health, 0);
 
@@ -265,24 +245,20 @@ function updateDisplay() {
             0
         ) + "%";
 
-
     document.getElementById(
         "heroMaxHealth"
     ).textContent =
         hero.maxHealth;
-
 
     document.getElementById(
         "heroAttack"
     ).textContent =
         hero.attack;
 
-
     document.getElementById(
         "heroDefense"
     ).textContent =
         hero.defense;
-
 
     document.getElementById(
         "heroXP"
@@ -290,16 +266,9 @@ function updateDisplay() {
         hero.xp;
 
 
-    // MONSTER
-
     if (monster) {
-
         monsterHealthText.textContent =
-            Math.max(
-                monster.health,
-                0
-            );
-
+            Math.max(monster.health, 0);
 
         monsterHealthBar.style.width =
             Math.max(
@@ -309,7 +278,6 @@ function updateDisplay() {
                 0
             ) + "%";
 
-
         document.getElementById(
             "monsterMaxHealth"
         ).textContent =
@@ -317,15 +285,10 @@ function updateDisplay() {
     }
 
 
-    // DUNGEON-STUFE
-
     document.getElementById(
         "dungeonLevel"
     ).textContent =
         currentDungeonLevel;
-
-
-    // RAUM
 
     document.getElementById(
         "dungeonProgress"
@@ -335,33 +298,38 @@ function updateDisplay() {
         + dungeon.monsters.length;
 
 
-    // BUTTON FÜR HÖHERE STUFE
-
     if (
         currentDungeonLevel <
         highestUnlockedLevel
     ) {
-
         nextDungeonButton.textContent =
             "⚔️ Stufe "
             + highestUnlockedLevel
             + " versuchen";
-
     } else {
-
         nextDungeonButton.textContent =
             "⚔️ Nächste Stufe";
     }
-updateNextLevelButton();
+
+    updateNextLevelButton();
+    updateFarmStatus();
 }
+
+
+// =====================================================
+// FARM-ANZEIGE / NÄCHSTE STUFE
+// =====================================================
+
 function updateNextLevelButton() {
+    if (!tryNextLevelButton) {
+        return;
+    }
 
     if (
         farmMode &&
         highestUnlockedLevel >
         currentDungeonLevel
     ) {
-
         tryNextLevelButton.classList.remove(
             "hidden"
         );
@@ -370,31 +338,35 @@ function updateNextLevelButton() {
             "⚔️ Stufe "
             + highestUnlockedLevel
             + " versuchen";
-
     } else {
-
         tryNextLevelButton.classList.add(
             "hidden"
         );
     }
-
-if (farmMode) {
-
-    farmStatus.textContent =
-        "Farmen – Stufe "
-        + currentDungeonLevel;
-
-} else {
-
-    farmStatus.textContent =
-        "Fortschritt";
 }
+
+
+function updateFarmStatus() {
+    if (!farmStatus) {
+        return;
+    }
+
+    if (farmMode) {
+        farmStatus.textContent =
+            "Farmen – Stufe "
+            + currentDungeonLevel;
+    } else {
+        farmStatus.textContent =
+            "Fortschritt";
+    }
+}
+
+
 // =====================================================
 // AUTO-ANGRIFF HELD
 // =====================================================
 
 function heroAttack() {
-
     if (dungeonFinished) {
         return;
     }
@@ -407,19 +379,15 @@ function heroAttack() {
         return;
     }
 
-
     monster.health -=
         hero.attack;
-
 
     battleMessage.textContent =
         "⚔️ Du verursachst "
         + hero.attack
         + " Schaden!";
 
-
     updateDisplay();
-
     checkMonsterDeath();
 }
 
@@ -429,7 +397,6 @@ function heroAttack() {
 // =====================================================
 
 function monsterAttack() {
-
     if (dungeonFinished) {
         return;
     }
@@ -442,7 +409,6 @@ function monsterAttack() {
         return;
     }
 
-
     const damage =
         Math.max(
             1,
@@ -450,10 +416,8 @@ function monsterAttack() {
             hero.defense
         );
 
-
     hero.health -=
         damage;
-
 
     battleMessage.textContent =
         "👹 "
@@ -462,28 +426,20 @@ function monsterAttack() {
         + damage
         + " Schaden!";
 
-
     updateDisplay();
 
-
-    // HELD BESIEGT
-
     if (hero.health <= 0) {
-
         hero.health = 0;
 
         updateDisplay();
-
 
         battleMessage.textContent =
             "💀 Niederlage auf Stufe "
             + currentDungeonLevel
             + "!";
 
-
         attackButton.disabled =
             true;
-
 
         setTimeout(
             returnToFarmLevel,
@@ -498,7 +454,6 @@ function monsterAttack() {
 // =====================================================
 
 function heavyAttack() {
-
     if (heavyAttackCooldown) {
         return;
     }
@@ -515,25 +470,19 @@ function heavyAttack() {
         return;
     }
 
-
     const damage =
         hero.attack * 2;
 
-
     monster.health -=
         damage;
-
 
     battleMessage.textContent =
         "💥 Schwerer Schlag! "
         + damage
         + " Schaden!";
 
-
     updateDisplay();
-
     checkMonsterDeath();
-
     startHeavyAttackCooldown();
 }
 
@@ -543,66 +492,48 @@ function heavyAttack() {
 // =====================================================
 
 function startHeavyAttackCooldown() {
-
     heavyAttackCooldown =
         true;
 
-
     let secondsLeft = 6;
-
 
     attackButton.disabled =
         true;
-
 
     attackButton.textContent =
         "💥 Schwerer Schlag ("
         + secondsLeft
         + "s)";
 
-
     const cooldownInterval =
         setInterval(
             function () {
-
                 secondsLeft--;
 
-
                 if (secondsLeft > 0) {
-
                     attackButton.textContent =
                         "💥 Schwerer Schlag ("
                         + secondsLeft
                         + "s)";
-
                 } else {
-
                     clearInterval(
                         cooldownInterval
                     );
 
-
                     heavyAttackCooldown =
                         false;
 
-
                     attackButton.textContent =
                         "💥 Schwerer Schlag";
-
-
-                    // Nur wieder aktivieren,
-                    // wenn tatsächlich gekämpft wird
 
                     if (
                         !dungeonFinished &&
                         hero.health > 0
                     ) {
-
                         attackButton.disabled =
                             false;
                     }
                 }
-
             },
             1000
         );
@@ -614,21 +545,16 @@ function startHeavyAttackCooldown() {
 // =====================================================
 
 function checkMonsterDeath() {
-
     if (monster.health > 0) {
         return;
     }
 
-
     monster.health = 0;
-
 
     hero.xp +=
         monster.xp;
 
-
     updateDisplay();
-
 
     battleMessage.textContent =
         "🏆 "
@@ -637,20 +563,14 @@ function checkMonsterDeath() {
         + monster.xp
         + " XP";
 
-
     currentMonsterIndex++;
-
-
-    // DUNGEON ABGESCHLOSSEN
 
     if (
         currentMonsterIndex >=
         dungeon.monsters.length
     ) {
-
         dungeonFinished =
             true;
-
 
         lastCompletedLevel =
             Math.max(
@@ -658,36 +578,27 @@ function checkMonsterDeath() {
                 currentDungeonLevel
             );
 
-
         highestUnlockedLevel =
             Math.max(
                 highestUnlockedLevel,
                 currentDungeonLevel + 1
             );
 
-
         attackButton.disabled =
             true;
-
 
         battleMessage.textContent =
             "🏆 Dungeon abgeschlossen!";
 
-
         saveGame();
-
 
         setTimeout(
             generateDungeonLoot,
             1200
         );
 
-
         return;
     }
-
-
-    // NÄCHSTES MONSTER
 
     setTimeout(
         loadMonster,
@@ -701,7 +612,6 @@ function checkMonsterDeath() {
 // =====================================================
 
 function recalculateHeroStats() {
-
     hero.attack =
         hero.baseAttack;
 
@@ -711,20 +621,12 @@ function recalculateHeroStats() {
     hero.maxHealth =
         hero.baseMaxHealth;
 
-
-    // WAFFE
-
     if (equipped.weapon) {
-
         hero.attack +=
             equipped.weapon.attackBonus;
     }
 
-
-    // RÜSTUNG
-
     if (equipped.armor) {
-
         hero.defense +=
             equipped.armor.defenseBonus;
 
@@ -732,16 +634,13 @@ function recalculateHeroStats() {
             equipped.armor.healthBonus;
     }
 
-
     if (
         hero.health >
         hero.maxHealth
     ) {
-
         hero.health =
             hero.maxHealth;
     }
-
 
     updateDisplay();
 }
@@ -752,34 +651,25 @@ function recalculateHeroStats() {
 // =====================================================
 
 function equipItem(index) {
-
     const item =
         inventory[index];
-
 
     if (!item) {
         return;
     }
 
-
     if (item.type === "weapon") {
-
         equipped.weapon =
             item;
     }
 
-
     if (item.type === "armor") {
-
         equipped.armor =
             item;
     }
 
-
     recalculateHeroStats();
-
     saveGame();
-
     showInventory();
 }
 
@@ -789,9 +679,7 @@ function equipItem(index) {
 // =====================================================
 
 function saveGame() {
-
     const saveData = {
-
         inventory:
             inventory,
 
@@ -812,10 +700,10 @@ function saveGame() {
 
         lastCompletedLevel:
             lastCompletedLevel,
-        farmMode:
-    farmMode
-    };
 
+        farmMode:
+            farmMode
+    };
 
     localStorage.setItem(
         "dungeonHeroSave",
@@ -829,41 +717,28 @@ function saveGame() {
 // =====================================================
 
 function loadGame() {
-
     const saved =
         localStorage.getItem(
             "dungeonHeroSave"
         );
 
-
     if (!saved) {
         return;
     }
-
 
     const data =
         JSON.parse(saved);
 
 
-    // INVENTAR
-
     if (data.inventory) {
-
         inventory.length = 0;
-
 
         data.inventory.forEach(
             item => {
-
-                // Alte Items ohne ID
-                // nachträglich ergänzen
-
                 if (!item.id) {
-
                     item.id =
                         crypto.randomUUID();
                 }
-
 
                 inventory.push(
                     item
@@ -873,31 +748,20 @@ function loadGame() {
     }
 
 
-    // AUSRÜSTUNG
-
     if (data.equipped) {
-
-
-        // WAFFE
-
         if (data.equipped.weapon) {
-
             equipped.weapon =
                 inventory.find(
                     item =>
-
                         item.type === "weapon" &&
-
                         (
                             item.id ===
                             data.equipped.weapon.id
                             ||
-
                             (
                                 item.name ===
                                 data.equipped.weapon.name
                                 &&
-
                                 item.attackBonus ===
                                 data.equipped.weapon.attackBonus
                             )
@@ -905,31 +769,22 @@ function loadGame() {
                 ) || null;
         }
 
-
-        // RÜSTUNG
-
         if (data.equipped.armor) {
-
             equipped.armor =
                 inventory.find(
                     item =>
-
                         item.type === "armor" &&
-
                         (
                             item.id ===
                             data.equipped.armor.id
                             ||
-
                             (
                                 item.name ===
                                 data.equipped.armor.name
                                 &&
-
                                 item.defenseBonus ===
                                 data.equipped.armor.defenseBonus
                                 &&
-
                                 item.healthBonus ===
                                 data.equipped.armor.healthBonus
                             )
@@ -939,10 +794,7 @@ function loadGame() {
     }
 
 
-    // RESSOURCEN
-
     if (data.resources) {
-
         resources.gold =
             data.resources.gold || 0;
 
@@ -957,70 +809,57 @@ function loadGame() {
     }
 
 
-    // XP
-
     if (
         data.heroXP !==
         undefined
     ) {
-
         hero.xp =
             data.heroXP;
     }
 
 
-    // DUNGEON-FORTSCHRITT
-
     if (
         data.currentDungeonLevel !==
         undefined
     ) {
-
         currentDungeonLevel =
             data.currentDungeonLevel;
     }
-
 
     if (
         data.highestUnlockedLevel !==
         undefined
     ) {
-
         highestUnlockedLevel =
             data.highestUnlockedLevel;
     }
-
 
     if (
         data.lastCompletedLevel !==
         undefined
     ) {
-
         lastCompletedLevel =
             data.lastCompletedLevel;
     }
 
+    if (
+        data.farmMode !==
+        undefined
+    ) {
+        farmMode =
+            data.farmMode;
+    }
 
     recalculateHeroStats();
 }
 
-if (
-    data.farmMode !== undefined
-) {
 
-    farmMode =
-        data.farmMode;
-}
 // =====================================================
 // AUSGERÜSTETE ITEMS ANZEIGEN
 // =====================================================
 
 function showEquippedItems() {
-
-    // WAFFE
-
     if (equipped.weapon) {
-
         equippedWeaponDisplay.innerHTML = `
             <strong>
                 ${equipped.weapon.rarity.symbol}
@@ -1032,18 +871,12 @@ function showEquippedItems() {
             ⚔️ +${equipped.weapon.attackBonus}
             Angriff
         `;
-
     } else {
-
         equippedWeaponDisplay.textContent =
             "Keine Waffe ausgerüstet";
     }
 
-
-    // RÜSTUNG
-
     if (equipped.armor) {
-
         equippedArmorDisplay.innerHTML = `
             <strong>
                 ${equipped.armor.rarity.symbol}
@@ -1060,9 +893,7 @@ function showEquippedItems() {
             ❤️ +${equipped.armor.healthBonus}
             Leben
         `;
-
     } else {
-
         equippedArmorDisplay.textContent =
             "Keine Rüstung ausgerüstet";
     }
@@ -1074,24 +905,15 @@ function showEquippedItems() {
 // =====================================================
 
 function getSellPrice(item) {
-
     const prices = {
-
         "Gewöhnlich": 10,
-
         "Ungewöhnlich": 20,
-
         "Selten": 40,
-
         "Episch": 100,
-
         "Legendär": 260,
-
         "Mythisch": 550,
-
         "Göttlich": 3000
     };
-
 
     return (
         prices[item.rarity.name]
@@ -1105,15 +927,12 @@ function getSellPrice(item) {
 // =====================================================
 
 function sellItem(index) {
-
     const item =
         inventory[index];
-
 
     if (!item) {
         return;
     }
-
 
     const isEquippedWeapon =
         item.type === "weapon"
@@ -1123,7 +942,6 @@ function sellItem(index) {
         equipped.weapon.id ===
         item.id;
 
-
     const isEquippedArmor =
         item.type === "armor"
         &&
@@ -1132,22 +950,15 @@ function sellItem(index) {
         equipped.armor.id ===
         item.id;
 
-
-    // Ausgerüstete Items
-    // dürfen nicht verkauft werden
-
     if (
         isEquippedWeapon ||
         isEquippedArmor
     ) {
-
         return;
     }
 
-
     const price =
         getSellPrice(item);
-
 
     const confirmed =
         confirm(
@@ -1157,24 +968,19 @@ function sellItem(index) {
             + " Gold verkaufen?"
         );
 
-
     if (!confirmed) {
         return;
     }
 
-
     resources.gold +=
         price;
-
 
     inventory.splice(
         index,
         1
     );
 
-
     saveGame();
-
     showInventory();
 }
 
@@ -1184,9 +990,7 @@ function sellItem(index) {
 // =====================================================
 
 function showInventory() {
-
     showEquippedItems();
-
 
     weaponInventoryList.innerHTML =
         "";
@@ -1194,100 +998,70 @@ function showInventory() {
     armorInventoryList.innerHTML =
         "";
 
-
     let weaponCount = 0;
     let armorCount = 0;
 
-
     inventory.forEach(
         (item, index) => {
-
-
             const box =
                 document.createElement(
                     "div"
                 );
 
-
             box.classList.add(
                 "inventory-item"
             );
 
-
             let values = "";
-
-            let isEquipped =
-                false;
-
-
-            // WAFFE
+            let isEquipped = false;
 
             if (
                 item.type ===
                 "weapon"
             ) {
-
                 weaponCount++;
-
 
                 values =
                     `⚔️ +${item.attackBonus} Angriff`;
-
 
                 if (
                     equipped.weapon &&
                     equipped.weapon.id ===
                     item.id
                 ) {
-
                     isEquipped =
                         true;
                 }
             }
 
-
-            // RÜSTUNG
-
             if (
                 item.type ===
                 "armor"
             ) {
-
                 armorCount++;
-
 
                 values =
                     `🛡️ +${item.defenseBonus} Verteidigung
                     <br>
                     ❤️ +${item.healthBonus} Leben`;
 
-
                 if (
                     equipped.armor &&
                     equipped.armor.id ===
                     item.id
                 ) {
-
                     isEquipped =
                         true;
                 }
             }
 
-
-            // AUSGERÜSTET MARKIEREN
-
             if (isEquipped) {
-
                 box.classList.add(
                     "equipped-inventory-item"
                 );
             }
 
-
-            // ITEM-KARTE
-
             box.innerHTML = `
-
                 <h3>
                     ${item.name}
                 </h3>
@@ -1301,75 +1075,56 @@ function showInventory() {
                     ${values}
                 </p>
 
-
                 <div class="inventory-buttons">
 
                     <button
                         onclick="equipItem(${index})"
                         ${isEquipped ? "disabled" : ""}
                     >
-
                         ${
                             isEquipped
                                 ? "✅ Ausgerüstet"
                                 : "Ausrüsten"
                         }
-
                     </button>
-
 
                     <button
                         onclick="sellItem(${index})"
                         ${isEquipped ? "disabled" : ""}
                     >
-
                         🪙 Verkaufen
                         (${getSellPrice(item)} Gold)
-
                     </button>
 
                 </div>
             `;
 
-
-            // RICHTIGE SPALTE
-
             if (
                 item.type ===
                 "weapon"
             ) {
-
                 weaponInventoryList.appendChild(
                     box
                 );
             }
 
-
             if (
                 item.type ===
                 "armor"
             ) {
-
                 armorInventoryList.appendChild(
                     box
                 );
             }
-
         }
     );
 
-
-    // LEERE KATEGORIEN
-
     if (weaponCount === 0) {
-
         weaponInventoryList.innerHTML =
             "<p>Keine Waffen vorhanden.</p>";
     }
 
-
     if (armorCount === 0) {
-
         armorInventoryList.innerHTML =
             "<p>Keine Rüstungen vorhanden.</p>";
     }
@@ -1377,54 +1132,41 @@ function showInventory() {
 
 
 // =====================================================
-// INVENTAR ÖFFNEN
+// INVENTAR ÖFFNEN / SCHLIESSEN
 // =====================================================
 
 inventoryButton.addEventListener(
     "click",
     function () {
-
         combatScreen.classList.add(
             "hidden"
         );
-
 
         lootPanel.classList.add(
             "hidden"
         );
 
-
         inventoryScreen.classList.remove(
             "hidden"
         );
-
 
         showInventory();
     }
 );
 
 
-// =====================================================
-// INVENTAR SCHLIESSEN
-// =====================================================
-
 closeInventoryButton.addEventListener(
     "click",
     function () {
-
         inventoryScreen.classList.add(
             "hidden"
         );
 
-
         if (dungeonFinished) {
-
             lootPanel.classList.remove(
                 "hidden"
             );
-
         } else {
-
             combatScreen.classList.remove(
                 "hidden"
             );
@@ -1434,46 +1176,40 @@ closeInventoryButton.addEventListener(
 
 
 // =====================================================
-// LOOT-KATEGORIEN
+// LOOT
 // =====================================================
 
 const lootCategories = [
-
     {
         type: "gold",
         name: "Gold",
         icon: "🪙",
         weight: 25
     },
-
     {
         type: "wood",
         name: "Holz",
         icon: "🪵",
         weight: 20
     },
-
     {
         type: "stone",
         name: "Stein",
         icon: "🪨",
         weight: 20
     },
-
     {
         type: "food",
         name: "Nahrung",
         icon: "🌾",
         weight: 20
     },
-
     {
         type: "weapon",
         name: "Waffe",
         icon: "⚔️",
         weight: 8
     },
-
     {
         type: "armor",
         name: "Rüstung",
@@ -1483,63 +1219,37 @@ const lootCategories = [
 ];
 
 
-// =====================================================
-// WAFFENNAMEN
-// =====================================================
-
 const weaponNames = [
-
     "Kurzschwert",
-
     "Langschwert",
-
     "Kriegsaxt",
-
     "Streitkolben",
-
     "Speer"
 ];
 
 
-// =====================================================
-// RÜSTUNGSNAMEN
-// =====================================================
-
 const armorNames = [
-
     "Lederrüstung",
-
     "Kettenrüstung",
-
     "Schuppenrüstung",
-
     "Plattenrüstung",
-
     "Verstärkte Rüstung"
 ];
 
 
-// =====================================================
-// LOOT AUSWÄHLEN
-// =====================================================
-
 function drawUniqueLootCategories(
     amount
 ) {
-
     const available =
         [...lootCategories];
 
-
     const selected = [];
-
 
     for (
         let i = 0;
         i < amount;
         i++
     ) {
-
         const totalWeight =
             available.reduce(
                 (sum, item) =>
@@ -1547,28 +1257,22 @@ function drawUniqueLootCategories(
                 0
             );
 
-
         let roll =
             Math.random() *
             totalWeight;
 
-
         let selectedIndex =
             0;
-
 
         for (
             let j = 0;
             j < available.length;
             j++
         ) {
-
             roll -=
                 available[j].weight;
 
-
             if (roll <= 0) {
-
                 selectedIndex =
                     j;
 
@@ -1576,20 +1280,17 @@ function drawUniqueLootCategories(
             }
         }
 
-
         selected.push(
             available[
                 selectedIndex
             ]
         );
 
-
         available.splice(
             selectedIndex,
             1
         );
     }
-
 
     return selected;
 }
@@ -1600,13 +1301,10 @@ function drawUniqueLootCategories(
 // =====================================================
 
 function rollRarity() {
-
     const roll =
         Math.random() * 100;
 
-
     if (roll < 45) {
-
         return {
             name: "Gewöhnlich",
             symbol: "⬜",
@@ -1614,9 +1312,7 @@ function rollRarity() {
         };
     }
 
-
     if (roll < 72) {
-
         return {
             name: "Ungewöhnlich",
             symbol: "🟩",
@@ -1624,9 +1320,7 @@ function rollRarity() {
         };
     }
 
-
     if (roll < 87) {
-
         return {
             name: "Selten",
             symbol: "🟦",
@@ -1634,9 +1328,7 @@ function rollRarity() {
         };
     }
 
-
     if (roll < 95) {
-
         return {
             name: "Episch",
             symbol: "🟪",
@@ -1644,9 +1336,7 @@ function rollRarity() {
         };
     }
 
-
     if (roll < 99) {
-
         return {
             name: "Legendär",
             symbol: "🟧",
@@ -1654,28 +1344,21 @@ function rollRarity() {
         };
     }
 
-
     return {
         name: "Mythisch",
         symbol: "🟥",
         multiplier: 4
     };
-
-
-    // Göttlich gibt es
-    // nicht in normalen Dungeons.
 }
 
 
 // =====================================================
-// WAFFE GENERIEREN
+// AUSRÜSTUNG GENERIEREN
 // =====================================================
 
 function generateWeapon() {
-
     const rarity =
         rollRarity();
-
 
     const name =
         weaponNames[
@@ -1685,13 +1368,11 @@ function generateWeapon() {
             )
         ];
 
-
     const baseAttack =
         randomNumber(
             3,
             6
         );
-
 
     const attackBonus =
         Math.round(
@@ -1699,9 +1380,7 @@ function generateWeapon() {
             rarity.multiplier
         );
 
-
     return {
-
         id:
             crypto.randomUUID(),
 
@@ -1720,15 +1399,9 @@ function generateWeapon() {
 }
 
 
-// =====================================================
-// RÜSTUNG GENERIEREN
-// =====================================================
-
 function generateArmor() {
-
     const rarity =
         rollRarity();
-
 
     const name =
         armorNames[
@@ -1738,20 +1411,17 @@ function generateArmor() {
             )
         ];
 
-
     const baseDefense =
         randomNumber(
             2,
             5
         );
 
-
     const defenseBonus =
         Math.round(
             baseDefense *
             rarity.multiplier
         );
-
 
     const healthBonus =
         Math.round(
@@ -1763,9 +1433,7 @@ function generateArmor() {
             rarity.multiplier
         );
 
-
     return {
-
         id:
             crypto.randomUUID(),
 
@@ -1792,48 +1460,36 @@ function generateArmor() {
 // =====================================================
 
 function generateDungeonLoot() {
-
     combatScreen.classList.add(
         "hidden"
     );
-
 
     inventoryScreen.classList.add(
         "hidden"
     );
 
-
     lootPanel.classList.remove(
         "hidden"
     );
-
 
     const loot =
         drawUniqueLootCategories(
             3
         );
 
-
     lootResults.innerHTML =
         "";
 
-
     loot.forEach(
         item => {
-
-
             const box =
                 document.createElement(
                     "div"
                 );
 
-
             box.classList.add(
                 "loot-item"
             );
-
-
-            // RESSOURCE
 
             if (
                 item.type === "gold"
@@ -1844,18 +1500,15 @@ function generateDungeonLoot() {
                 ||
                 item.type === "food"
             ) {
-
                 const amount =
                     randomNumber(
                         10,
                         30
                     );
 
-
                 resources[
                     item.type
                 ] += amount;
-
 
                 box.innerHTML = `
                     <h3>
@@ -1869,22 +1522,16 @@ function generateDungeonLoot() {
                 `;
             }
 
-
-            // WAFFE
-
             else if (
                 item.type ===
                 "weapon"
             ) {
-
                 const weapon =
                     generateWeapon();
-
 
                 inventory.push(
                     weapon
                 );
-
 
                 box.innerHTML = `
                     <h3>
@@ -1903,22 +1550,16 @@ function generateDungeonLoot() {
                 `;
             }
 
-
-            // RÜSTUNG
-
             else if (
                 item.type ===
                 "armor"
             ) {
-
                 const armor =
                     generateArmor();
-
 
                 inventory.push(
                     armor
                 );
-
 
                 box.innerHTML = `
                     <h3>
@@ -1942,22 +1583,15 @@ function generateDungeonLoot() {
                 `;
             }
 
-
             lootResults.appendChild(
                 box
             );
-
         }
     );
 
-
     saveGame();
 
-
-    // FARM-LOOP
-
     if (farmMode) {
-
         setTimeout(
             restartFarmDungeon,
             2500
@@ -1965,8 +1599,12 @@ function generateDungeonLoot() {
     }
 }
 
-function tryHighestUnlockedLevel() {
 
+// =====================================================
+// HÖCHSTE FREIGESCHALTETE STUFE VERSUCHEN
+// =====================================================
+
+function tryHighestUnlockedLevel() {
     if (
         highestUnlockedLevel <=
         currentDungeonLevel
@@ -1974,23 +1612,17 @@ function tryHighestUnlockedLevel() {
         return;
     }
 
-    // Farmmodus beenden
     farmMode = false;
 
-    // Höchste freigeschaltete Stufe wählen
     currentDungeonLevel =
         highestUnlockedLevel;
 
-    // aktuellen Run abbrechen
     currentMonsterIndex = 0;
-
     dungeonFinished = false;
 
-    // Held heilen
     hero.health =
         hero.maxHealth;
 
-    // Bildschirme korrigieren
     lootPanel.classList.add(
         "hidden"
     );
@@ -2003,54 +1635,42 @@ function tryHighestUnlockedLevel() {
         "hidden"
     );
 
-    // Fähigkeit wieder verfügbar
-    attackButton.disabled = false;
+    attackButton.disabled =
+        false;
 
-    // neue Stufe starten
     loadMonster();
-
     saveGame();
 }
+
+
 // =====================================================
 // FARM-DUNGEON NEU STARTEN
 // =====================================================
 
 function restartFarmDungeon() {
-
     currentDungeonLevel =
         lastCompletedLevel > 0
             ? lastCompletedLevel
             : 1;
 
-
-    currentMonsterIndex =
-        0;
-
-
-    dungeonFinished =
-        false;
-
+    currentMonsterIndex = 0;
+    dungeonFinished = false;
 
     hero.health =
         hero.maxHealth;
 
-
     attackButton.disabled =
         false;
-
 
     lootPanel.classList.add(
         "hidden"
     );
 
-
     combatScreen.classList.remove(
         "hidden"
     );
 
-
     loadMonster();
-
     saveGame();
 }
 
@@ -2060,53 +1680,36 @@ function restartFarmDungeon() {
 // =====================================================
 
 function returnToFarmLevel() {
-
-    farmMode =
-        true;
-
+    farmMode = true;
 
     if (
         lastCompletedLevel > 0
     ) {
-
         currentDungeonLevel =
             lastCompletedLevel;
-
     } else {
-
         currentDungeonLevel =
             1;
     }
 
-
-    currentMonsterIndex =
-        0;
-
-
-    dungeonFinished =
-        false;
-
+    currentMonsterIndex = 0;
+    dungeonFinished = false;
 
     hero.health =
         hero.maxHealth;
 
-
     attackButton.disabled =
         false;
-
 
     lootPanel.classList.add(
         "hidden"
     );
 
-
     combatScreen.classList.remove(
         "hidden"
     );
 
-
     loadMonster();
-
     saveGame();
 }
 
@@ -2116,49 +1719,34 @@ function returnToFarmLevel() {
 // =====================================================
 
 function restartDungeon() {
-
-    farmMode =
-        false;
-
+    farmMode = false;
 
     if (
         currentDungeonLevel <
         highestUnlockedLevel
     ) {
-
         currentDungeonLevel =
             highestUnlockedLevel;
     }
 
-
-    currentMonsterIndex =
-        0;
-
-
-    dungeonFinished =
-        false;
-
+    currentMonsterIndex = 0;
+    dungeonFinished = false;
 
     hero.health =
         hero.maxHealth;
-
 
     lootPanel.classList.add(
         "hidden"
     );
 
-
     combatScreen.classList.remove(
         "hidden"
     );
 
-
     attackButton.disabled =
         false;
 
-
     loadMonster();
-
     saveGame();
 }
 
@@ -2178,10 +1766,15 @@ nextDungeonButton.addEventListener(
     restartDungeon
 );
 
-tryNextLevelButton.addEventListener(
-    "click",
-    tryHighestUnlockedLevel
-);
+
+if (tryNextLevelButton) {
+    tryNextLevelButton.addEventListener(
+        "click",
+        tryHighestUnlockedLevel
+    );
+}
+
+
 // =====================================================
 // AUTO-KAMPF
 // =====================================================
@@ -2202,9 +1795,5 @@ setInterval(
 // SPIELSTART
 // =====================================================
 
-// Erst gespeicherten Fortschritt laden,
-// danach Gegner für die richtige Stufe erzeugen.
-
 loadGame();
-
 loadMonster();
