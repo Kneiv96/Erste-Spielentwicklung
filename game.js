@@ -167,7 +167,10 @@ const equippedArmorDisplay =
 
 const nextDungeonButton =
     document.getElementById("nextDungeonButton");
-
+const tryNextLevelButton =
+    document.getElementById(
+        "tryNextLevelButton"
+    );
 
 // =====================================================
 // HILFSFUNKTIONEN
