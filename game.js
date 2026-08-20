@@ -5142,7 +5142,7 @@ const OFFLINE_EFFICIENCY =
     0.60;
 
 const OFFLINE_DUNGEON_MINUTES =
-    3;
+    0.1;
 
 const OFFLINE_MINIMUM_MINUTES =
     0.1;
@@ -5892,50 +5892,18 @@ function applyOfflineProgress() {
 
 function startOfflineTracking() {
 
-    // Alle 30 Sekunden speichern,
-    // dass der Spieler noch aktiv ist.
-
-    setInterval(
-        saveLastActiveTime,
-        30000
-    );
-
-
-    // Tab / Browser wird verlassen
-
-    window.addEventListener(
-        "beforeunload",
-        saveLastActiveTime
-    );
-
-
-    document.addEventListener(
-        "visibilitychange",
-        function () {
-
-            if (
-                document.visibilityState
-                ===
-                "hidden"
-            ) {
-
-                saveLastActiveTime();
-            }
-        }
-    );
-
-
     const closeButton =
         document.getElementById(
             "closeOfflineFarmButton"
         );
-
 
     const screen =
         document.getElementById(
             "offlineFarmScreen"
         );
 
+
+    // Offline-Fenster schliessen
 
     if (
         closeButton
@@ -5953,6 +5921,51 @@ function startOfflineTracking() {
             }
         );
     }
+
+
+    // Wenn der Tab verlassen wird:
+    // Startzeit der Offline-Phase speichern
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState
+                ===
+                "hidden"
+            ) {
+
+                saveLastActiveTime();
+
+                return;
+            }
+
+
+            // Wenn der Spieler zurückkommt,
+            // Offline-Fortschritt berechnen
+
+            if (
+                document.visibilityState
+                ===
+                "visible"
+            ) {
+
+                applyOfflineProgress();
+            }
+        }
+    );
+
+
+    // Browser / Seite wird geschlossen
+
+    window.addEventListener(
+        "pagehide",
+        function () {
+
+            saveLastActiveTime();
+        }
+    );
 }
 // =====================================================
 // BUTTONS
