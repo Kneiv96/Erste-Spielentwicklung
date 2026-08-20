@@ -832,6 +832,8 @@ function saveGame() {
 
         heroXP:
             hero.xp,
+        heroLevel:
+    hero.level,
 
         currentDungeonLevel:
             currentDungeonLevel,
@@ -956,8 +958,15 @@ function loadGame() {
     ) {
         hero.xp =
             data.heroXP;
+ 
     }
-
+if (
+    data.heroLevel !==
+    undefined
+) {
+    hero.level =
+        data.heroLevel;
+}
 
     if (
         data.currentDungeonLevel !==
