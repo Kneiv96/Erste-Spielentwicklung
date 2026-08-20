@@ -1553,6 +1553,7 @@ function rollRarity() {
 // =====================================================
 
 function generateWeapon() {
+
     const rarity =
         rollRarity();
 
@@ -1564,38 +1565,35 @@ function generateWeapon() {
             )
         ];
 
-    const baseAttack =
-        randomNumber(
-            3,
-            6
-        );
+    const attackRanges = {
+        1: [3, 5],
+        2: [6, 8],
+        3: [9, 12],
+        4: [13, 17],
+        5: [18, 23],
+        6: [24, 31]
+    };
+
+    const range =
+        attackRanges[rarity.tier];
 
     const attackBonus =
-        Math.round(
-            baseAttack *
-            rarity.multiplier
+        randomNumber(
+            range[0],
+            range[1]
         );
 
     return {
-        id:
-            crypto.randomUUID(),
-
-        type:
-            "weapon",
-
-        name:
-            name,
-
-        rarity:
-            rarity,
-
-        attackBonus:
-            attackBonus
+        id: crypto.randomUUID(),
+        type: "weapon",
+        name: name,
+        rarity: rarity,
+        attackBonus: attackBonus
     };
 }
 
-
 function generateArmor() {
+
     const rarity =
         rollRarity();
 
@@ -1607,46 +1605,49 @@ function generateArmor() {
             )
         ];
 
-    const baseDefense =
-        randomNumber(
-            2,
-            5
-        );
+    const defenseRanges = {
+        1: [2, 3],
+        2: [4, 5],
+        3: [6, 8],
+        4: [9, 12],
+        5: [13, 17],
+        6: [18, 24]
+    };
+
+    const healthRanges = {
+        1: [5, 10],
+        2: [11, 17],
+        3: [18, 27],
+        4: [28, 40],
+        5: [41, 57],
+        6: [58, 80]
+    };
+
+    const defenseRange =
+        defenseRanges[rarity.tier];
+
+    const healthRange =
+        healthRanges[rarity.tier];
 
     const defenseBonus =
-        Math.round(
-            baseDefense *
-            rarity.multiplier
+        randomNumber(
+            defenseRange[0],
+            defenseRange[1]
         );
 
     const healthBonus =
-        Math.round(
-            randomNumber(
-                5,
-                12
-            )
-            *
-            rarity.multiplier
+        randomNumber(
+            healthRange[0],
+            healthRange[1]
         );
 
     return {
-        id:
-            crypto.randomUUID(),
-
-        type:
-            "armor",
-
-        name:
-            name,
-
-        rarity:
-            rarity,
-
-        defenseBonus:
-            defenseBonus,
-
-        healthBonus:
-            healthBonus
+        id: crypto.randomUUID(),
+        type: "armor",
+        name: name,
+        rarity: rarity,
+        defenseBonus: defenseBonus,
+        healthBonus: healthBonus
     };
 }
 
