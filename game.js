@@ -242,7 +242,30 @@ function loadMonster() {
     updateDisplay();
 }
 
+function updateNextLevelButton() {
 
+    if (
+        farmMode &&
+        highestUnlockedLevel >
+        currentDungeonLevel
+    ) {
+
+        tryNextLevelButton.classList.remove(
+            "hidden"
+        );
+
+        tryNextLevelButton.textContent =
+            "⚔️ Stufe "
+            + highestUnlockedLevel
+            + " versuchen";
+
+    } else {
+
+        tryNextLevelButton.classList.add(
+            "hidden"
+        );
+    }
+}
 // =====================================================
 // ANZEIGE AKTUALISIEREN
 // =====================================================
@@ -349,6 +372,7 @@ function updateDisplay() {
         nextDungeonButton.textContent =
             "⚔️ Nächste Stufe";
     }
+updateNextLevelButton();
 }
 
 
