@@ -451,7 +451,32 @@ function updateDisplay() {
         nextDungeonButton.textContent =
             "⚔️ Nächste Stufe";
     }
+document.getElementById(
+    "heroLevel"
+).textContent =
+    hero.level;
 
+
+document.getElementById(
+    "heroRank"
+).textContent =
+    getHeroRank(
+        hero.level
+    );
+
+
+const neededXP =
+    xpNeededForLevel(
+        hero.level
+    );
+
+
+document.getElementById(
+    "heroXPNeeded"
+).textContent =
+    neededXP === null
+        ? "MAX"
+        : neededXP;
     updateNextLevelButton();
     updateFarmStatus();
 }
