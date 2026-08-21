@@ -5909,13 +5909,26 @@ function showOfflineFarmResults(
 
         <hr>
 
-        <p>
-            🏰 Gefarmte Dungeons:
-            <strong>
-                ${dungeonCount}
-            </strong>
-        </p>
+       <p>
+    🏰 Versuchte Dungeons:
+    <strong>
+        ${dungeonCount}
+    </strong>
+</p>
 
+<p>
+    ✅ Geschafft:
+    <strong>
+        ${rewards.successfulDungeons}
+    </strong>
+</p>
+
+<p>
+    ❌ Gescheitert:
+    <strong>
+        ${rewards.failedDungeons}
+    </strong>
+</p>
         <p>
             ⭐ XP:
             <strong>
