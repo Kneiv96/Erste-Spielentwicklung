@@ -389,7 +389,7 @@ const dungeon = {
             name: "Ratte",
             maxHealth: 25,
             attack: 4,
-            xp: 10
+            xp: 10,
             image: "images/monsters/ratte.png"
         },
         {
