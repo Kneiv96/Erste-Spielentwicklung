@@ -390,6 +390,7 @@ const dungeon = {
             maxHealth: 25,
             attack: 4,
             xp: 10
+            image: "images/monsters/ratte.png"
         },
         {
             name: "Goblin-Schürfer",
