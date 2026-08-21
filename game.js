@@ -5318,7 +5318,312 @@ function getOfflineResourceTypes() {
     );
 }
 
+// =====================================================
+// OFFLINE-DUNGEON ERFOLGSCHANCE
+// =====================================================
 
+function calculateOfflineDungeonSuccessChance() {
+
+    // -------------------------
+    // ZUFÄLLIGEN DUNGEON BAUEN
+    // -------------------------
+
+    const availableMonsters = [
+        ...dungeon.normalMonsters
+    ];
+
+
+    const selectedMonsters = [];
+
+
+    for (
+        let i = 0;
+        i < 4;
+        i++
+    ) {
+
+        const randomIndex =
+            randomNumber(
+                0,
+                availableMonsters.length - 1
+            );
+
+
+        selectedMonsters.push(
+            availableMonsters[
+                randomIndex
+            ]
+        );
+
+
+        availableMonsters.splice(
+            randomIndex,
+            1
+        );
+    }
+
+
+    const boss =
+        dungeon.bosses[
+            randomNumber(
+                0,
+                dungeon.bosses.length - 1
+            )
+        ];
+
+
+    selectedMonsters.push(
+        boss
+    );
+
+
+    // -------------------------
+    // FARM-MONSTER SKALIERUNG
+    // -------------------------
+
+    let healthMultiplier =
+        1
+        +
+        (
+            currentDungeonLevel - 1
+        )
+        *
+        0.25;
+
+
+    let attackMultiplier =
+        1
+        +
+        (
+            currentDungeonLevel - 1
+        )
+        *
+        0.15;
+
+
+    // Gleiche Erleichterung wie
+    // beim normalen Farm-Modus
+
+    healthMultiplier *=
+        0.60;
+
+    attackMultiplier *=
+        0.55;
+
+
+    // -------------------------
+    // KAMPF SIMULIEREN
+    // -------------------------
+
+    let simulatedHealth =
+        hero.maxHealth;
+
+
+    selectedMonsters.forEach(
+        monsterTemplate => {
+
+            if (
+                simulatedHealth <= 0
+            ) {
+
+                return;
+            }
+
+
+            const monsterHealth =
+                Math.round(
+                    monsterTemplate.maxHealth
+                    *
+                    healthMultiplier
+                );
+
+
+            const monsterAttack =
+                Math.round(
+                    monsterTemplate.attack
+                    *
+                    attackMultiplier
+                );
+
+
+            // Held greift alle 2 Sekunden an.
+
+            const attacksNeeded =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        monsterHealth
+                        /
+                        hero.attack
+                    )
+                );
+
+
+            const combatSeconds =
+                attacksNeeded
+                *
+                2;
+
+
+            // Monster greift alle
+            // 2,5 Sekunden an.
+
+            const monsterHits =
+                Math.floor(
+                    combatSeconds
+                    /
+                    2.5
+                );
+
+
+            let damagePerHit =
+                Math.max(
+                    1,
+                    monsterAttack
+                    -
+                    hero.defense
+                );
+
+
+            // Bollwerk
+
+            if (
+                hasAbility(
+                    "bulwark"
+                )
+            ) {
+
+                damagePerHit =
+                    Math.max(
+                        1,
+                        Math.round(
+                            damagePerHit
+                            *
+                            0.85
+                        )
+                    );
+            }
+
+
+            const incomingDamage =
+                monsterHits
+                *
+                damagePerHit;
+
+
+            simulatedHealth -=
+                incomingDamage;
+
+
+            // Regeneration nach Kill
+
+            if (
+                simulatedHealth > 0
+                &&
+                hasAbility(
+                    "regeneration"
+                )
+            ) {
+
+                simulatedHealth +=
+                    Math.round(
+                        hero.maxHealth
+                        *
+                        0.08
+                    );
+
+
+                simulatedHealth =
+                    Math.min(
+                        hero.maxHealth,
+                        simulatedHealth
+                    );
+            }
+        }
+    );
+
+
+    // -------------------------
+    // ERFOLGSCHANCE
+    // -------------------------
+
+    const healthRatio =
+        simulatedHealth
+        /
+        hero.maxHealth;
+
+
+    // Sehr komfortabel geschafft
+
+    if (
+        healthRatio >= 0.70
+    ) {
+
+        return 0.98;
+    }
+
+
+    if (
+        healthRatio >= 0.40
+    ) {
+
+        return 0.90;
+    }
+
+
+    if (
+        healthRatio >= 0.20
+    ) {
+
+        return 0.75;
+    }
+
+
+    if (
+        healthRatio > 0
+    ) {
+
+        return 0.60;
+    }
+
+
+    // Rechnerisch eigentlich verloren.
+    // Eine kleine Restchance bleibt.
+
+    const deficitRatio =
+        Math.abs(
+            simulatedHealth
+        )
+        /
+        hero.maxHealth;
+
+
+    if (
+        deficitRatio < 0.25
+    ) {
+
+        return 0.40;
+    }
+
+
+    if (
+        deficitRatio < 0.50
+    ) {
+
+        return 0.20;
+    }
+
+
+    if (
+        deficitRatio < 1
+    ) {
+
+        return 0.08;
+    }
+
+
+    return 0.02;
+}
 // =====================================================
 // OFFLINE-BELOHNUNGEN BERECHNEN
 // =====================================================
@@ -5338,7 +5643,10 @@ function calculateOfflineRewards(
 
         weapons: 0,
         armor: 0,
-
+        
+successfulDungeons: 0,
+failedDungeons: 0,
+        
         rarity: {
             common: 0,
             uncommon: 0,
@@ -5356,7 +5664,27 @@ function calculateOfflineRewards(
         i < dungeonCount;
         i++
     ) {
+const successChance =
+    calculateOfflineDungeonSuccessChance();
 
+
+const dungeonSuccessful =
+    Math.random()
+    <
+    successChance;
+
+
+if (
+    !dungeonSuccessful
+) {
+
+    rewards.failedDungeons++;
+
+    continue;
+}
+
+
+rewards.successfulDungeons++;
         // -------------------------
         // XP
         // -------------------------
