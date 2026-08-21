@@ -1896,6 +1896,43 @@ if (
         monster.name
     );
 
+    // =====================================================
+// MONSTER-GRAFIK
+// =====================================================
+
+const monsterCharacter =
+    document.getElementById(
+        "monsterCharacter"
+    );
+
+
+if (
+    monsterCharacter
+) {
+
+    // Falls das Monster eine eigene Grafik hat
+
+    if (
+        monster.image
+    ) {
+
+        monsterCharacter.innerHTML = `
+            <img
+                src="${monster.image}"
+                alt="${monster.name}"
+                class="monster-image"
+            >
+        `;
+
+    } else {
+
+        // Fallback für Monster,
+        // die noch keine Grafik haben
+
+        monsterCharacter.textContent =
+            "👹";
+    }
+}
 
     battleMessage.textContent =
         monster.boss
