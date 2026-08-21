@@ -5856,8 +5856,72 @@ function applyOfflineProgress() {
 
     // XP hinzufügen
 
-    hero.xp +=
-        rewards.xp;
+    // =====================================================
+// OFFLINE-XP BEGRENZEN
+// =====================================================
+
+// Offline-XP nur zu 15 % werten
+
+const reducedOfflineXP =
+    Math.floor(
+        rewards.xp *
+        0.1
+    );
+
+
+// XP bis zum nächsten Level bestimmen
+
+const nextLevelXP =
+    xpNeededForLevel(
+        hero.level
+    );
+
+
+// Auf Level 100 gibt es keinen weiteren Aufstieg
+
+let offlineXPCap =
+    reducedOfflineXP;
+
+
+if (
+    nextLevelXP !== null
+) {
+
+    const xpMissing =
+        Math.max(
+            0,
+            nextLevelXP - hero.xp
+        );
+
+
+    // Offline darf maximal 25 %
+    // des noch fehlenden XP-Bedarfs liefern
+
+    offlineXPCap =
+        Math.floor(
+            xpMissing *
+            0.25
+        );
+}
+
+
+// Tatsächlich gewährte XP
+
+const grantedOfflineXP =
+    Math.min(
+        reducedOfflineXP,
+        offlineXPCap
+    );
+
+
+hero.xp +=
+    grantedOfflineXP;
+
+
+// Für die Anzeige korrigieren
+
+rewards.xp =
+    grantedOfflineXP;
 
 
     // Eventuelle Levelaufstiege ausführen
