@@ -493,3 +493,15 @@ button:hover {
 .offline-farm-box button {
     margin-top: 20px;
 }
+.character {
+    height: 300px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.hero-image {
+    max-height: 290px;
+    max-width: 100%;
+    object-fit: contain;
+}
